@@ -1,0 +1,82 @@
+{
+  "collectionName": "components_appartements_locataires",
+  "info": {
+    "displayName": "locataires",
+    "icon": "user"
+  },
+  "options": {},
+  "attributes": {
+    "nom": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "telephone": {
+      "type": "string"
+    },
+    "dateEntree": {
+      "type": "date"
+    },
+    "bail": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "etatDesLieuxEntree": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "etatDesLieuxSortie": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "assuranceLocataire": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "assurancePno": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "indiceIrl": {
+      "type": "enumeration",
+      "enum": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ]
+    }
+  },
+  "config": {}
+}

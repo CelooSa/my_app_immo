@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_appartements_trousseaux",
+  "info": {
+    "displayName": "trousseaux",
+    "icon": "key"
+  },
+  "options": {},
+  "attributes": {
+    "identifiantTrousseau": {
+      "type": "string"
+    },
+    "contenuTrousseau": {
+      "type": "blocks"
+    },
+    "detenteurTrousseau": {
+      "type": "enumeration",
+      "enum": [
+        "agence",
+        "locataire"
+      ]
+    }
+  },
+  "config": {}
+}
