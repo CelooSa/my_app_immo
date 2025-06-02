@@ -1,0 +1,84 @@
+{
+  "collectionName": "components_appartements_le_biens",
+  "info": {
+    "displayName": "leBien",
+    "icon": "house"
+  },
+  "options": {},
+  "attributes": {
+    "proprietaire": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "text"
+    },
+    "etage": {
+      "type": "integer"
+    },
+    "position": {
+      "type": "string"
+    },
+    "cave": {
+      "type": "boolean"
+    },
+    "caveNumeroLot": {
+      "type": "string"
+    },
+    "caveEmplacement": {
+      "type": "string"
+    },
+    "parking": {
+      "type": "boolean"
+    },
+    "parkingEmplacement": {
+      "type": "string"
+    },
+    "parkingNumeroLot": {
+      "type": "string"
+    },
+    "plans": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "photos": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "nombrePieces": {
+      "type": "integer"
+    },
+    "nombreM2": {
+      "type": "decimal"
+    },
+    "chaudiereIndividuelle": {
+      "type": "boolean"
+    },
+    "energie": {
+      "type": "enumeration",
+      "enum": [
+        "gaz",
+        "electricite",
+        "autre"
+      ]
+    },
+    "meuble": {
+      "type": "boolean"
+    },
+    "listeMeubles": {
+      "type": "blocks"
+    }
+  },
+  "config": {}
+}
