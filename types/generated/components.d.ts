@@ -1,5 +1,17 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface AppartementsEntrtienChaudiere extends Struct.ComponentSchema {
+  collectionName: 'components_appartements_entrtien_chaudieres';
+  info: {
+    displayName: 'entretienChaudiere';
+  };
+  attributes: {
+    compriseDansLesCharges: Schema.Attribute.Boolean;
+    dateEntretienChaudiere: Schema.Attribute.Date;
+    prixEntretienChaudiere: Schema.Attribute.Decimal;
+  };
+}
+
 export interface AppartementsLeBien extends Struct.ComponentSchema {
   collectionName: 'components_appartements_le_biens';
   info: {
@@ -75,6 +87,10 @@ export interface AppartementsLoyerCharges extends Struct.ComponentSchema {
   attributes: {
     anneeIrl: Schema.Attribute.Integer;
     charges: Schema.Attribute.Decimal;
+    entretienChaudiere: Schema.Attribute.Component<
+      'appartements.entrtien-chaudiere',
+      true
+    >;
     indiceValeurIrl: Schema.Attribute.Decimal;
     loyerHc: Schema.Attribute.Decimal;
     loyerTtc: Schema.Attribute.Decimal;
@@ -105,12 +121,16 @@ export interface AppartementsTrousseaux extends Struct.ComponentSchema {
     contenuTrousseau: Schema.Attribute.Blocks;
     detenteurTrousseau: Schema.Attribute.Enumeration<['agence', 'locataire']>;
     identifiantTrousseau: Schema.Attribute.String;
+    photoTrousseau: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
   };
 }
 
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'appartements.entrtien-chaudiere': AppartementsEntrtienChaudiere;
       'appartements.le-bien': AppartementsLeBien;
       'appartements.locataires': AppartementsLocataires;
       'appartements.loyer-charges': AppartementsLoyerCharges;

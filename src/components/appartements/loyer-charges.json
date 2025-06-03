@@ -34,6 +34,11 @@
       "type": "component",
       "component": "appartements.tom",
       "repeatable": true
+    },
+    "entretienChaudiere": {
+      "type": "component",
+      "component": "appartements.entrtien-chaudiere",
+      "repeatable": true
     }
   },
   "config": {}

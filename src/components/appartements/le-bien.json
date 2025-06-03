@@ -30,10 +30,10 @@
     "parking": {
       "type": "boolean"
     },
-    "parkingEmplacement": {
+    "parkingNumeroLot": {
       "type": "string"
     },
-    "parkingNumeroLot": {
+    "parkingEmplacement": {
       "type": "string"
     },
     "plans": {
