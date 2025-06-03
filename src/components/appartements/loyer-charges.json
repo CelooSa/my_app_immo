@@ -37,7 +37,7 @@
     },
     "entretienChaudiere": {
       "type": "component",
-      "component": "appartements.entrtien-chaudiere",
+      "component": "appartements.entretien-chaudiere",
       "repeatable": true
     }
   },
