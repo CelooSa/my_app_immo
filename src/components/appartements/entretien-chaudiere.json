@@ -1,7 +1,7 @@
 {
   "collectionName": "components_loyer_charges_entretien_chaudieres",
   "info": {
-    "displayName": "entretienChaudiere"
+    "displayName": "entretien chaudiere "
   },
   "options": {},
   "attributes": {
@@ -11,14 +11,8 @@
     "compriseDansLesCharges": {
       "type": "boolean"
     },
-    "installation": {
+    "intervention": {
       "type": "component",
-      "repeatable": true,
-      "component": "entretien-chaudiere.fiche-entreprise"
-    },
-    "revisions": {
-      "type": "component",
-      "repeatable": true,
       "component": "entretien-chaudiere.fiche-entreprise"
     },
     "prochainEntretienPrevu": {
@@ -26,7 +20,11 @@
     },
     "frequenceEntretien": {
       "type": "enumeration",
-      "enum": ["annuel", "semestriel", "trimestriel"]
+      "enum": [
+        "annuel",
+        "semestriel",
+        "trimestriel"
+      ]
     }
   },
   "config": {}
