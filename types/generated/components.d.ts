@@ -1,21 +1,44 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
-export interface AppartementsEntrtienChaudiere extends Struct.ComponentSchema {
-  collectionName: 'components_appartements_entrtien_chaudieres';
+export interface AppartementsDossierEnCours extends Struct.ComponentSchema {
+  collectionName: 'components_appartements_dossier_en_cours';
   info: {
-    displayName: 'entretienChaudiere';
+    displayName: 'dossier en cours';
+    icon: 'folder';
+  };
+  attributes: {
+    descriptionLitige: Schema.Attribute.Blocks;
+    fichiersLitige: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    typeLitige: Schema.Attribute.String;
+  };
+}
+
+export interface AppartementsEntretienChaudiere extends Struct.ComponentSchema {
+  collectionName: 'components_loyer_charges_entretien_chaudieres';
+  info: {
+    displayName: 'entretien chaudiere ';
   };
   attributes: {
     compriseDansLesCharges: Schema.Attribute.Boolean;
-    dateEntretienChaudiere: Schema.Attribute.Date;
+    frequenceEntretien: Schema.Attribute.Enumeration<
+      ['annuel', 'semestriel', 'trimestriel']
+    >;
+    intervention: Schema.Attribute.Component<
+      'entretien-chaudiere.fiche-entreprise',
+      false
+    >;
     prixEntretienChaudiere: Schema.Attribute.Decimal;
+    prochainEntretienPrevu: Schema.Attribute.Date;
   };
 }
 
 export interface AppartementsLeBien extends Struct.ComponentSchema {
   collectionName: 'components_appartements_le_biens';
   info: {
-    displayName: 'leBien';
+    displayName: 'le Bien';
     icon: 'house';
   };
   attributes: {
@@ -81,14 +104,14 @@ export interface AppartementsLocataires extends Struct.ComponentSchema {
 export interface AppartementsLoyerCharges extends Struct.ComponentSchema {
   collectionName: 'components_appartements_loyer_charges';
   info: {
-    displayName: 'loyerCharges';
+    displayName: 'loyer et charges';
     icon: 'shoppingCart';
   };
   attributes: {
     anneeIrl: Schema.Attribute.Integer;
     charges: Schema.Attribute.Decimal;
     entretienChaudiere: Schema.Attribute.Component<
-      'appartements.entrtien-chaudiere',
+      'appartements.entretien-chaudiere',
       true
     >;
     indiceValeurIrl: Schema.Attribute.Decimal;
@@ -127,15 +150,37 @@ export interface AppartementsTrousseaux extends Struct.ComponentSchema {
   };
 }
 
+export interface EntretienChaudiereFicheEntreprise
+  extends Struct.ComponentSchema {
+  collectionName: 'components_entretien_chaudiere_fiche_entreprises';
+  info: {
+    displayName: 'fiche Entreprise';
+  };
+  attributes: {
+    adresse: Schema.Attribute.Text;
+    dateIntervention: Schema.Attribute.Date;
+    email: Schema.Attribute.Email;
+    nomEntreprise: Schema.Attribute.String & Schema.Attribute.Required;
+    numeroSiret: Schema.Attribute.String;
+    technicien: Schema.Attribute.String;
+    telephone: Schema.Attribute.String;
+    typeIntervention: Schema.Attribute.Enumeration<
+      ['entretien', 'reparation', 'installation', 'diagnostic']
+    >;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
-      'appartements.entrtien-chaudiere': AppartementsEntrtienChaudiere;
+      'appartements.dossier-en-cours': AppartementsDossierEnCours;
+      'appartements.entretien-chaudiere': AppartementsEntretienChaudiere;
       'appartements.le-bien': AppartementsLeBien;
       'appartements.locataires': AppartementsLocataires;
       'appartements.loyer-charges': AppartementsLoyerCharges;
       'appartements.tom': AppartementsTom;
       'appartements.trousseaux': AppartementsTrousseaux;
+      'entretien-chaudiere.fiche-entreprise': EntretienChaudiereFicheEntreprise;
     }
   }
 }

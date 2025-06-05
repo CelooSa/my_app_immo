@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_appartements_dossier_en_cours",
+  "info": {
+    "displayName": "dossier en cours",
+    "icon": "folder"
+  },
+  "options": {},
+  "attributes": {
+    "typeLitige": {
+      "type": "string"
+    },
+    "descriptionLitige": {
+      "type": "blocks"
+    },
+    "fichiersLitige": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  },
+  "config": {}
+}

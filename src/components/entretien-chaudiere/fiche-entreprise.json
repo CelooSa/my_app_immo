@@ -1,9 +1,8 @@
 {
   "collectionName": "components_entretien_chaudiere_fiche_entreprises",
   "info": {
-    "displayName": "ficheEntreprise"
+    "displayName": "fiche Entreprise"
   },
-
   "options": {},
   "attributes": {
     "nomEntreprise": {
@@ -25,9 +24,6 @@
     "technicien": {
       "type": "string"
     },
-    "dateIntervention": {
-      "type": "date"
-    },
     "typeIntervention": {
       "type": "enumeration",
       "enum": [
@@ -36,6 +32,9 @@
         "installation",
         "diagnostic"
       ]
+    },
+    "dateIntervention": {
+      "type": "date"
     }
   }
 }
