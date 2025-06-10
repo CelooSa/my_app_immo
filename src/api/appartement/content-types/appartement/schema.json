@@ -14,6 +14,9 @@
     "nomAppartement": {
       "type": "string"
     },
+    "memo": {
+      "type": "blocks"
+    },
     "Locataire": {
       "type": "component",
       "component": "appartements.locataires",
@@ -23,6 +26,12 @@
       "type": "component",
       "component": "appartements.trousseaux",
       "repeatable": true
+    },
+    "intervenants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::autre-contact.autre-contact",
+      "mappedBy": "appartements_travailles"
     }
   }
 }

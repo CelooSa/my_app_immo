@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_appartements_decomptes_annuels",
+  "info": {
+    "displayName": "decomptes_annuels"
+  },
+  "options": {},
+  "attributes": {
+    "annee": {
+      "type": "integer"
+    },
+    "fichier_decompte": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "montant_total": {
+      "type": "decimal"
+    },
+    "archive": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "blocks"
+    }
+  },
+  "config": {}
+}
