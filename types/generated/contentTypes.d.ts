@@ -387,6 +387,10 @@ export interface ApiAppartementAppartement extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    intervenants: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::autre-contact.autre-contact'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -394,9 +398,164 @@ export interface ApiAppartementAppartement extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     Locataire: Schema.Attribute.Component<'appartements.locataires', true>;
+    memo: Schema.Attribute.Blocks;
     nomAppartement: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     trousseau: Schema.Attribute.Component<'appartements.trousseaux', true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiAutresContactAutresContact
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'autres_contacts';
+  info: {
+    description: 'Annuaire professionnel par cat\u00E9gories de m\u00E9tiers';
+    displayName: 'Autres Contacts';
+    pluralName: 'autres-contacts';
+    singularName: 'autres-contact';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    actif: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    adresse: Schema.Attribute.Text;
+    categorie_principale: Schema.Attribute.Enumeration<
+      [
+        'Entrepreneurs',
+        'Plombiers',
+        'Electriciens',
+        'Assureurs',
+        'Comptables',
+        'Notaires',
+        'Architectes',
+        'Avocats',
+        'Syndics',
+        'Agents immobiliers',
+        'Diagnostiqueurs',
+        'Autres',
+      ]
+    >;
+    code_postal: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 10;
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date_ajout: Schema.Attribute.DateTime & Schema.Attribute.DefaultTo<'now'>;
+    derniere_utilisation: Schema.Attribute.Date;
+    documents: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    email: Schema.Attribute.Email;
+    entreprise: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 150;
+      }>;
+    evaluation: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 1;
+        },
+        number
+      >;
+    horaires: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::autres-contact.autres-contact'
+    > &
+      Schema.Attribute.Private;
+    nom: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    notes: Schema.Attribute.Text;
+    prenom: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    recommande_par: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    siret: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 14;
+      }>;
+    site_web: Schema.Attribute.String;
+    sous_categorie: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    specialites: Schema.Attribute.JSON;
+    tags: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::tag-contact.tag-contact'
+    >;
+    tarifs_indicatifs: Schema.Attribute.Text;
+    telephone_fixe: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 20;
+      }>;
+    telephone_mobile: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 20;
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    ville: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+  };
+}
+
+export interface ApiTagsContactTagsContact extends Struct.CollectionTypeSchema {
+  collectionName: 'tag-contact';
+  info: {
+    description: 'Tags pour cat\u00E9goriser les contacts professionnels';
+    displayName: 'Tags Contacts';
+    pluralName: 'tag-contacts';
+    singularName: 'tags-contact';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    contacts: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::autres-contact.autres-contact'
+    >;
+    couleur: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 7;
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::tags-contact.tags-contact'
+    > &
+      Schema.Attribute.Private;
+    nom: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 50;
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -913,6 +1072,8 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::appartement.appartement': ApiAppartementAppartement;
+      'api::autres-contact.autres-contact': ApiAutresContactAutresContact;
+      'api::tags-contact.tags-contact': ApiTagsContactTagsContact;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

@@ -1,7 +1,7 @@
 {
   "collectionName": "components_appartements_loyer_charges",
   "info": {
-    "displayName": "loyer et charges",
+    "displayName": "loyer_et_charges",
     "icon": "shoppingCart"
   },
   "options": {},
@@ -38,6 +38,11 @@
     "entretienChaudiere": {
       "type": "component",
       "component": "appartements.entretien-chaudiere",
+      "repeatable": true
+    },
+    "decomptes_annuels_charges": {
+      "type": "component",
+      "component": "appartements.decomptes-annuels",
       "repeatable": true
     }
   },

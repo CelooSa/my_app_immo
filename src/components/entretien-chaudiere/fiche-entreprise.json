@@ -1,7 +1,7 @@
 {
   "collectionName": "components_entretien_chaudiere_fiche_entreprises",
   "info": {
-    "displayName": "fiche Entreprise"
+    "displayName": "fiche_entreprise"
   },
   "options": {},
   "attributes": {

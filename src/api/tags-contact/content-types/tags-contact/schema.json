@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tag-contact",
+  "info": {
+    "singularName": "tags-contact",
+    "pluralName": "tag-contacts",
+    "displayName": "Tags Contacts",
+    "description": "Tags pour catégoriser les contacts professionnels"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "nom": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 50
+    },
+    "couleur": {
+      "type": "string",
+      "required": false,
+      "maxLength": 7,
+      "regex": "^#[0-9A-Fa-f]{6}$"
+    },
+    "description": {
+      "type": "text",
+      "required": false
+    },
+    "contacts": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::autres-contact.autres-contact"
+    }
+  }
+}
