@@ -68,8 +68,16 @@
       "maxLength": 100
     },
     "specialites": {
-      "type": "json"
+      "type": "json",
+      "default": []
     },
+    "zone_intervention": {
+      "type": "string"
+    },
+
+
+
+
     "tags": {
       "type": "relation",
       "relation": "manyToMany",
@@ -89,8 +97,13 @@
       "type": "datetime",
       "default": "now"
     },
+    "criteres_recherche": {
+      "type": "component",
+      "component": "shared.criteres-recherche",
+      "repeatable": false
+    },
     "derniere_utilisation": {
-      "type": "date",
+      "type": "datetime",
       "required": false
     },
     "evaluation": {

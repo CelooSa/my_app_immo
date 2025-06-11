@@ -351,6 +351,38 @@ export interface InterventionsHistoriqueInterventions
   };
 }
 
+export interface SharedCriteresRecherche extends Struct.ComponentSchema {
+  collectionName: 'components_shared_criteres_recherches';
+  info: {
+    description: 'Component pour la recherche intelligente des contacts';
+    displayName: 'Crit\u00E8res de Recherche';
+  };
+  attributes: {
+    appartements_concernes: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::appartement.appartement'
+    >;
+    date_utilisation_apres: Schema.Attribute.Date;
+    disponible_weekends: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    evaluation_minimum: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<1>;
+    tags_requis: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::tags-contact.tags-contact'
+    >;
+    urgence_requise: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -368,6 +400,7 @@ declare module '@strapi/strapi' {
       'dossier-en-cours.travaux': DossierEnCoursTravaux;
       'entretien-chaudiere.fiche-entreprise': EntretienChaudiereFicheEntreprise;
       'interventions.historique_interventions': InterventionsHistoriqueInterventions;
+      'shared.criteres-recherche': SharedCriteresRecherche;
     }
   }
 }

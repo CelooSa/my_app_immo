@@ -446,8 +446,12 @@ export interface ApiAutresContactAutresContact
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    criteres_recherche: Schema.Attribute.Component<
+      'shared.criteres-recherche',
+      false
+    >;
     date_ajout: Schema.Attribute.DateTime & Schema.Attribute.DefaultTo<'now'>;
-    derniere_utilisation: Schema.Attribute.Date;
+    derniere_utilisation: Schema.Attribute.DateTime;
     documents: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
@@ -495,7 +499,7 @@ export interface ApiAutresContactAutresContact
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 100;
       }>;
-    specialites: Schema.Attribute.JSON;
+    specialites: Schema.Attribute.JSON & Schema.Attribute.DefaultTo<[]>;
     tags: Schema.Attribute.Relation<
       'manyToMany',
       'api::tag-contact.tag-contact'
@@ -516,6 +520,7 @@ export interface ApiAutresContactAutresContact
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 100;
       }>;
+    zone_intervention: Schema.Attribute.String;
   };
 }
 
