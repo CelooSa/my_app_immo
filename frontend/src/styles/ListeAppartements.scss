@@ -1,0 +1,40 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:wght@200&display=swap');
+
+
+
+.grid-appartements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.appartement-card {
+  padding: 1rem;
+  border-radius: 20px; // Coins très arrondis
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  font-family: 'Sour Gummy', sans-serif;
+
+  h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .placeholder-image {
+    height: 120px;
+    background-color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+  }
+
+  &:hover {
+    transform: scale(1.03);
+  }
+}
