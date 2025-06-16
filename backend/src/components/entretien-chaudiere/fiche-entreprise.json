@@ -1,0 +1,40 @@
+{
+  "collectionName": "components_entretien_chaudiere_fiche_entreprises",
+  "info": {
+    "displayName": "fiche_entreprise"
+  },
+  "options": {},
+  "attributes": {
+    "nomEntreprise": {
+      "type": "string",
+      "required": true
+    },
+    "adresse": {
+      "type": "text"
+    },
+    "telephone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "numeroSiret": {
+      "type": "string"
+    },
+    "technicien": {
+      "type": "string"
+    },
+    "typeIntervention": {
+      "type": "enumeration",
+      "enum": [
+        "entretien",
+        "reparation",
+        "installation",
+        "diagnostic"
+      ]
+    },
+    "dateIntervention": {
+      "type": "date"
+    }
+  }
+}

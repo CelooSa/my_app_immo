@@ -1,0 +1,55 @@
+{
+  "collectionName": "components_interventions_historique_interventions",
+  "info": {
+    "displayName": "Historique Intervention",
+    "description": "Historique des interventions d'un contact sur les appartements"
+  },
+  "options": {},
+  "attributes": {
+    "date_intervention": {
+      "type": "date",
+      "required": true
+    },
+    "appartement": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::appartement.appartement"
+    },
+    "type_intervention": {
+      "type": "enumeration",
+      "enum": [
+        "Réparation",
+        "Maintenance",
+        "Installation",
+        "Diagnostic",
+        "Devis",
+        "Autre"
+      ],
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "cout": {
+      "type": "decimal",
+      "required": false
+    },
+    "satisfaction": {
+      "type": "integer",
+      "required": false,
+      "min": 1,
+      "max": 5
+    },
+    "notes": {
+      "type": "text",
+      "required": false
+    },
+    "documents_intervention": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images", "files"]
+    }
+  }
+}

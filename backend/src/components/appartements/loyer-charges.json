@@ -1,0 +1,50 @@
+{
+  "collectionName": "components_appartements_loyer_charges",
+  "info": {
+    "displayName": "loyer_et_charges",
+    "icon": "shoppingCart"
+  },
+  "options": {},
+  "attributes": {
+    "loyerHc": {
+      "type": "decimal"
+    },
+    "charges": {
+      "type": "decimal"
+    },
+    "loyerTtc": {
+      "type": "decimal"
+    },
+    "trimestreIrl": {
+      "type": "enumeration",
+      "enum": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ]
+    },
+    "anneeIrl": {
+      "type": "integer"
+    },
+    "indiceValeurIrl": {
+      "type": "decimal"
+    },
+    "taxeOrduresMenageres": {
+      "type": "component",
+      "component": "appartements.tom",
+      "repeatable": true
+    },
+    "entretienChaudiere": {
+      "type": "component",
+      "component": "appartements.entretien-chaudiere",
+      "repeatable": true
+    },
+    "decomptes_annuels_charges": {
+      "type": "component",
+      "component": "appartements.decomptes-annuels",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

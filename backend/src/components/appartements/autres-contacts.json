@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_appartements_autres_contacts",
+  "info": {
+    "displayName": "autres_contacts",
+    "icon": "phone"
+  },
+  "options": {},
+  "attributes": {
+    "nom": {
+      "type": "string"
+    },
+    "type_contact": {
+      "type": "enumeration",
+      "enum": [
+        "Agence immo",
+        "Plombier",
+        "Gestionnaire",
+        "Gardien",
+        "Autre"
+      ]
+    },
+    "coordonnees": {
+      "type": "blocks"
+    },
+    "notes": {
+      "type": "blocks"
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,69 @@
+{
+  "collectionName": "components_dossier_en_cours_travaux",
+  "info": {
+    "displayName": "travaux"
+  },
+  "options": {},
+  "attributes": {
+    "titre": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "typesTravaux": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "renovation",
+        "remise-en-etat",
+        "changement-fenetres",
+        "peinture",
+        "plomberie",
+        "electricite",
+        "chauffage",
+        "autre"
+      ]
+    },
+    "dateDebut": {
+      "type": "date"
+    },
+    "dateFin": {
+      "type": "date"
+    },
+    "statut": {
+      "type": "enumeration",
+      "default": "planifie",
+      "enum": [
+        "planifie",
+        "en-cours",
+        "termine",
+        "annule",
+        "archive"
+      ]
+    },
+    "budget": {
+      "type": "decimal"
+    },
+    "entreprise": {
+      "type": "string"
+    },
+    "documentsTravauxAmericainents": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "notes": {
+      "type": "text"
+    },
+    "archive": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
