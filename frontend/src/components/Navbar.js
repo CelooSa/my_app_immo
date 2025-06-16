@@ -31,7 +31,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Profil utilisateur */}
+        {/*pour le  Profil utilisateur */}
         <div className="navbar-profile">
           <button className="profile-button">
             <Icon icon="game-icons:pixel-heart" className="heart-icon" />
