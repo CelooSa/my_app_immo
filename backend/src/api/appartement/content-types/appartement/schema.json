@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "appartements",
+  "info": {
+    "singularName": "appartement",
+    "pluralName": "appartements",
+    "displayName": "appartements"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nomAppartement": {
+      "type": "string"
+    },
+    "memo": {
+      "type": "blocks"
+    },
+    "le_bien": {
+      "type": "component",
+      "component": "appartements.le-bien"
+    },
+    "Locataire": {
+      "type": "component",
+      "component": "appartements.locataires",
+      "repeatable": true
+    },
+    "trousseau": {
+      "type": "component",
+      "component": "appartements.trousseaux",
+      "repeatable": true
+    },
+    "intervenants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::autre-contact.autre-contact",
+      "mappedBy": "appartements_travailles"
+    }
+  }
+}

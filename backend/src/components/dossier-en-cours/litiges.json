@@ -1,0 +1,50 @@
+{
+  "collectionName": "components_dossier_en_cours_litiges",
+  "info": {
+    "displayName": "litiges"
+  },
+  "options": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "degat-des-eaux",
+        "probleme-chauffage",
+        "nuisances-sonores",
+        "impaye-loyer",
+        "deterioration",
+        "autre"
+      ]
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "dateIncident": {
+      "type": "date",
+      "required": true
+    },
+    "statut": {
+      "type": "enumeration",
+      "default": "en-cours",
+      "enum": [
+        "en-cours",
+        "resolu",
+        "en-attente",
+        "abandonne"
+      ]
+    },
+    "documentsLitige": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "notes": {
+      "type": "text"
+    }
+  }
+}
