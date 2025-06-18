@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/ListeAppartements.scss';
+import '../styles/listeAppartements.scss';
 
 const colors = ['#F8D7DA', '#D1ECF1', '#D4EDDA', '#FFF3CD', '#E2E3E5', '#F0D9FF', '#FFEFD5'];
 /*const colors = [

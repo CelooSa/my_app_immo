@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy&display=swap');
+
+.home-container {
+  font-family: 'Sour Gummy', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #f6f8ff, #ffe8f0);
+  overflow-x: hidden;
+}
+
+.home-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: radial-gradient(circle at 20% 40%, #ffd5f2 0%, transparent 60%),
+                    radial-gradient(circle at 80% 30%, #c7eaff 0%, transparent 70%),
+                    radial-gradient(circle at 50% 80%, #e0ffef 0%, transparent 70%);
+  z-index: 0;
+}
+
+.home-content {
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  padding: 2rem;
+  width: 100%;
+  max-width: 960px;
+}
+
+.home-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .main-title {
+    font-size: 3rem;
+    color: #4a4a4a;
+    margin: 0.2em 0;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: #888;
+  }
+
+  .logo-icon {
+    font-size: 2.5rem;
+    vertical-align: middle;
+    margin: 0 0.3em;
+  }
+
+  .bounce {
+    animation: bounce 2s infinite;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.main-card {
+  background: #ffffffcc;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+  .card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+  }
+
+  .login-button {
+    background: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.3s;
+
+    .mr-2 {
+      margin-right: 0.5rem;
+    }
+
+    &:hover {
+      background: #554fc4;
+    }
+  }
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+
+  .feature-card {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #555;
+    }
+  }
+}
