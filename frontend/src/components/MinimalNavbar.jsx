@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Navbar.scss';
 
 
@@ -40,11 +40,11 @@ const Navbar = () => {
 
         {/* Profil visible sur toutes les pages */}
         <div className="navbar-profile">
-          <button className="profile-button">
-            <Icon icon="game-icons:pixel-heart" className="heart-icon" />
+            <Link to="login" className="profile-button">
+                <Icon icon="game-icons:pixel-heart" className="heart-icon" />
             <div className="avatar">👩‍💼</div>
             <span>Admin</span>
-          </button>
+        </Link>
         </div>
       </div>
     </nav>

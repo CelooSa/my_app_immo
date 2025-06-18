@@ -1,12 +1,19 @@
 import React from 'react';
-import { Icon } from '@iconify/react';
-import { useLocation } from 'react-router-dom';
-import './Navbar.scss';
+import { useLocation, useNavigate } from 'react-router-dom';
 
+import { Icon } from '@iconify/react';
+import './Navbar.scss';
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); 
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
 
   return (
     <nav className="navbar">
@@ -40,8 +47,8 @@ const Navbar = () => {
 
         {/* Profil visible sur toutes les pages */}
         <div className="navbar-profile">
-          <button className="profile-button">
-            <Icon icon="game-icons:pixel-heart" className="heart-icon" />
+          <button type="button" className="profile-button" onClick={handleLogout} title="Déconnexion">
+            <Icon icon="mdi:logout" className="logout-icon" />
             <div className="avatar">👩‍💼</div>
             <span>Admin</span>
           </button>

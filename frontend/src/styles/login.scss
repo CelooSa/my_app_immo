@@ -1,0 +1,112 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: linear-gradient(135deg, #d0eaff, #f0faff);
+
+  .background-blobs {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+    }
+
+    &::before {
+      top: -10%;
+      left: -10%;
+      width: 300px;
+      height: 300px;
+      background: #98D8C8;
+    }
+
+    &::after {
+      bottom: -10%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: #00A2FF;
+    }
+  }
+
+  .login-content {
+    position: relative;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 162, 255, 0.2);
+    transition: all 0.8s ease;
+    opacity: 0;
+    transform: translateY(20px);
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .arale-image {
+      width: 180px;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      font-family: 'Sour Gummy', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #00A2FF;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      input {
+        padding: 10px 15px;
+        border: 2px solid #b8e6b8;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 1rem;
+        outline: none;
+        transition: 0.3s;
+
+        &:focus {
+          border-color: #00A2FF;
+          box-shadow: 0 0 10px #00a2ff44;
+        }
+      }
+
+      button {
+        background: linear-gradient(135deg, #FF9EC7, #98D8C8);
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: scale(1.05);
+          box-shadow: 0 6px 15px rgba(255, 158, 199, 0.4);
+        }
+      }
+    }
+  }
+}
