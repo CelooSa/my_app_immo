@@ -16,6 +16,40 @@ export interface AppartementsAutresContacts extends Struct.ComponentSchema {
   };
 }
 
+export interface AppartementsBienVisite extends Struct.ComponentSchema {
+  collectionName: 'components_appartements_bien_visite';
+  info: {
+    displayName: 'bien_visite';
+    icon: 'store';
+  };
+  attributes: {
+    adresse: Schema.Attribute.String;
+    cave: Schema.Attribute.Boolean;
+    caveEmplacement: Schema.Attribute.String;
+    caveNumeroLot: Schema.Attribute.String;
+    chaudiereIndividuelle: Schema.Attribute.Boolean;
+    energie: Schema.Attribute.Enumeration<['gaz', 'electricite', 'autre']>;
+    etage: Schema.Attribute.Integer;
+    listeMeubles: Schema.Attribute.Blocks;
+    meuble: Schema.Attribute.Boolean;
+    nom_appartement: Schema.Attribute.String;
+    nombreM2: Schema.Attribute.Decimal;
+    nombrePieces: Schema.Attribute.Integer;
+    parking: Schema.Attribute.Boolean;
+    parkingEmplacement: Schema.Attribute.String;
+    parkingNumeroLot: Schema.Attribute.String;
+    photos: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    plans: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    position: Schema.Attribute.String;
+  };
+}
+
 export interface AppartementsDecomptesAnnuels extends Struct.ComponentSchema {
   collectionName: 'components_appartements_decomptes_annuels';
   info: {
@@ -387,6 +421,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'appartements.autres-contacts': AppartementsAutresContacts;
+      'appartements.bien-visite': AppartementsBienVisite;
       'appartements.decomptes-annuels': AppartementsDecomptesAnnuels;
       'appartements.entretien-chaudiere': AppartementsEntretienChaudiere;
       'appartements.le-bien': AppartementsLeBien;

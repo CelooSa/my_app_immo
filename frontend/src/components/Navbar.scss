@@ -72,6 +72,7 @@ $profile-pink: #D63384;
   &-menu {
     display: flex;
     gap: 8px;
+    
 
     .nav-button {
       display: flex;
@@ -87,12 +88,13 @@ $profile-pink: #D63384;
       transition: all 0.3s ease;
       backdrop-filter: blur(10px);
       font-size: 14px;
+      font-family: 'Sour Gummy';
 
       &:hover {
         background: rgba($primary-green, 0.3);
         color: $text-dark-green;
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba($primary-green, 0.4);
+        box-shadow: 0 6px 20px rgba($primary-green, 0.2);
       }
 
       &.active {

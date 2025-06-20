@@ -43,13 +43,13 @@
 
   .main-title {
     font-size: 3rem;
-    color: #4a4a4a;
+    color: #d999d7;
     margin: 0.2em 0;
   }
 
   .subtitle {
     font-size: 1.2rem;
-    color: #888;
+    color: #777676;
   }
 
   .logo-icon {
@@ -87,7 +87,7 @@
 
   h2 {
     font-size: 2rem;
-    color: #333;
+    color: #d999d7;
     margin-bottom: 0.5rem;
   }
 
@@ -97,27 +97,10 @@
     margin-bottom: 1.5rem;
   }
 
-  .login-button {
-    background: #6c63ff;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    transition: background 0.3s;
-
-    .mr-2 {
-      margin-right: 0.5rem;
-    }
-
-    &:hover {
+      &:hover {
       background: #554fc4;
     }
   }
-}
 
 .features {
   display: grid;
@@ -144,6 +127,7 @@
     h3 {
       font-size: 1.3rem;
       margin-bottom: 0.3rem;
+      color: #666
     }
 
     p {

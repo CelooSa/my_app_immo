@@ -36,6 +36,11 @@
       "relation": "manyToMany",
       "target": "api::autre-contact.autre-contact",
       "mappedBy": "appartements_travailles"
+    },
+    "bien_visite": {
+      "type":"component",
+      "component":"appartements.bien-visite",
+      "repeatable": false
     }
   }
 }

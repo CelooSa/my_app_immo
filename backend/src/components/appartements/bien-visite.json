@@ -1,0 +1,84 @@
+{
+  "collectionName": "components_appartements_bien_visite",
+  "info": {
+    "displayName": "bien_visite",
+    "icon": "store"
+  },
+  "options": {},
+  "attributes": {
+    "nom_appartement": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "string"
+    }, 
+    "etage": {
+      "type": "integer"
+    },
+    "position": {
+      "type": "string"
+    },
+    "cave": {
+      "type": "boolean"
+    },
+    "caveNumeroLot": {
+      "type": "string"
+    },
+    "caveEmplacement": {
+      "type": "string"
+    },
+    "parking": {
+      "type": "boolean"
+    },
+    "parkingNumeroLot": {
+      "type": "string"
+    },
+    "parkingEmplacement": {
+      "type": "string"
+    },
+    "photos": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "plans": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "nombrePieces": {
+      "type": "integer"
+    },
+    "nombreM2": {
+      "type": "decimal"
+    },
+    "chaudiereIndividuelle": {
+      "type": "boolean"
+    },
+    "energie": {
+      "type": "enumeration",
+      "enum": [
+        "gaz",
+        "electricite",
+        "autre"
+      ]
+    },
+    "meuble": {
+      "type": "boolean"
+    },
+    "listeMeubles": {
+      "type": "blocks"
+    }
+  },
+  "config": {}
+}

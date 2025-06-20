@@ -384,6 +384,7 @@ export interface ApiAppartementAppartement extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    bien_visite: Schema.Attribute.Component<'appartements.bien-visite', false>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

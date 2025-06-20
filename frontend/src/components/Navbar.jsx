@@ -34,12 +34,12 @@ const Navbar = () => {
             </button>
 
             <button className="nav-button">
-              <Icon icon="fluent-emoji:speech-balloon" width="30" />
+              <Icon icon="mdi:card-account-details-outline" width="26" style={{color: ' #00D4FF' }} />
               <span>Contacts</span>
             </button>
 
             <button className="nav-button">
-              <Icon icon="fluent-emoji:scroll" width="23" />
+              <Icon icon="mdi:note-text-outline" width="26" style={{color: ' #B8E6B8'}} />
               <span>Mémos</span>
             </button>
           </div>

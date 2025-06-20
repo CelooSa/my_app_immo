@@ -20,19 +20,14 @@ const Home = () => {
       icon: 'mdi:home-city-outline',
       title: 'Biens',
       description: 'Tous vos biens immobiliers centralisés',
-      color: '#00A2FF'
+      color: 'rgb(65, 192, 187)'
     },
+  
     {
-      icon: 'mdi:account-heart-outline',
-      title: 'Locataires',
-      description: 'Suivi simple et efficace des locataires',
-      color: '#FF9EC7'
-    },
-    {
-      icon: 'mdi:note-text-outline',
-      title: 'Mémos',
+      icon: 'mdi:notebook-edit-outline',
+      title: 'Notes de visite',
       description: 'Notes organisées et accessibles',
-      color: '#B8E6B8'
+      color: 'rgb(221, 173, 225)'
     },
     ];
 
@@ -44,21 +39,18 @@ const Home = () => {
 
       <div className={`home-content ${isVisible ? 'visible' : ''}`}>
         <header className="home-header">
-          <Icon icon="mdi:home-heart" className="logo-icon" />
-          <h1 className="main-title">My Happy mo</h1>
-          <Icon icon="mdi:home-heart" className="logo-icon bounce" />
+          <Icon icon="mdi:home-heart" className="logo-icon" color=' #78c7df' />
+          <h1 className="main-title" >My Happy mo</h1> 
+          <Icon icon="mdi:home-heart" className="logo-icon bounce"  color=' #78c7df' />
           <p className="subtitle">L'application pour gérer vos biens avec le sourire ✨</p>
         </header>
 
         <section className="main-card">
           <div className="card-icon">
-            <Icon icon="mdi:city-variant-outline" />
+            <Icon icon="mdi:city-variant-outline"  color=' #78c7df'  />
           </div>
           <h2>Simplifiez votre gestion</h2>
           <p>Un outil professionnel et joyeux pour gérer vos biens efficacement.</p>
-          <button onClick={handleLogin} className="login-button">
-            <Icon icon="mdi:login" className="mr-2" /> Se connecter
-          </button>
         </section>
 
         <section className="features">
