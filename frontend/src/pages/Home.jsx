@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { Icon } from '@iconify/react';
 import '../styles/home.scss';
 import MinimalNavbar from '../components/MinimalNavbar';
 
 
+
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
@@ -42,7 +46,7 @@ const Home = () => {
           <Icon icon="mdi:home-heart" className="logo-icon" color=' #78c7df' />
           <h1 className="main-title" >My Happy mo</h1> 
           <Icon icon="mdi:home-heart" className="logo-icon bounce"  color=' #78c7df' />
-          <p className="subtitle">L'application pour gérer vos biens avec le sourire ✨</p>
+          <p className="subtitle">L'application pour gérer vos biens✨</p>
         </header>
 
         <section className="main-card">
@@ -50,7 +54,6 @@ const Home = () => {
             <Icon icon="mdi:city-variant-outline"  color=' #78c7df'  />
           </div>
           <h2>Simplifiez votre gestion</h2>
-          <p>Un outil professionnel et joyeux pour gérer vos biens efficacement.</p>
         </section>
 
         <section className="features">
@@ -58,9 +61,15 @@ const Home = () => {
             <div
               key={i}
               className="feature-card"
+              onClick={() => {
+                if (f.title === 'Biens') {
+                  navigate('/preview');
+                }
+              }}
               style={{
                 transitionDelay: `${i * 100}ms`,
-                boxShadow: `0 6px 20px ${f.color}44`
+                boxShadow: `0 6px 20px ${f.color}44`,
+                cursor: f.title === 'Biens' ? 'pointer' : 'default'
               }}
             >
               <Icon icon={f.icon} style={{ color: f.color }} className="feature-icon" />

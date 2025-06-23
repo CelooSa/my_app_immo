@@ -1,12 +1,11 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar'; // la grosse navbar
 
-const MainLayout = () => {
+const MainLayout = ({ children }) => {
   return (
-    <div className="App"> 
+    <div>
       <Navbar />
-      <Outlet />
+      {children}
     </div>
   );
 };

@@ -18,25 +18,7 @@ const Navbar = () => {
           <span className="brand-emoji">🏠</span>
         </div>
 
-        {/* Menu central visible uniquement si ce n'est PAS la page d'accueil */}
-        {!isHomePage && (
-          <div className="navbar-menu">
-            <button className="nav-button active">
-              <Icon icon="game-icons:village" width="26" />
-              <span>Appartements</span>
-            </button>
-
-            <button className="nav-button">
-              <Icon icon="fluent-emoji:speech-balloon" width="30" />
-              <span>Contacts</span>
-            </button>
-
-            <button className="nav-button">
-              <Icon icon="fluent-emoji:scroll" width="23" />
-              <span>Mémos</span>
-            </button>
-          </div>
-        )}
+       
 
         {/* Profil visible sur toutes les pages */}
         <div className="navbar-profile">
