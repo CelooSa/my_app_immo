@@ -15,10 +15,7 @@ const Home = () => {
     setIsVisible(true);
   }, []);
 
-  const handleLogin = () => {
-    console.log('Redirection vers /login');
-  };
-
+  
   const features = [
     {
       icon: 'mdi:home-city-outline',
@@ -64,6 +61,8 @@ const Home = () => {
               onClick={() => {
                 if (f.title === 'Biens') {
                   navigate('/preview');
+                }else if (f.title === 'Notes de visite') {
+                  navigate('/blocnotes');
                 }
               }}
               style={{

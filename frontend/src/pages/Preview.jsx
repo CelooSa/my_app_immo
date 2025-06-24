@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import MinimalNavbar from '../components/MinimalNavbar';
 
+
+import { useNavigate } from 'react-router-dom';
 
 import '../styles/preview.scss';
 
 const colors = ['#F8D7DA', '#D1ECF1', '#D4EDDA', '#FFF3CD', '#E2E3E5', '#F0D9FF', '#FFEFD5'];
+
 
 const Preview = () => {
   const [appartements, setAppartements] = useState([]);
@@ -13,6 +16,7 @@ const Preview = () => {
 
   useEffect(() => {
     setIsVisible(true);
+
     const mockAppartements = Array.from({ length: 6 }, (_, i) => ({
       id: i + 1,
       attributes: { nom: `Appartement #${i + 1}`, image: null },
@@ -21,10 +25,12 @@ const Preview = () => {
   }, []);
 
   return (
+    <>
+    <MinimalNavbar />
     <div className="preview-container">
       <div className={`preview-content ${isVisible ? 'visible' : ''}`}>
         <header className="preview-header">
-          <h1>Mes Biens</h1>
+          <h1>Les Biens</h1>
         </header>
 
         <div className="grid-appartements">
@@ -44,6 +50,7 @@ const Preview = () => {
         </div>
       </div>
     </div>
+</>
   );
 };
 
