@@ -104,12 +104,23 @@ h1 {
   border-radius: 40px 40px 40px 10px; // forme asymétrique, organique
   padding: 1.2rem 1.5rem;
   box-shadow: 3px 6px 8px rgba(0,0,0,0.15);
-  font-family: 'Comic Neue', cursive;
+  font-family: 'Sour Gummy', sans-serif;
   font-size: 1.2rem;
   color: #4a4a4a;
   cursor: default;
   user-select: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  min-width: 220px;
+  max-width: 280px;
+  width: 100%;
+  min-height: 160px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 
   &:hover {
     transform: scale(1.07) rotate(1deg);

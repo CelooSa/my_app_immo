@@ -14,9 +14,6 @@
     "nomAppartement": {
       "type": "string"
     },
-    "memo": {
-      "type": "blocks"
-    },
     "le_bien": {
       "type": "component",
       "component": "appartements.le-bien"
@@ -37,6 +34,9 @@
       "target": "api::autre-contact.autre-contact",
       "mappedBy": "appartements_travailles"
     },
+    "notes": {
+    "type": "blocks"
+  },
     "bien_visite": {
       "type":"component",
       "component":"appartements.bien-visite",

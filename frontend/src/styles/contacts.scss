@@ -1,0 +1,230 @@
+$page-bg: #fefbf5;
+$paper-yellow: #fff7d1;
+$spiral-gray: #a09f9b;
+$text-color: #444;
+$accent-color: #6a4c93;
+
+.page-container {
+  min-height: 100vh;
+  padding: 2rem;
+  background: $page-bg;
+  font-family: 'Comic Neue', cursive;
+}
+
+h1 {
+  font-family: 'Sour Gummy', cursive;
+  text-align: center;
+  color: $accent-color;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* Formulaire prise de notes scolaire */
+
+.add-contact {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+
+  input {
+    background: $paper-yellow;
+    border: 2px solid $spiral-gray;
+    border-radius: 8px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    width: 200px;
+    box-shadow: inset 0 0 5px #f4eab2;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $accent-color;
+      box-shadow: 0 0 8px rgba($accent-color, 0.6);
+      background: lighten($paper-yellow, 5%);
+    }
+  }
+
+  button {
+    background: $accent-color;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.7rem 1.6rem;
+    font-family: 'Sour Gummy', cursive;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba($accent-color, 0.5);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      background: darken($accent-color, 10%);
+      transform: scale(1.05);
+    }
+  }
+}
+
+/* Message vide */
+
+.empty-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: $accent-color;
+  font-family: 'Sour Gummy', cursive;
+}
+
+/* Grid des contacts (style carnet) */
+
+.contacts-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.8rem;
+}
+
+/* Carte contact = mini carnet */
+
+.contact-card {
+  background: $paper-yellow;
+  border-radius: 12px 12px 18px 18px;
+  box-shadow:
+    inset 5px 0 0 0 $spiral-gray,
+    3px 5px 8px rgba(0, 0, 0, 0.12);
+  width: 320px;
+  padding: 1.3rem 1.6rem 2rem;
+  position: relative;
+  font-family: 'Comic Neue', cursive;
+  font-size: 1.15rem;
+  color: $text-color;
+  user-select: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow:
+      inset 5px 0 0 0 $accent-color,
+      6px 8px 20px rgba(0, 0, 0, 0.3);
+    z-index: 20;
+  }
+
+  /* Fond quadrillé léger */
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+  linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+
+  /* Bande spirale (verticale) */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    bottom: 12px;
+    width: 14px;
+    background:
+      radial-gradient(circle at 7px 10px, $spiral-gray 3px, transparent 4px),
+      radial-gradient(circle at 7px 25px, $spiral-gray 3px, transparent 4px),
+      radial-gradient(circle at 7px 40px, $spiral-gray 3px, transparent 4px),
+      radial-gradient(circle at 7px 55px, $spiral-gray 3px, transparent 4px),
+      radial-gradient(circle at 7px 70px, $spiral-gray 3px, transparent 4px);
+    background-repeat: repeat-y;
+    background-size: 14px 20px;
+    background-position: center;
+  }
+}
+
+/* Titre carnet */
+
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-bottom: 2px solid $accent-color;
+  margin-bottom: 1rem;
+
+  h2 {
+    margin: 0;
+    font-family: 'Sour Gummy', sans-serif;
+    color: $accent-color;
+    font-weight: 700;
+    font-size: 1.6rem;
+  }
+
+
+  .toggle-button {
+    background: $accent-color;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.8rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background: darken($accent-color, 10%);
+    }
+
+
+  }
+}
+
+/* Infos contact */
+
+.contact-info p {
+  margin: 0.3rem 0;
+  line-height: 1.4;
+}
+
+/* Bouton supprimer */
+
+.delete-button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  color: #900;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0;
+  user-select: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #f00;
+  }
+}
+
+
+
+.add-new-button {
+      display: block;
+      margin: 0 auto 2rem auto;
+      background: $accent-color;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 0.8rem 2.5rem;
+      font-family: 'Sour Gummy', sans-serif;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba($accent-color, 0.7);
+      transition: background-color 0.3s ease, transform 0.3s ease;
+
+      &:hover {
+        background: darken($accent-color, 10%);
+        transform: scale(1.1);
+      }
+    }

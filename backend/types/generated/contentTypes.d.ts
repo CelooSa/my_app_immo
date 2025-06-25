@@ -400,8 +400,8 @@ export interface ApiAppartementAppartement extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     Locataire: Schema.Attribute.Component<'appartements.locataires', true>;
-    memo: Schema.Attribute.Blocks;
     nomAppartement: Schema.Attribute.String;
+    notes: Schema.Attribute.Blocks;
     publishedAt: Schema.Attribute.DateTime;
     trousseau: Schema.Attribute.Component<'appartements.trousseaux', true>;
     updatedAt: Schema.Attribute.DateTime;
