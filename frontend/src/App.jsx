@@ -44,6 +44,30 @@ function AnimatedRoutes() {
           }
         />
 
+         <Route
+    path="/appartements/:id"
+    element={
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        <MainLayout>
+          <DetailAppartement />
+        </MainLayout>
+      </motion.div>
+    }
+  />
+
+
+
+
+
+
+
+
+
         <Route
           path="/login"
           element={
@@ -51,7 +75,7 @@ function AnimatedRoutes() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.2 }}
             >
               <Login />
             </motion.div>
@@ -62,16 +86,14 @@ function AnimatedRoutes() {
         <Route
           path="/preview"
           element={
-            < motion.div
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.2 }}
             >
-              <>
-                <Preview />
-              </>
-            </motion.div>
+              <Preview />
+              </motion.div>
           }
         />
         <Route
@@ -81,7 +103,7 @@ function AnimatedRoutes() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.2 }}
             >
               <BlocNotes />
             </motion.div>
@@ -98,7 +120,7 @@ function AnimatedRoutes() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.2 }}
               >
                 <MainLayout>
                   <ListeAppartements />
@@ -109,12 +131,12 @@ function AnimatedRoutes() {
 
           <Route
             path="/detail/:id"
-            element={
-              <motion.div
+            element={              
+            <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.2 }}
               >
                 <MainLayout>
                   <DetailAppartement />
@@ -128,7 +150,7 @@ function AnimatedRoutes() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.2 }}
             >
               <MainLayout>
                 <Contacts />
@@ -141,7 +163,7 @@ function AnimatedRoutes() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.2 }}
             >
               <MainLayout>
                 <Memos />

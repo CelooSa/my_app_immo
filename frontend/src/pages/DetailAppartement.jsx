@@ -1,75 +1,107 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import strapiClient from '../api/strapiClient';
 import '../styles/detailAppartement.scss';
-
-const API_URL = 'http://localhost:1337/api/appartements';
 
 function DetailAppartement() {
   const { id } = useParams();
-  const [appart, setAppart] = useState(null);
   const navigate = useNavigate();
+  const [appart, setAppart] = useState(null);
 
   useEffect(() => {
-    axios.get(`${API_URL}/${id}?populate=*`)
-      .then(res => setAppart(res.data.data))
-      .catch(err => console.error(err));
+    strapiClient
+      .get(`/appartements/${id}?populate=deep,5`)
+      .then((res) => setAppart(res.data.data))
+      .catch((err) => console.error(err));
   }, [id]);
 
   if (!appart) return <p>Chargement...</p>;
 
   const { attributes } = appart;
-  const locataires = attributes.locataires || [];
-  const trousseaux = attributes.trousseau || [];
-  const memo = attributes.memo || null;
-  const le_bien = attributes.le_bien || null;
+  const {
+    le_bien,
+    locataires,
+    loyer_et_charges,
+    trousseau,
+    dossier_en_cours,
+    syndic,
+    memo,
+    autres_contacts,
+  } = attributes;
 
   return (
     <div className="detail-appartement">
       <button onClick={() => navigate(-1)}>← Retour</button>
+      <h2>{attributes.nom || "Nom non défini"}</h2>
 
-      <h2>{attributes.nom}</h2>
-
-      {le_bien?.photo?.data?.attributes?.url && (
-        <img 
-          src={le_bien.photo.data.attributes.url} 
-          alt={attributes.nom} 
-          className="photo-principale"
-        />
-      )}
-
+      {/* Fiche Le Bien */}
       <section>
-        <h3>Description du bien</h3>
-        <p>{le_bien?.description || "Pas de description disponible."}</p>
+        <h3>🏠 Le bien</h3>
+        <p><strong>Propriétaire :</strong> {le_bien?.proprietaire || "Non renseigné"}</p>
+        <p><strong>Adresse :</strong> {le_bien?.adresse || "Non renseignée"}</p>
+        {/* ... autres champs à insérer avec ton schéma */}
       </section>
 
+      {/* Fiche Locataires */}
       <section>
-        <h3>Locataires</h3>
-        {locataires.length === 0 && <p>Aucun locataire enregistré.</p>}
-        {locataires.map((loc, idx) => (
-          <div key={idx}>
-            <p><strong>Nom :</strong> {loc.nom}</p>
-            <p><strong>Email :</strong> {loc.email}</p>
-            <p><strong>Téléphone :</strong> {loc.telephone}</p>
-            {/* Ajoute ici d'autres infos si besoin */}
-          </div>
-        ))}
+        <h3>👤 Locataire(s)</h3>
+        {locataires?.length > 0 ? (
+          locataires.map((loc, i) => (
+            <div key={i}>
+              <p><strong>Nom :</strong> {loc.nom}</p>
+              <p><strong>Email :</strong> {loc.email}</p>
+              {/* ... on ajoutera tout à l'étape suivante */}
+            </div>
+          ))
+        ) : (
+          <p>Aucun locataire renseigné.</p>
+        )}
       </section>
 
+      {/* Fiche Loyer & Charges */}
       <section>
-        <h3>Trousseau</h3>
-        {trousseaux.length === 0 && <p>Aucun trousseau enregistré.</p>}
-        {trousseaux.map((clef, idx) => (
-          <div key={idx}>
-            <p><strong>Type de clé :</strong> {clef.type || "Inconnu"}</p>
-            <p><strong>Commentaires :</strong> {clef.commentaires || "Aucun"}</p>
-          </div>
-        ))}
+        <h3>💶 Loyer et charges</h3>
+        <p><strong>Loyer HC :</strong> {loyer_et_charges?.loyerHc || "Non renseigné"}</p>
+        {/* On complètera plus tard */}
       </section>
 
+      {/* Fiche Trousseau */}
       <section>
-        <h3>Mémo</h3>
-        <p>{memo?.texte || "Aucun mémo disponible."}</p>
+        <h3>🔑 Trousseau</h3>
+        {trousseau?.length > 0 ? (
+          trousseau.map((t, i) => (
+            <div key={i}>
+              <p><strong>ID :</strong> {t.identifiantTrousseau}</p>
+            </div>
+          ))
+        ) : (
+          <p>Aucun trousseau enregistré.</p>
+        )}
+      </section>
+
+      {/* Fiche Dossier en cours */}
+      <section>
+        <h3>📂 Dossier en cours</h3>
+        {/* À compléter plus tard avec litiges/travaux */}
+        <p>Aucun dossier renseigné.</p>
+      </section>
+
+      {/* Fiche Syndic */}
+      <section>
+        <h3>🏢 Syndic</h3>
+        <p>Coordonnées : {syndic?.coordonnees_syndic || "Non renseignées"}</p>
+      </section>
+
+      {/* Fiche Mémos */}
+      <section>
+        <h3>📝 Mémos</h3>
+        <p>{memo?.texte || "Aucun mémo pour cet appartement."}</p>
+      </section>
+
+      {/* Fiche Autres contacts */}
+      <section>
+        <h3>📇 Autres contacts</h3>
+        <p>À venir.</p>
       </section>
     </div>
   );

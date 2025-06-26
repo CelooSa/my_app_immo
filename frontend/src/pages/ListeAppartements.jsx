@@ -1,6 +1,10 @@
 import React,{ useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+
+
 import '../styles/listeAppartements.scss';
+
 
 const colors = ['#F8D7DA', '#D1ECF1', '#D4EDDA', '#FFF3CD', '#E2E3E5', '#F0D9FF', '#FFEFD5'];
 /*const colors = [
@@ -39,14 +43,13 @@ const ListeAppartements = () => {
           key={item.id}
           className="appartement-card"
           style={{ backgroundColor: colors[index % colors.length] }}
-          onClick={() => navigate(`/appartements/${item.id}`)}
+          onClick={() => navigate(`/detail/${item.id}`)}
           >
 
           <h3>{item.attributes.nom || 'Nom non défini'}</h3>
 
           {item.attributes.image?.data? (
-            <img
-            src={`http://localhost:1337${item.attributes.image.data.attributes.url}`}
+            <img src={`http://localhost:1337${item.attributes.image.data.attributes.url}`}
             alt={item.attributes.nom}
             className='image-appartement'
             />
