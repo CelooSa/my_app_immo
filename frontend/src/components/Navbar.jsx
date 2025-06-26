@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import { Icon } from '@iconify/react';
 import './Navbar.scss';
@@ -19,29 +19,39 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo/Titre */}
-        <div className="navbar-brand">
+      
+          <NavLink to={localStorage.getItem('token') ? '/appartements' : '/'} className="navbar-brand">
           <Icon icon="game-icons:house" className="logo-icon" />
           <span className="brand-text">My Happy mo</span>
           <span className="brand-emoji">🏠</span>
-        </div>
+          </NavLink>
+      
 
         {/* Menu central visible uniquement si ce n'est PAS la page d'accueil */}
         {!isHomePage && (
           <div className="navbar-menu">
-            <button className="nav-button active">
+            <button className="nav-button active" onClick={() => navigate ('/appartements')}>
               <Icon icon="game-icons:village" width="26" />
               <span>Appartements</span>
             </button>
 
-            <button className="nav-button">
-              <Icon icon="mdi:card-account-details-outline" width="26" style={{color: ' #00D4FF' }} />
+            <NavLink
+            to="/contacts"
+            className={({ isActive }) => "nav-button" + (isActive ? "active" : "")}
+            style={{ color: ' #00D4FF' }}
+          >
+            <Icon icon="mdi:card-account-details-outline" width="26" />
               <span>Contacts</span>
-            </button>
+            </NavLink>
 
-            <button className="nav-button">
-              <Icon icon="mdi:note-text-outline" width="26" style={{color: ' #B8E6B8'}} />
+            <NavLink
+            to="/memos"
+            className={({ isActive })=> "nav-button" + (isActive ? "active" : "")}
+            style={{ color: ' #B8E6B8'}}
+              >
+              <Icon icon="mdi:note-text-outline" width="26" />
               <span>Mémos</span>
-            </button>
+            </NavLink>
           </div>
         )}
 
