@@ -20,105 +20,83 @@ h1 {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+.add-new-button {
+  display: block;
+  margin: 0 auto 2rem auto;
+  background: $accent-color;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 0.8rem 2.5rem;
+  font-family: 'Sour Gummy', sans-serif;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba($accent-color, 0.7);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 
-
-/* Formulaire prise de notes scolaire */
-
-.add-contact {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
-
-  input {
-    background: $paper-yellow;
-    border: 2px solid $spiral-gray;
-    border-radius: 8px;
-    font-family: 'Comic Neue', cursive;
-    font-size: 1rem;
-    padding: 0.6rem 1rem;
-    width: 200px;
-    box-shadow: inset 0 0 5px #f4eab2;
-    transition: border-color 0.3s ease;
-
-    &:focus {
-      outline: none;
-      border-color: $accent-color;
-      box-shadow: 0 0 8px rgba($accent-color, 0.6);
-      background: lighten($paper-yellow, 5%);
-    }
-  }
-
-  button {
-    background: $accent-color;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 0.7rem 1.6rem;
-    font-family: 'Sour Gummy', cursive;
-    font-weight: 700;
-    font-size: 1.1rem;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba($accent-color, 0.5);
-    transition: background-color 0.3s ease, transform 0.3s ease;
-
-    &:hover {
-      background: darken($accent-color, 10%);
-      transform: scale(1.05);
-    }
+  &:hover {
+    background: darken($accent-color, 10%);
+    transform: scale(1.05);
   }
 }
 
-/* Message vide */
-
-.empty-message {
-  text-align: center;
-  font-size: 1.2rem;
-  color: $accent-color;
-  font-family: 'Sour Gummy', cursive;
-}
-
-/* Grid des contacts (style carnet) */
-
+/* Grid des contacts */
 .contacts-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.8rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+  align-items: start; // Important pour éviter le glissement
 }
 
-/* Carte contact = mini carnet */
-
+/* Carte contact */
 .contact-card {
   background: $paper-yellow;
   border-radius: 12px 12px 18px 18px;
   box-shadow:
     inset 5px 0 0 0 $spiral-gray,
     3px 5px 8px rgba(0, 0, 0, 0.12);
-  width: 320px;
+  width: 100%;
+  max-width: 320px;
   padding: 1.3rem 1.6rem 2rem;
   position: relative;
   font-family: 'Comic Neue', cursive;
   font-size: 1.15rem;
   color: $text-color;
   user-select: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-
-  &:hover {
-    transform: scale(1.05);
-    box-shadow:
-      inset 5px 0 0 0 $accent-color,
-      6px 8px 20px rgba(0, 0, 0, 0.3);
-    z-index: 20;
-  }
-
-  /* Fond quadrillé léger */
+  // Transition plus douce et pas sur la transform qui cause le glissement
+  transition: box-shadow 0.3s ease, border 0.3s ease;
+  
+  // Fond quadrillé léger
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
   linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
 
-  /* Bande spirale (verticale) */
+  // Hover plus subtil pour éviter le glissement
+  &:hover:not(.expanded) {
+    box-shadow:
+      inset 5px 0 0 0 $accent-color,
+      6px 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  // Style pour la carte étendue
+  &.expanded {
+    box-shadow:
+      inset 5px 0 0 0 $accent-color,
+      6px 8px 25px rgba(0, 0, 0, 0.25);
+  }
+
+  // Style pour le placeholder
+  &.placeholder {
+    opacity: 0.6;
+    pointer-events: none;
+    
+    .contact-header {
+      cursor: default;
+    }
+  }
+
+  // Bande spirale (verticale)
   &::before {
     content: '';
     position: absolute;
@@ -138,8 +116,7 @@ h1 {
   }
 }
 
-/* Titre carnet */
-
+/* Header de la carte */
 .contact-header {
   display: flex;
   justify-content: space-between;
@@ -147,6 +124,7 @@ h1 {
   cursor: pointer;
   border-bottom: 2px solid $accent-color;
   margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
 
   h2 {
     margin: 0;
@@ -154,8 +132,8 @@ h1 {
     color: $accent-color;
     font-weight: 700;
     font-size: 1.6rem;
+    flex: 1;
   }
-
 
   .toggle-button {
     background: $accent-color;
@@ -170,61 +148,154 @@ h1 {
     cursor: pointer;
     user-select: none;
     transition: background-color 0.3s ease;
+    flex-shrink: 0;
 
     &:hover {
       background: darken($accent-color, 10%);
     }
-
-
   }
 }
 
-/* Infos contact */
-
-.contact-info p {
-  margin: 0.3rem 0;
-  line-height: 1.4;
+/* Détails du contact avec animation */
+.contact-details {
+  animation: slideDown 0.3s ease-out;
+  overflow: hidden;
 }
 
-/* Bouton supprimer */
-
-.delete-button {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: transparent;
-  border: none;
-  font-size: 1.4rem;
-  color: #900;
-  cursor: pointer;
-  font-weight: bold;
-  padding: 0;
-  user-select: none;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #f00;
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
   }
 }
 
+/* Formulaire */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-
-.add-new-button {
-      display: block;
-      margin: 0 auto 2rem auto;
-      background: $accent-color;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 0.8rem 2.5rem;
-      font-family: 'Sour Gummy', sans-serif;
-      font-size: 1.4rem;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba($accent-color, 0.7);
-      transition: background-color 0.3s ease, transform 0.3s ease;
-
-      &:hover {
-        background: darken($accent-color, 10%);
-        transform: scale(1.1);
-      }
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    
+    label {
+      flex: 1;
     }
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    color: $text-color;
+    font-size: 0.95rem;
+  }
+
+  input, textarea {
+    margin-top: 0.3rem;
+    padding: 0.5rem 0.8rem;
+    border: 2px solid lighten($spiral-gray, 20%);
+    border-radius: 6px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 1rem;
+    background: lighten($paper-yellow, 3%);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $accent-color;
+      box-shadow: 0 0 5px rgba($accent-color, 0.3);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+  }
+}
+
+/* Actions du formulaire */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    border: none;
+    border-radius: 8px;
+    font-family: 'Sour Gummy', cursive;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .save-button {
+    background: $accent-color;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba($accent-color, 0.3);
+
+    &:hover {
+      background: darken($accent-color, 10%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($accent-color, 0.4);
+    }
+  }
+
+  .delete-button-small {
+    background: rgba(#dc3545, 0.1);
+    color: #dc3545;
+    border: 2px solid rgba(#dc3545, 0.3);
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: rgba(#dc3545, 0.2);
+      border-color: #dc3545;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* Message vide */
+.empty-message {
+  grid-column: 1/-1;
+  justify-self:  center;
+  text-align: center;
+  font-size: 1.2rem;
+  color: $accent-color;
+  font-family: 'Sour Gummy', sans-serif;
+  padding: 1rem 0;
+  max-width: 600px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contacts-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .contact-card {
+    max-width: 100%;
+  }
+  
+  .contact-info .form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
