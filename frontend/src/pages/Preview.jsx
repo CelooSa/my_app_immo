@@ -39,7 +39,7 @@ const Preview = () => {
               key={item.id}
               className="appartement-card"
               style={{ backgroundColor: colors[index % colors.length] }}
-              onClick={() => navigate(`/appartements/${item.id}`)}
+              onClick={() => navigate(`/bienVisite/${item.id}`)}
             >
               <h3>{item.attributes.nom || 'Nom non défini'}</h3>
               <div className="placeholder-image">

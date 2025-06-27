@@ -1,34 +1,33 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
-import Home from './pages/Home';
-import Preview from './pages/Preview';
-import BlocNotes from './pages/BlocNotes';
+import Home from "./pages/Home";
+import Preview from "./pages/Preview";
+import BlocNotes from "./pages/BlocNotes";
 
-import Login from './pages/Login';
+import Login from "./pages/Login";
 
-import ListeAppartements from './pages/ListeAppartements';
-import DetailAppartement from './pages/DetailAppartement';
-import Contacts from './pages/Contacts';
-import Memos from './pages/Memos';
+import ListeAppartements from "./pages/ListeAppartements";
+import DetailAppartement from "./pages/DetailAppartement";
+import Contacts from "./pages/Contacts";
+import Memos from "./pages/Memos";
 
-
-import MainLayout from './layouts/MainLayout';
-import PrivateRoute from './Private/PrivateRoute';
-
-
+import MainLayout from "./layouts/MainLayout";
+import PrivateRoute from "./Private/PrivateRoute";
 
 function AnimatedRoutes() {
   const location = useLocation();
 
-
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-
         {/* PUBLIC */}
-
 
         <Route
           path="/"
@@ -44,30 +43,6 @@ function AnimatedRoutes() {
           }
         />
 
-         <Route
-    path="/appartements/:id"
-    element={
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-      >
-        <MainLayout>
-          <DetailAppartement />
-        </MainLayout>
-      </motion.div>
-    }
-  />
-
-
-
-
-
-
-
-
-
         <Route
           path="/login"
           element={
@@ -82,7 +57,6 @@ function AnimatedRoutes() {
           }
         />
 
-
         <Route
           path="/preview"
           element={
@@ -93,7 +67,7 @@ function AnimatedRoutes() {
               transition={{ duration: 0.2 }}
             >
               <Preview />
-              </motion.div>
+            </motion.div>
           }
         />
         <Route
@@ -109,7 +83,6 @@ function AnimatedRoutes() {
             </motion.div>
           }
         />
-
 
         {/* PROTECTED */}
         <Route element={<PrivateRoute />}>
@@ -131,8 +104,8 @@ function AnimatedRoutes() {
 
           <Route
             path="/detail/:id"
-            element={              
-            <motion.div
+            element={
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -145,45 +118,40 @@ function AnimatedRoutes() {
             }
           />
 
-          <Route path="/contacts" element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <MainLayout>
-                <Contacts />
-              </MainLayout>
-            </motion.div>
-          } />
+          <Route
+            path="/contacts"
+            element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <MainLayout>
+                  <Contacts />
+                </MainLayout>
+              </motion.div>
+            }
+          />
 
-          <Route path="/memos" element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <MainLayout>
-                <Memos />
-              </MainLayout>
-            </motion.div>
-          } />
-
-
-
-
-
-
-
-
-
-
-        </Route >
-      </Routes >
-    </AnimatePresence >
-
+          <Route
+            path="/memos"
+            element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <MainLayout>
+                  <Memos />
+                </MainLayout>
+              </motion.div>
+            }
+          />
+        </Route>
+      </Routes>
+    </AnimatePresence>
   );
 }
 
@@ -193,7 +161,6 @@ function App() {
       <AnimatedRoutes />
     </Router>
   );
-
 }
 
 export default App;
