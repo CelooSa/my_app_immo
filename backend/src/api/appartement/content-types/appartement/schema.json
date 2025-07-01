@@ -28,19 +28,23 @@
       "component": "appartements.trousseaux",
       "repeatable": true
     },
-    "intervenants": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::autre-contact.autre-contact",
-      "mappedBy": "appartements_travailles"
-    },
     "notes": {
-    "type": "blocks"
-  },
-    "bien_visite": {
-      "type":"component",
-      "component":"appartements.bien-visite",
-      "repeatable": false
+      "type": "blocks"
+    },
+    "Interventions": {
+      "type": "component",
+      "component": "appartements.historique_interventions",
+      "repeatable": true
+    },
+    "Relocation": {
+      "type": "component",
+      "component": "appartements.relocation",
+      "repeatable": true
+    },
+    "syndic": {
+      "type": "component",
+      "component": "appartements.syndic",
+      "repeatable": true
     }
   }
 }

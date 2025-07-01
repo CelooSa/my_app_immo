@@ -1,16 +1,8 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import {BrowserRouter as Router, Routes,  Route,  useLocation,} from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import Home from "./pages/Home";
-import Preview from "./pages/Preview";
-import BlocNotes from "./pages/BlocNotes";
-
 import Login from "./pages/Login";
 
 import ListeAppartements from "./pages/ListeAppartements";
@@ -53,33 +45,6 @@ function AnimatedRoutes() {
               transition={{ duration: 0.2 }}
             >
               <Login />
-            </motion.div>
-          }
-        />
-
-        <Route
-          path="/preview"
-          element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Preview />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/blocnotes"
-          element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <BlocNotes />
             </motion.div>
           }
         />

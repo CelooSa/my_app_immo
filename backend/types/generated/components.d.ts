@@ -16,40 +16,6 @@ export interface AppartementsAutresContacts extends Struct.ComponentSchema {
   };
 }
 
-export interface AppartementsBienVisite extends Struct.ComponentSchema {
-  collectionName: 'components_appartements_bien_visite';
-  info: {
-    displayName: 'bien_visite';
-    icon: 'store';
-  };
-  attributes: {
-    adresse: Schema.Attribute.String;
-    cave: Schema.Attribute.Boolean;
-    caveEmplacement: Schema.Attribute.String;
-    caveNumeroLot: Schema.Attribute.String;
-    chaudiereIndividuelle: Schema.Attribute.Boolean;
-    energie: Schema.Attribute.Enumeration<['gaz', 'electricite', 'autre']>;
-    etage: Schema.Attribute.Integer;
-    listeMeubles: Schema.Attribute.Blocks;
-    meuble: Schema.Attribute.Boolean;
-    nom_appartement: Schema.Attribute.String;
-    nombreM2: Schema.Attribute.Decimal;
-    nombrePieces: Schema.Attribute.Integer;
-    parking: Schema.Attribute.Boolean;
-    parkingEmplacement: Schema.Attribute.String;
-    parkingNumeroLot: Schema.Attribute.String;
-    photos: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    >;
-    plans: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    >;
-    position: Schema.Attribute.String;
-  };
-}
-
 export interface AppartementsDecomptesAnnuels extends Struct.ComponentSchema {
   collectionName: 'components_appartements_decomptes_annuels';
   info: {
@@ -82,6 +48,46 @@ export interface AppartementsEntretienChaudiere extends Struct.ComponentSchema {
     >;
     prixEntretienChaudiere: Schema.Attribute.Decimal;
     prochainEntretienPrevu: Schema.Attribute.Date;
+  };
+}
+
+export interface AppartementsHistoriqueInterventions
+  extends Struct.ComponentSchema {
+  collectionName: 'components_interventions_historique_interventions';
+  info: {
+    description: "Historique des interventions d'un contact sur les appartements";
+    displayName: 'Historique Intervention';
+  };
+  attributes: {
+    appartement: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::appartement.appartement'
+    >;
+    cout: Schema.Attribute.Decimal;
+    date_intervention: Schema.Attribute.Date;
+    description: Schema.Attribute.Text;
+    documents_intervention: Schema.Attribute.Media<'images' | 'files', true>;
+    nom_entreprise: Schema.Attribute.String;
+    nom_intervenant: Schema.Attribute.String;
+    notes: Schema.Attribute.Text;
+    satisfaction: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 1;
+        },
+        number
+      >;
+    type_intervention: Schema.Attribute.Enumeration<
+      [
+        'R\u00E9paration',
+        'Maintenance',
+        'Installation',
+        'Diagnostic',
+        'Devis',
+        'Autre',
+      ]
+    >;
   };
 }
 
@@ -346,45 +352,6 @@ export interface EntretienChaudiereFicheEntreprise
   };
 }
 
-export interface InterventionsHistoriqueInterventions
-  extends Struct.ComponentSchema {
-  collectionName: 'components_interventions_historique_interventions';
-  info: {
-    description: "Historique des interventions d'un contact sur les appartements";
-    displayName: 'Historique Intervention';
-  };
-  attributes: {
-    appartement: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::appartement.appartement'
-    >;
-    cout: Schema.Attribute.Decimal;
-    date_intervention: Schema.Attribute.Date & Schema.Attribute.Required;
-    description: Schema.Attribute.Text & Schema.Attribute.Required;
-    documents_intervention: Schema.Attribute.Media<'images' | 'files', true>;
-    notes: Schema.Attribute.Text;
-    satisfaction: Schema.Attribute.Integer &
-      Schema.Attribute.SetMinMax<
-        {
-          max: 5;
-          min: 1;
-        },
-        number
-      >;
-    type_intervention: Schema.Attribute.Enumeration<
-      [
-        'R\u00E9paration',
-        'Maintenance',
-        'Installation',
-        'Diagnostic',
-        'Devis',
-        'Autre',
-      ]
-    > &
-      Schema.Attribute.Required;
-  };
-}
-
 export interface SharedCriteresRecherche extends Struct.ComponentSchema {
   collectionName: 'components_shared_criteres_recherches';
   info: {
@@ -421,9 +388,9 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'appartements.autres-contacts': AppartementsAutresContacts;
-      'appartements.bien-visite': AppartementsBienVisite;
       'appartements.decomptes-annuels': AppartementsDecomptesAnnuels;
       'appartements.entretien-chaudiere': AppartementsEntretienChaudiere;
+      'appartements.historique_interventions': AppartementsHistoriqueInterventions;
       'appartements.le-bien': AppartementsLeBien;
       'appartements.locataires': AppartementsLocataires;
       'appartements.loyer-charges': AppartementsLoyerCharges;
@@ -434,7 +401,6 @@ declare module '@strapi/strapi' {
       'dossier-en-cours.litiges': DossierEnCoursLitiges;
       'dossier-en-cours.travaux': DossierEnCoursTravaux;
       'entretien-chaudiere.fiche-entreprise': EntretienChaudiereFicheEntreprise;
-      'interventions.historique_interventions': InterventionsHistoriqueInterventions;
       'shared.criteres-recherche': SharedCriteresRecherche;
     }
   }

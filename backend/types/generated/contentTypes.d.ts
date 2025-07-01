@@ -384,13 +384,12 @@ export interface ApiAppartementAppartement extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    bien_visite: Schema.Attribute.Component<'appartements.bien-visite', false>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    intervenants: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::autre-contact.autre-contact'
+    Interventions: Schema.Attribute.Component<
+      'appartements.historique_interventions',
+      true
     >;
     le_bien: Schema.Attribute.Component<'appartements.le-bien', false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -403,6 +402,8 @@ export interface ApiAppartementAppartement extends Struct.CollectionTypeSchema {
     nomAppartement: Schema.Attribute.String;
     notes: Schema.Attribute.Blocks;
     publishedAt: Schema.Attribute.DateTime;
+    Relocation: Schema.Attribute.Component<'appartements.relocation', true>;
+    syndic: Schema.Attribute.Component<'appartements.syndic', true>;
     trousseau: Schema.Attribute.Component<'appartements.trousseaux', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

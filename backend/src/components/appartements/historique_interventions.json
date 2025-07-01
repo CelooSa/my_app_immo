@@ -6,17 +6,9 @@
   },
   "options": {},
   "attributes": {
-    "date_intervention": {
-      "type": "date",
-      "required": true
-    },
-    "appartement": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::appartement.appartement"
-    },
     "type_intervention": {
       "type": "enumeration",
+      "required": false,
       "enum": [
         "Réparation",
         "Maintenance",
@@ -24,12 +16,26 @@
         "Diagnostic",
         "Devis",
         "Autre"
-      ],
-      "required": true
+      ]
+    },
+    "nom_entreprise": {
+      "type": "string",
+      "required": false
+    },
+    "nom_intervenant": {
+      "type": "string"
+    },
+    "date_intervention": {
+      "type": "date"    
+    },
+    "appartement": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::appartement.appartement"
     },
     "description": {
-      "type": "text",
-      "required": true
+      "type": "text"
+            
     },
     "cout": {
       "type": "decimal",

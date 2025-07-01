@@ -1,0 +1,68 @@
+.blocnote-compact {
+  max-width: 350px; // limite la largeur pour que ce soit compact
+  margin: 1rem auto;
+  font-family: 'Sour Gummy', sans-serif;
+
+  textarea {
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+
+  .buttons-row {
+    margin-top: 0.6rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+  }
+
+  button {
+    flex: 1;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .save-button {
+    background-color: #d4f0f0;
+    color: #065757;
+
+    &:hover {
+      background-color: #a0d6d6;
+    }
+  }
+
+  .export-button {
+    background-color: #b8e6b8;
+    color: #1d4f2b;
+
+    &:hover {
+      background-color: #a0dba0;
+    }
+  }
+
+  .clear-button {
+    background-color: #f7c6d9;
+    color: #6c1f38;
+
+    &:hover {
+      background-color: #f29dbd;
+    }
+  }
+
+  .saved-msg {
+    display: block;
+    margin-top: 0.5rem;
+    color: green;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+}
