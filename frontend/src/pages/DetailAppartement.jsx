@@ -53,6 +53,7 @@ const DetailAppartement = () => {
   const navigate = useNavigate();
   const [appart, setAppart] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [filesToUpload, setFilesToUpload] = useState({});
 
   useEffect(() => {
     const fetchAppartement = async () => {
@@ -75,6 +76,76 @@ const DetailAppartement = () => {
 
     fetchAppartement();
   }, [id]);
+
+  const handleFileUpload = (e, section, field, isMultiple) => {
+    const files = isMultiple ? Array.from(e.target.files) : e.target.files[0];
+    setFilesToUpload((prev) => ({
+      ...prev,
+      [`${section}.${field}`]: files,
+    }));
+  };
+
+  const uploadFiles = async (section, field) => {
+    const key = `${section}.${field}`;
+    if (!filesToUpload[key]) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+      if (Array.isArray(filesToUpload[key])) {
+        filesToUpload[key].forEach((file) => {
+          formData.append(`files`, file);
+        });
+      } else {
+        formData.append(`files`, filesToUpload[key]);
+      }
+
+      const uploadRes = await axios.post("http://localhost:1337/api/upload", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const fileIds = Array.isArray(uploadRes.data)
+        ? uploadRes.data.map((file) => file.id)
+        : [uploadRes.data.id];
+
+      const updatedData = { ...appart.attributes };
+      if (section === "loyer_et_charges" && field === "fichier_decompte") {
+        updatedData[section].decomptes_annuels = updatedData[section].decomptes_annuels || [];
+        if (updatedData[section].decomptes_annuels.length === 0) {
+          updatedData[section].decomptes_annuels.push({});
+        }
+        updatedData[section].decomptes_annuels[0][field] = fileIds[0];
+      } else {
+        updatedData[section] = updatedData[section] || {};
+        updatedData[section][field] = field === "bail" || field === "bail_fiinal" || field === "etat_des_lieux_sortie" || field === "etat_des_lieux_entree" || field === "photoTrousseau" ? fileIds[0] : fileIds;
+      }
+
+      await axios.put(
+        `http://localhost:1337/api/appartements/${id}`,
+        { data: updatedData },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const res = await axios.get(`${API_URL}/${id}?populate=*`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAppart(res.data.data);
+      setFilesToUpload((prev) => ({ ...prev, [key]: null }));
+      alert("Fichier(s) ajouté(s) avec succès !");
+    } catch (err) {
+      console.error("Erreur lors de l'upload :", err);
+      alert("Erreur lors de l'ajout du fichier.");
+    }
+  };
 
   if (loading) return <div className="loading-spinner">🏠 Chargement...</div>;
 
@@ -160,35 +231,66 @@ const DetailAppartement = () => {
               </div>
             </div>
 
-            <div className="documents-section">
-              <h4>📐 Plans</h4>
-              <div className="doc-links">
-                {leBien.plans?.data?.length > 0 ? (
-                  leBien.plans.data.map((file, i) => (
-                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-                      📎 Plan {i + 1}
-                    </a>
-                  ))
-                ) : (
-                  <span className="no-doc">Aucun plan fourni</span>
-                )}
+            <Accordion title="Documents" icon="📄">
+              <div className="documents-section">
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="label">Plans</span>
+                    <span className="value">
+                      {leBien.plans?.data?.length > 0 ? (
+                        leBien.plans.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            📎 Plan {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "le_bien", "plans", true)}
+                      />
+                      <button onClick={() => uploadFiles("le_bien", "plans")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Photos</span>
+                    <span className="value">
+                      {leBien.photos?.data?.length > 0 ? (
+                        leBien.photos.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            🖼️ Photo {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "le_bien", "photos", true)}
+                      />
+                      <button onClick={() => uploadFiles("le_bien", "photos")}>Ajouter</button>
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div className="documents-section">
-              <h4>📷 Photos</h4>
-              <div className="doc-links">
-                {leBien.photos?.data?.length > 0 ? (
-                  leBien.photos.data.map((file, i) => (
-                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-                      🖼️ Photo {i + 1}
-                    </a>
-                  ))
-                ) : (
-                  <span className="no-doc">Aucune photo fournie</span>
-                )}
-              </div>
-            </div>
+            </Accordion>
 
             <div className="info-block">
               <h4>🪑 Liste des meubles</h4>
@@ -230,48 +332,143 @@ const DetailAppartement = () => {
               </div>
             </div>
 
-            <div className="documents-section">
-              <h4>📄 Documents</h4>
-              <div className="doc-links">
-                {appart?.attributes?.locataires?.bail?.data ? (
-                  <a href={`http://localhost:1337${appart.attributes.locataires.bail.data.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-                    📄 Bail
-                  </a>
-                ) : <span className="no-doc">Bail non fourni</span>}
-
-                {appart?.attributes?.locataires?.etatDesLieuxEntree?.data?.length ? (
-                  appart.attributes.locataires.etatDesLieuxEntree.data.map((file, i) => (
-                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-                      📝 État des lieux entrée {i + 1}
-                    </a>
-                  ))
-                ) : <span className="no-doc">État des lieux entrée non fourni</span>}
-
-                {appart?.attributes?.locataires?.etatDesLieuxSortie?.data?.length ? (
-                  appart.attributes.locataires.etatDesLieuxSortie.data.map((file, i) => (
-                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-                      📝 État des lieux sortie {i + 1}
-                    </a>
-                  ))
-                ) : <span className="no-doc">État des lieux sortie non fourni</span>}
-
-                {appart?.attributes?.locataires?.assuranceLocataire?.data?.length > 0 ? (
-                  appart.attributes.locataires.assuranceLocataire.data.map((file, i) => (
-                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-                      🛡️ Assurance locataire {i + 1}
-                    </a>
-                  ))
-                ) : <span className="no-doc">Assurance locataire non fournie</span>}
-
-                {appart?.attributes?.locataires?.assurancePno?.data?.length > 0 ? (
-                  appart.attributes.locataires.assurancePno.data.map((file, i) => (
-                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-                      🧾 Assurance PNO {i + 1}
-                    </a>
-                  ))
-                ) : <span className="no-doc">Assurance PNO non fournie</span>}
+            <Accordion title="Documents" icon="📄">
+              <div className="documents-section">
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="label">Bail</span>
+                    <span className="value">
+                      {appart?.attributes?.locataires?.bail?.data ? (
+                        <a
+                          href={`http://localhost:1337${appart.attributes.locataires.bail.data.attributes.url}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="doc-link"
+                        >
+                          📄 Télécharger
+                        </a>
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        onChange={(e) => handleFileUpload(e, "locataires", "bail", false)}
+                      />
+                      <button onClick={() => uploadFiles("locataires", "bail")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">État des lieux entrée</span>
+                    <span className="value">
+                      {appart?.attributes?.locataires?.etatDesLieuxEntree?.data?.length > 0 ? (
+                        appart.attributes.locataires.etatDesLieuxEntree.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            📝 État des lieux entrée {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "locataires", "etatDesLieuxEntree", true)}
+                      />
+                      <button onClick={() => uploadFiles("locataires", "etatDesLieuxEntree")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">État des lieux sortie</span>
+                    <span className="value">
+                      {appart?.attributes?.locataires?.etatDesLieuxSortie?.data?.length > 0 ? (
+                        appart.attributes.locataires.etatDesLieuxSortie.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            📝 État des lieux sortie {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "locataires", "etatDesLieuxSortie", true)}
+                      />
+                      <button onClick={() => uploadFiles("locataires", "etatDesLieuxSortie")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Assurance locataire</span>
+                    <span className="value">
+                      {appart?.attributes?.locataires?.assuranceLocataire?.data?.length > 0 ? (
+                        appart.attributes.locataires.assuranceLocataire.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            🛡️ Assurance locataire {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "locataires", "assuranceLocataire", true)}
+                      />
+                      <button onClick={() => uploadFiles("locataires", "assuranceLocataire")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Assurance PNO</span>
+                    <span className="value">
+                      {appart?.attributes?.locataires?.assurancePno?.data?.length > 0 ? (
+                        appart.attributes.locataires.assurancePno.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            🧾 Assurance PNO {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "locataires", "assurancePno", true)}
+                      />
+                      <button onClick={() => uploadFiles("locataires", "assurancePno")}>Ajouter</button>
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
+            </Accordion>
 
             <div className="irl-info">
               <h4>📊 Indice IRL (contrat)</h4>
@@ -321,7 +518,6 @@ const DetailAppartement = () => {
               </div>
             </div>
 
-            {/* Taxe Ordures Ménagères */}
             <Accordion title="Taxe Ordures Ménagères (TOM)" icon="🗑️">
               <div className="taxe-ordures-menageres">
                 {loyerEtCharges.toms && loyerEtCharges.toms.length > 0 ? (
@@ -368,7 +564,6 @@ const DetailAppartement = () => {
               </div>
             </Accordion>
 
-            {/* Entretien Chaudière */}
             <Accordion title="Entretien Chaudière" icon="🔥">
               <div className="entretien-chaudiere">
                 {loyerEtCharges.entretien_chaudieres && loyerEtCharges.entretien_chaudieres.length > 0 ? (
@@ -495,7 +690,6 @@ const DetailAppartement = () => {
               </div>
             </Accordion>
 
-            {/* Décomptes Annuels Charges */}
             <Accordion title="Décomptes Annuels Charges" icon="📁">
               <div className="decomptes-annuels-charges">
                 {loyerEtCharges.decomptes_annuels && loyerEtCharges.decomptes_annuels.length > 0 ? (
@@ -529,13 +723,26 @@ const DetailAppartement = () => {
                           </div>
                           <div className="info-item">
                             <span className="label">Fichier</span>
-                            {decompte.fichier_decompte?.data ? (
-                              <a href={`http://localhost:1337${decompte.fichier_decompte.data.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-                                📎 Télécharger
-                              </a>
-                            ) : (
-                              <span>Pas de fichier</span>
-                            )}
+                            <span className="value">
+                              {decompte.fichier_decompte?.data ? (
+                                <a
+                                  href={`http://localhost:1337${decompte.fichier_decompte.data.attributes.url}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="doc-link"
+                                >
+                                  📎 Télécharger
+                                </a>
+                              ) : (
+                                <span className="no-doc">Aucun fichier</span>
+                              )}
+                              <input
+                                type="file"
+                                accept="image/*,application/pdf,video/*,audio/*"
+                                onChange={(e) => handleFileUpload(e, "loyer_et_charges", "fichier_decompte", false)}
+                              />
+                              <button onClick={() => uploadFiles("loyer_et_charges", "fichier_decompte")}>Ajouter</button>
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -565,7 +772,15 @@ const DetailAppartement = () => {
                         </div>
                         <div className="info-item">
                           <span className="label">Fichier</span>
-                          <span>Pas de fichier</span>
+                          <span className="value">
+                            <span className="no-doc">Aucun fichier</span>
+                            <input
+                              type="file"
+                              accept="image/*,application/pdf,video/*,audio/*"
+                              onChange={(e) => handleFileUpload(e, "loyer_et_charges", "fichier_decompte", false)}
+                            />
+                            <button onClick={() => uploadFiles("loyer_et_charges", "fichier_decompte")}>Ajouter</button>
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -691,40 +906,51 @@ const DetailAppartement = () => {
                 <div className="trousseau-id">
                   <span className="label">ID:</span>
                   <span className="value">
-                    {appart.attributes.trousseaux.identifiantTrousseau ||
-                      "Non renseigné"}
+                    {appart.attributes.trousseaux.identifiantTrousseau || "Non renseigné"}
                   </span>
                 </div>
-
                 <div className="trousseau-holder">
                   <span className="label">Détenteur:</span>
                   <span className="value">
-                    {appart.attributes.trousseaux.detenteurTrousseau ||
-                      "Non renseigné"}
+                    {appart.attributes.trousseaux.detenteurTrousseau || "Non renseigné"}
                   </span>
                 </div>
-
-                {appart.attributes.trousseaux.photoTrousseau && (
-                  <div className="trousseau-photo">
-                    <img
-                      src={`http://localhost:1337${appart.attributes.trousseaux.photoTrousseau.url}`}
-                      alt="Photo du trousseau"
-                    />
+                <Accordion title="Documents" icon="📄">
+                  <div className="documents-section">
+                    <div className="info-grid">
+                      <div className="info-item">
+                        <span className="label">Photo du trousseau</span>
+                        <span className="value">
+                          {appart.attributes.trousseaux.photoTrousseau?.data ? (
+                            <a
+                              href={`http://localhost:1337${appart.attributes.trousseaux.photoTrousseau.data.attributes.url}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="doc-link"
+                            >
+                              🖼️ Télécharger
+                            </a>
+                          ) : (
+                            <span className="no-doc">Aucun fichier</span>
+                          )}
+                          <input
+                            type="file"
+                            accept="image/*,application/pdf,video/*,audio/*"
+                            onChange={(e) => handleFileUpload(e, "trousseaux", "photoTrousseau", false)}
+                          />
+                          <button onClick={() => uploadFiles("trousseaux", "photoTrousseau")}>Ajouter</button>
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                )}
-
+                </Accordion>
                 <div className="trousseau-content">
                   <h4>📋 Contenu</h4>
                   <div className="rich-text">
-                    {appart.attributes.trousseaux.contenuTrousseau?.length >
-                    0 ? (
-                      appart.attributes.trousseaux.contenuTrousseau.map(
-                        (block, i) => (
-                          <div key={i}>
-                            {block.children?.[0]?.text || "Contenu"}
-                          </div>
-                        )
-                      )
+                    {appart.attributes.trousseaux.contenuTrousseau?.length > 0 ? (
+                      appart.attributes.trousseaux.contenuTrousseau.map((block, i) => (
+                        <div key={i}>{block.children?.[0]?.text || "Contenu"}</div>
+                      ))
                     ) : (
                       <p className="empty-state">Aucun contenu</p>
                     )}
@@ -732,7 +958,40 @@ const DetailAppartement = () => {
                 </div>
               </div>
             ) : (
-              <p className="empty-state">🔑 Aucun trousseau défini</p>
+              <div className="trousseau-info">
+                <div className="trousseau-id">
+                  <span className="label">ID:</span>
+                  <span className="value">Non renseigné</span>
+                </div>
+                <div className="trousseau-holder">
+                  <span className="label">Détenteur:</span>
+                  <span className="value">Non renseigné</span>
+                </div>
+                <Accordion title="Documents" icon="📄">
+                  <div className="documents-section">
+                    <div className="info-grid">
+                      <div className="info-item">
+                        <span className="label">Photo du trousseau</span>
+                        <span className="value">
+                          <span className="no-doc">Aucun fichier</span>
+                          <input
+                            type="file"
+                            accept="image/*,application/pdf,video/*,audio/*"
+                            onChange={(e) => handleFileUpload(e, "trousseaux", "photoTrousseau", false)}
+                          />
+                          <button onClick={() => uploadFiles("trousseaux", "photoTrousseau")}>Ajouter</button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Accordion>
+                <div className="trousseau-content">
+                  <h4>📋 Contenu</h4>
+                  <div className="rich-text">
+                    <p className="empty-state">Aucun contenu</p>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -830,13 +1089,10 @@ const DetailAppartement = () => {
             <div className="info-block">
               <h4>📌 Coordonnées Agence</h4>
               <div className="rich-text">
-                {appart?.attributes?.relocation?.agence_coordonnees?.length >
-                0 ? (
+                {appart?.attributes?.relocation?.agence_coordonnees?.length > 0 ? (
                   appart.attributes.relocation.agence_coordonnees.map(
                     (block, i) => (
-                      <div key={i}>
-                        {block.children?.[0]?.text || "Contenu"}
-                      </div>
+                      <div key={i}>{block.children?.[0]?.text || "Contenu"}</div>
                     )
                   )
                 ) : (
@@ -845,129 +1101,216 @@ const DetailAppartement = () => {
               </div>
             </div>
 
-            <div className="documents-section">
-              <h4>📄 Documents</h4>
-              <div className="doc-links">
-                {appart?.attributes?.relocation?.mandats_location?.data
-                  ?.length > 0 ? (
-                  appart.attributes.relocation.mandats_location.data.map(
-                    (file, i) => (
-                      <a
-                        key={i}
-                        href={`http://localhost:1337${file.attributes.url}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="doc-link"
-                      >
-                        📁 Mandat {i + 1}
-                      </a>
-                    )
-                  )
-                ) : (
-                  <span className="no-doc">Mandats non fournis</span>
-                )}
-
-                {appart?.attributes?.relocation?.diagnostiques?.data?.length >
-                0 ? (
-                  appart.attributes.relocation.diagnostiques.data.map(
-                    (file, i) => (
-                      <a
-                        key={i}
-                        href={`http://localhost:1337${file.attributes.url}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="doc-link"
-                      >
-                        🧪 Diagnostic {i + 1}
-                      </a>
-                    )
-                  )
-                ) : (
-                  <span className="no-doc">Diagnostics non fournis</span>
-                )}
-
-                {appart?.attributes?.relocation?.bail_fiinal?.data ? (
-                  <a
-                    href={`http://localhost:1337${appart.attributes.relocation.bail_fiinal.data.attributes.url}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="doc-link"
-                  >
-                    📄 Bail final
-                  </a>
-                ) : (
-                  <span className="no-doc">Bail final non fourni</span>
-                )}
-
-                {appart?.attributes?.relocation?.etat_des_lieux_sortie?.data ? (
-                  <a
-                    href={`http://localhost:1337${appart.attributes.relocation.etat_des_lieux_sortie.data.attributes.url}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="doc-link"
-                  >
-                    🚪 État des lieux sortie
-                  </a>
-                ) : (
-                  <span className="no-doc">
-                    État des lieux sortie non fourni
-                  </span>
-                )}
-
-                {appart?.attributes?.relocation?.etat_des_lieux_entree?.data ? (
-                  <a
-                    href={`http://localhost:1337${appart.attributes.relocation.etat_des_lieux_entree.data.attributes.url}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="doc-link"
-                  >
-                    🚪 État des lieux entrée
-                  </a>
-                ) : (
-                  <span className="no-doc">
-                    État des lieux entrée non fourni
-                  </span>
-                )}
-
-                {appart?.attributes?.relocation
-                  ?.dossier_candidature_locataire_retenu?.data?.length > 0 ? (
-                  appart.attributes.relocation.dossier_candidature_locataire_retenu.data.map(
-                    (file, i) => (
-                      <a
-                        key={i}
-                        href={`http://localhost:1337${file.attributes.url}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="doc-link"
-                      >
-                        🗂️ Dossier locataire {i + 1}
-                      </a>
-                    )
-                  )
-                ) : (
-                  <span className="no-doc">Dossier locataire non fourni</span>
-                )}
-              </div>
-            </div>
-
-            {appart?.attributes?.relocation?.photos?.data?.length > 0 && (
+            <Accordion title="Documents" icon="📄">
               <div className="documents-section">
-                <h4>📸 Photos</h4>
-                <div className="doc-links">
-                  {appart.attributes.relocation.photos.data.map((photo, i) => (
-                    <a
-                      key={i}
-                      href={`http://localhost:1337${photo.attributes.url}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="doc-link"
-                    >
-                      🖼️ Photo {i + 1}
-                    </a>
-                  ))}
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="label">Mandats de location</span>
+                    <span className="value">
+                      {appart?.attributes?.relocation?.mandats_location?.data?.length > 0 ? (
+                        appart.attributes.relocation.mandats_location.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            📁 Mandat {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "relocation", "mandats_location", true)}
+                      />
+                      <button onClick={() => uploadFiles("relocation", "mandats_location")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Diagnostiques</span>
+                    <span className="value">
+                      {appart?.attributes?.relocation?.diagnostiques?.data?.length > 0 ? (
+                        appart.attributes.relocation.diagnostiques.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            🧪 Diagnostic {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "relocation", "diagnostiques", true)}
+                      />
+                      <button onClick={() => uploadFiles("relocation", "diagnostiques")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Bail final</span>
+                    <span className="value">
+                      {appart?.attributes?.relocation?.bail_fiinal?.data ? (
+                        <a
+                          href={`http://localhost:1337${appart.attributes.relocation.bail_fiinal.data.attributes.url}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="doc-link"
+                        >
+                          📄 Télécharger
+                        </a>
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        onChange={(e) => handleFileUpload(e, "relocation", "bail_fiinal", false)}
+                      />
+                      <button onClick={() => uploadFiles("relocation", "bail_fiinal")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">État des lieux sortie</span>
+                    <span className="value">
+                      {appart?.attributes?.relocation?.etat_des_lieux_sortie?.data ? (
+                        <a
+                          href={`http://localhost:1337${appart.attributes.relocation.etat_des_lieux_sortie.data.attributes.url}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="doc-link"
+                        >
+                          🚪 Télécharger
+                        </a>
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        onChange={(e) => handleFileUpload(e, "relocation", "etat_des_lieux_sortie", false)}
+                      />
+                      <button onClick={() => uploadFiles("relocation", "etat_des_lieux_sortie")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">État des lieux entrée</span>
+                    <span className="value">
+                      {appart?.attributes?.relocation?.etat_des_lieux_entree?.data ? (
+                        <a
+                          href={`http://localhost:1337${appart.attributes.relocation.etat_des_lieux_entree.data.attributes.url}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="doc-link"
+                        >
+                          🚪 Télécharger
+                        </a>
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        onChange={(e) => handleFileUpload(e, "relocation", "etat_des_lieux_entree", false)}
+                      />
+                      <button onClick={() => uploadFiles("relocation", "etat_des_lieux_entree")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Dossier locataire retenu</span>
+                    <span className="value">
+                      {appart?.attributes?.relocation?.dossier_candidature_locataire_retenu?.data?.length > 0 ? (
+                        appart.attributes.relocation.dossier_candidature_locataire_retenu.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            🗂️ Dossier {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "relocation", "dossier_candidature_locataire_retenu", true)}
+                      />
+                      <button onClick={() => uploadFiles("relocation", "dossier_candidature_locataire_retenu")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Photos</span>
+                    <span className="value">
+                      {appart?.attributes?.relocation?.photos?.data?.length > 0 ? (
+                        appart.attributes.relocation.photos.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            🖼️ Photo {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "relocation", "photos", true)}
+                      />
+                      <button onClick={() => uploadFiles("relocation", "photos")}>Ajouter</button>
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Fichiers travaux</span>
+                    <span className="value">
+                      {appart?.attributes?.relocation?.travaux_fichiers?.data?.length > 0 ? (
+                        appart.attributes.relocation.travaux_fichiers.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            📎 Fichier travaux {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf,video/*,audio/*"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "relocation", "travaux_fichiers", true)}
+                      />
+                      <button onClick={() => uploadFiles("relocation", "travaux_fichiers")}>Ajouter</button>
+                    </span>
+                  </div>
                 </div>
               </div>
-            )}
+            </Accordion>
 
             <div className="info-block">
               <h4>🛠️ Travaux (texte)</h4>
@@ -978,30 +1321,6 @@ const DetailAppartement = () => {
                   ))
                 ) : (
                   <p className="empty-state">Non renseigné</p>
-                )}
-              </div>
-            </div>
-
-            <div className="documents-section">
-              <h4>📎 Fichiers Travaux</h4>
-              <div className="doc-links">
-                {appart?.attributes?.relocation?.travaux_fichiers?.data
-                  ?.length > 0 ? (
-                  appart.attributes.relocation.travaux_fichiers.data.map(
-                    (file, i) => (
-                      <a
-                        key={i}
-                        href={`http://localhost:1337${file.attributes.url}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="doc-link"
-                      >
-                        📎 Fichier travaux {i + 1}
-                      </a>
-                    )
-                  )
-                ) : (
-                  <span className="no-doc">Aucun fichier travaux</span>
                 )}
               </div>
             </div>
