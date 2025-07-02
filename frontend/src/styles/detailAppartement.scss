@@ -1,11 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sour+Gummy&display=swap');
 
 .detail-container {
   padding: 1.5rem;
-  background: linear-gradient(135deg, #fce7f3 0%, #f9a8d4 100%);
+  background: linear-gradient(135deg, #fce7f3 0%, #d8b4fe 100%); /* Rose poudré à violet lavande */
   min-height: 100vh;
   font-family: 'Poppins', sans-serif;
   color: #2d3748;
+  box-sizing: border-box;
 
   .header-section {
     display: flex;
@@ -19,7 +20,7 @@
     backdrop-filter: blur(5px);
 
     .btn-retour {
-      background: linear-gradient(45deg, #f9a8d4, #fbcfe8);
+      background: linear-gradient(45deg, #d8b4fe, #c4b5fd); /* Violet lavande */
       border: none;
       padding: 10px 18px;
       border-radius: 8px;
@@ -27,22 +28,23 @@
       font-weight: 500;
       font-size: 0.9rem;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(244, 63, 94, 0.2);
+      box-shadow: 0 2px 8px rgba(168, 85, 247, 0.2);
       transition: all 0.3s ease;
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
-        background: linear-gradient(45deg, #ec4899, #f9a8d4);
+        box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        background: linear-gradient(45deg, #a78bfa, #d8b4fe);
       }
 
       &:focus {
-        outline: 2px solid #be185d;
+        outline: 2px solid #6b46c1;
         outline-offset: 2px;
       }
     }
 
     .main-title {
+      font-family: 'Sour Gummy', 'Poppins', sans-serif;
       color: #4a044e;
       font-size: 2rem;
       font-weight: 600;
@@ -50,6 +52,10 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+
+      @media (max-width: 768px) {
+        font-size: 1.75rem;
+      }
     }
   }
 
@@ -91,6 +97,7 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 
   &:hover {
     transform: translateY(-4px);
@@ -99,15 +106,20 @@
 
   .card-header {
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid #fce7f3;
+    border-bottom: 1px solid #e2e8f0;
 
     h2 {
+      font-family: 'Sour Gummy', 'Poppins', sans-serif;
       font-size: 1.25rem;
       font-weight: 600;
       margin: 0;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+
+      @media (max-width: 768px) {
+        font-size: 1.1rem;
+      }
     }
   }
 
@@ -115,75 +127,16 @@
     padding: 1.5rem;
   }
 
-  &.card-bien {
-    .card-header {
-      background: linear-gradient(135deg, #bbf7d0, #86efac);
-      h2 { color: #166534; }
-    }
-  }
-
-  &.card-locataire {
-    .card-header {
-      background: linear-gradient(135deg, #fed7e2, #f9a8d4);
-      h2 { color: #9a3412; }
-    }
-  }
-
-  &.card-loyer {
-    .card-header {
-      background: linear-gradient(135deg, #bfdbfe, #93c5fd);
-      h2 { color: #1e40af; }
-    }
-  }
-
-  &.card-syndic {
-    .card-header {
-      background: linear-gradient(135deg, #e9d5ff, #d8b4fe);
-      h2 { color: #6b46c1; }
-    }
-  }
-
-  &.card-dossier {
-    .card-header {
-      background: linear-gradient(135deg, #fbcfe8, #f9a8d4);
-      h2 { color: #be185d; }
-    }
-  }
-
-  &.card-trousseau {
-    .card-header {
-      background: linear-gradient(135deg, #bae6fd, #7dd3fc);
-      h2 { color: #1e40af; }
-    }
-  }
-
-  &.card-contacts {
-    .card-header {
-      background: linear-gradient(135deg, #fef3c7, #fde68a);
-      h2 { color: #78350f; }
-    }
-  }
-
-  &.card-interventions {
-    .card-header {
-      background: linear-gradient(135deg, #fecdd3, #fb7185);
-      h2 { color: #9f1239; }
-    }
-  }
-
-  &.card-notes {
-    .card-header {
-      background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
-      h2 { color: #134e4a; }
-    }
-  }
-
-  &.card-relocation {
-    .card-header {
-      background: linear-gradient(135deg, #fef9c3, #fef08a);
-      h2 { color: #713f12; }
-    }
-  }
+  &.card-bien { .card-header { background: linear-gradient(135deg, #a7f3d0, #6ee7b7); h2 { color: #134e4a; } } } /* Vert d’eau */
+  &.card-locataire { .card-header { background: linear-gradient(135deg, #fed7e2, #f9a8d4); h2 { color: #9a3412; } } } /* Rose poudré */
+  &.card-loyer { .card-header { background: linear-gradient(135deg, #bae6fd, #7dd3fc); h2 { color: #1e40af; } } } /* Bleu ciel */
+  &.card-syndic { .card-header { background: linear-gradient(135deg, #e9d5ff, #d8b4fe); h2 { color: #6b46c1; } } } /* Violet lavande */
+  &.card-dossier { .card-header { background: linear-gradient(135deg, #fbcfe8, #f9a8d4); h2 { color: #be185d; } } } /* Rose poudré */
+  &.card-trousseau { .card-header { background: linear-gradient(135deg, #bfdbfe, #93c5fd); h2 { color: #1e40af; } } } /* Bleu clair */
+  &.card-contacts { .card-header { background: linear-gradient(135deg, #fef3c7, #fde68a); h2 { color: #78350f; } } } /* Jaune pâle */
+  &.card-interventions { .card-header { background: linear-gradient(135deg, #fecdd3, #fb7185); h2 { color: #9f1239; } } } /* Rose corail */
+  &.card-notes { .card-header { background: linear-gradient(135deg, #a7f3d0, #6ee7b7); h2 { color: #134e4a; } } } /* Vert d’eau */
+  &.card-relocation { .card-header { background: linear-gradient(135deg, #fef9c3, #fef08a); h2 { color: #713f12; } } } /* Jaune doux */
 }
 
 .info-grid {
@@ -192,13 +145,14 @@
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 
   .info-item {
-    background: #fff1f8;
+    background: #f0f9ff; /* Bleu très clair */
     padding: 0.75rem;
     border-radius: 8px;
-    border-left: 3px solid #f9a8d4;
+    border-left: 3px solid #7dd3fc; /* Bleu ciel */
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    box-sizing: border-box;
 
     .label {
       font-size: 0.85rem;
@@ -217,30 +171,71 @@
 .documents-section {
   margin-top: 1rem;
   padding: 1rem;
-  background: #fff1f8;
+  background: #f0f9ff; /* Bleu très clair */
   border-radius: 8px;
+  box-sizing: border-box;
 
   input[type="file"] {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #f9a8d4;
+    width: 135px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid #fce7f3; /* Rose poudré clair */
     border-radius: 6px;
-    background: white;
+    background: linear-gradient(45deg, #fce7f3, #fbcfe8); /* Rose poudré clair */
     font-size: 0.85rem;
-    color: #4b5563;
+    color: #be185d;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden; /* Coupe tout texte parasite */
     transition: all 0.3s ease;
 
+    &::before {
+      content: '📎 Choisir un fichier';
+      font-size: 0.85rem;
+      color: #be185d;
+      padding: 0.5rem 0.8rem; /* Remplit tout l’espace de l’input */
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
     &:hover, &:focus {
-      border-color: #ec4899;
-      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+      border-color: #f9a8d4;
+      background: linear-gradient(45deg, #fbcfe8, #f9a8d4);
+      box-shadow: 0 0 0 3px rgba(249, 168, 212, 0.2);
       outline: none;
+    }
+
+    &::-webkit-file-upload-button {
+      visibility: hidden;
+      width: 0;
+      height: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    &::-moz-file-upload-button {
+      visibility: hidden;
+      width: 0;
+      height: 0;
+      margin: 0;
+      padding: 0;
     }
   }
 
   button {
     margin-top: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: linear-gradient(45deg, #f9a8d4, #fbcfe8);
+    width: 80px;
+    height: 28px;
+    padding: 0.4rem 0.8rem;
+    background: linear-gradient(45deg, #f3e8ff, #e9d5ff); /* Violet lavande clair */
     color: #4a044e;
     border: none;
     border-radius: 6px;
@@ -249,21 +244,22 @@
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
     transition: all 0.3s ease;
 
     &::before {
-      content: '📎';
+      content: '⬆';
+      font-size: 1rem;
     }
 
     &:hover {
-      background: linear-gradient(45deg, #ec4899, #f9a8d4);
+      background: linear-gradient(45deg, #e9d5ff, #d8b4fe);
       transform: translateY(-2px);
-      box-shadow: 0 2px 8px rgba(236, 72, 153, 0.2);
+      box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3);
     }
 
     &:focus {
-      outline: 2px solid #be185d;
+      outline: 2px solid #6b46c1;
       outline-offset: 2px;
     }
   }
@@ -273,30 +269,35 @@
     flex-direction: column;
     gap: 0.5rem;
     margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 40px;
+    border: 2px dashed #bae6fd;
+    border-radius: 6px;
+    padding: 0.5rem;
 
     .doc-link {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       padding: 0.5rem 0.75rem;
-      background: #fce7f3;
-      color: #be185d;
+      background: #e0f2fe; /* Bleu clair */
+      color: #1e40af;
       text-decoration: none;
       border-radius: 6px;
       font-size: 0.85rem;
       transition: all 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
 
       &:hover {
-        background: #f9a8d4;
-        color: #4a044e;
+        background: #bfdbfe;
         transform: translateX(3px);
       }
     }
 
     .no-doc {
-      color: #9ca3af;
-      font-size: 0.85rem;
-      font-style: italic;
+      display: none; /* Masquer "Aucun fichier" */
     }
   }
 }
@@ -307,7 +308,7 @@
   .loyer-item.main {
     text-align: center;
     padding: 1.25rem;
-    background: linear-gradient(135deg, #f9a8d4, #ec4899);
+    background: linear-gradient(135deg, #bae6fd, #7dd3fc); /* Bleu ciel */
     color: white;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -332,7 +333,7 @@
     .breakdown-item {
       text-align: center;
       padding: 0.75rem;
-      background: #fff1f8;
+      background: #f0f9ff; /* Bleu très clair */
       border-radius: 8px;
 
       .amount {
@@ -352,15 +353,16 @@
 .irl-info {
   margin-top: 1rem;
   padding: 0.75rem;
-  background: #fef3c7;
+  background: #fef3c7; /* Jaune pâle */
   border-radius: 8px;
-  border-left: 3px solid #f9a8d4;
+  border-left: 3px solid #fde68a;
 
   h4 {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #4a044e;
+    color: #78350f;
     margin-bottom: 0.5rem;
+    font-family: 'Sour Gummy', 'Poppins', sans-serif;
   }
 
   .irl-details {
@@ -392,6 +394,7 @@
     font-weight: 600;
     color: #4a044e;
     margin-bottom: 0.5rem;
+    font-family: 'Sour Gummy', 'Poppins', sans-serif;
   }
 
   .rich-text {
@@ -402,12 +405,13 @@
 }
 
 .mini-card {
-  background: #fff1f8;
+  background: #f0f9ff; /* Bleu très clair */
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 0.75rem;
-  border-left: 3px solid #f9a8d4;
+  border-left: 3px solid #7dd3fc; /* Bleu ciel */
   transition: all 0.3s ease;
+  box-sizing: border-box;
 
   &:hover {
     transform: translateY(-2px);
@@ -427,8 +431,8 @@
       color: white;
     }
 
-    .status { background: #f9a8d4; }
-    .budget { background: #ec4899; }
+    .status { background: #7dd3fc; } /* Bleu ciel */
+    .budget { background: #6ee7b7; } /* Vert d’eau */
     .date { background: #6b7280; }
   }
 }
@@ -438,22 +442,22 @@
     display: flex;
     justify-content: space-between;
     padding: 0.75rem;
-    background: #fce7f3;
+    background: #e9d5ff; /* Violet lavande */
     border-radius: 8px;
     margin-bottom: 0.75rem;
 
-    .label { font-weight: 500; color: #be185d; }
+    .label { font-weight: 500; color: #6b46c1; }
     .value { font-weight: 600; color: #4a044e; }
   }
 }
 
 .contacts-list {
   .contact-item {
-    background: #fff1f8;
+    background: #fef3c7; /* Jaune pâle */
     border-radius: 8px;
     padding: 1rem;
     margin-bottom: 0.75rem;
-    border-left: 3px solid #f9a8d4;
+    border-left: 3px solid #fde68a;
     display: flex;
     gap: 1rem;
     align-items: center;
@@ -461,12 +465,12 @@
     .contact-avatar {
       width: 36px;
       height: 36px;
-      background: linear-gradient(45deg, #f9a8d4, #fbcfe8);
+      background: linear-gradient(45deg, #fef3c7, #fde68a); /* Jaune pâle */
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #4a044e;
+      color: #78350f;
       font-size: 1rem;
       font-weight: 600;
     }
@@ -489,24 +493,25 @@
 
   .accordion-header-modern {
     padding: 1rem 1.5rem;
-    background: linear-gradient(135deg, #fbcfe8, #f9a8d4);
+    background: linear-gradient(135deg, #e9d5ff, #d8b4fe); /* Violet lavande */
     border: none;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    font-family: 'Sour Gummy', 'Poppins', sans-serif;
     font-size: 1rem;
     font-weight: 500;
     color: #4a044e;
     transition: background 0.3s ease;
 
     &:hover {
-      background: linear-gradient(135deg, #f9a8d4, #ec4899);
+      background: linear-gradient(135deg, #d8b4fe, #a78bfa);
     }
 
     &:focus {
-      outline: 2px solid #be185d;
+      outline: 2px solid #6b46c1;
       outline-offset: 2px;
     }
 
@@ -537,6 +542,168 @@
 
     .accordion-inner { padding: 1.5rem; }
   }
+
+  &.decomptes-annuels-charges {
+    .items-list {
+      display: grid;
+      gap: 0.8rem;
+      width: 100%;
+      box-sizing: border-box;
+
+      .mini-card {
+        background: #f0f9ff; /* Bleu très clair */
+        border-radius: 10px;
+        padding: 1rem;
+        border-left: 3px solid #7dd3fc; /* Bleu ciel */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-grid {
+          gap: 0.5rem;
+
+          .info-item {
+            background: transparent;
+            border-left: none;
+            padding: 0.5rem 0;
+
+            .label {
+              font-size: 0.85rem;
+              color: #6b7280;
+            }
+
+            .value {
+              font-size: 0.9rem;
+              color: #2d3748;
+            }
+          }
+        }
+      }
+
+      input[type="file"] {
+  width: 135px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid #fce7f3; /* Rose poudré clair */
+  border-radius: 6px;
+  background: linear-gradient(45deg, #fce7f3, #fbcfe8) !important; /* Rose poudré clair */
+  font-size: 0.85rem;
+  color: #be185d !important;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+
+  &::before {
+    content: '📎 Choisir un fichier';
+    font-size: 0.85rem;
+    color: #be185d;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  &:hover, &:focus {
+    border-color: #f9a8d4;
+    background: linear-gradient(45deg, #fbcfe8, #f9a8d4) !important;
+    box-shadow: 0 0 0 3px rgba(249, 168, 212, 0.2);
+    outline: none;
+  }
+
+  &::-webkit-file-upload-button {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  &::-moz-file-upload-button {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+button {
+  margin-top: 0.5rem;
+  width: 80px;
+  height: 28px;
+  padding: 0.4rem 0.8rem;
+  background: linear-gradient(45deg, #f3e8ff, #e9d5ff) !important; /* Violet lavande clair */
+  color: #4a044e !important;
+  border: none !important;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+
+  &::before {
+    content: '⬆';
+    font-size: 1rem;
+  }
+
+  &:hover {
+    background: linear-gradient(45deg, #e9d5ff, #d8b4fe) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3);
+  }
+
+  &:focus {
+    outline: 2px solid #6b46c1 !important;
+    outline-offset: 2px;
+  }
+}
+    }
+
+    .empty-state {
+      background: #f0f9ff; /* Bleu très clair */
+      border: 2px dashed #bae6fd; /* Bordure pointillée subtile */
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.8rem;
+      font-style: italic;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+
+      &::before {
+        content: '📂';
+        font-size: 1rem;
+        color: #6b7280;
+      }
+    }
+  }
 }
 
 @keyframes pulse {
@@ -562,7 +729,6 @@
       align-items: flex-start;
       padding: 0.75rem;
 
-      .main-title { font-size: 1.5rem; }
       .btn-retour { padding: 8px 16px; font-size: 0.85rem; }
     }
   }
@@ -572,4 +738,34 @@
   .info-grid { grid-template-columns: 1fr; }
 
   .loyer-breakdown { grid-template-columns: 1fr; }
+
+  .documents-section {
+    input[type="file"] {
+      width: 100px;
+      height: 24px;
+
+      &::before {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+      }
+    }
+    button {
+      width: 70px;
+      height: 24px;
+      padding: 0.3rem 0.6rem;
+    }
+
+    .doc-links {
+      min-height: 32px;
+      padding: 0.4rem;
+    }
+  }
+
+  
+
+  .accordion-modern.decomptes-annuels-charges .empty-state {
+    min-height: 32px;
+    padding: 0.8rem;
+    font-size: 0.75rem;
+  }
 }

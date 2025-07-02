@@ -45,6 +45,11 @@
       "type": "component",
       "component": "appartements.syndic",
       "repeatable": true
+    },
+    "loyers_charges": {
+      "type": "component",
+      "component": "appartements.loyer-charges",
+      "repeatable": true
     }
   }
 }

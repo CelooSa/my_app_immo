@@ -399,6 +399,10 @@ export interface ApiAppartementAppartement extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     Locataire: Schema.Attribute.Component<'appartements.locataires', true>;
+    loyers_charges: Schema.Attribute.Component<
+      'appartements.loyer-charges',
+      true
+    >;
     nomAppartement: Schema.Attribute.String;
     notes: Schema.Attribute.Blocks;
     publishedAt: Schema.Attribute.DateTime;
