@@ -2,31 +2,51 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/detailAppartement.scss";
-
 import BlocNotesContent from "./BlocNotesCompact";
 
 const API_URL = "http://localhost:1337/api/appartements";
 
-const Accordion = ({ title, children,}) => {
+const Accordion = ({ title, icon, children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`accordion ${isOpen ? "open" : "closed"}`}>
-      <button className="accordion-header" onClick={() => setIsOpen(!isOpen)} aria-expanded={isOpen}>
-        <span>{title}</span>
-        <span className={`arrow ${isOpen ? "down" : "right"}`}>▶</span>
-        </button>
-        {isOpen && <div className="accordion-content">{children}</div>}
+    <div className="accordion-modern">
+      <button
+        className="accordion-header-modern"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls={`accordion-content-${title.replace(/\s+/g, "-").toLowerCase()}`}
+      >
+        <span className="accordion-title">
+          {icon && <span className="accordion-icon">{icon}</span>}
+          {title}
+        </span>
+        <span className={`accordion-arrow ${isOpen ? "open" : ""}`}>
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </span>
+      </button>
+      <div
+        className={`accordion-content-modern ${isOpen ? "open" : ""}`}
+        id={`accordion-content-${title.replace(/\s+/g, "-").toLowerCase()}`}
+      >
+        <div className="accordion-inner">{children}</div>
+      </div>
     </div>
   );
 };
-
-
-
-
-
-
-
 
 const DetailAppartement = () => {
   const { id } = useParams();
@@ -43,9 +63,10 @@ const DetailAppartement = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log("Réponse API loyer_et_charges:", res.data.data.attributes.loyer_et_charges);
         setAppart(res.data.data);
       } catch (err) {
-        console.warn("Aucune donnée trouvée, affichage en mode vide.");
+        console.warn("Aucune donnée trouvée, affichage en mode vide:", err.message);
         setAppart(null);
       } finally {
         setLoading(false);
@@ -58,9 +79,7 @@ const DetailAppartement = () => {
   if (loading) return <div className="loading-spinner">🏠 Chargement...</div>;
 
   const leBien = appart?.attributes?.le_bien || {};
-
-
-
+  const loyerEtCharges = appart?.attributes?.loyer_et_charges || {};
 
   return (
     <div className="detail-container">
@@ -72,402 +91,490 @@ const DetailAppartement = () => {
       </div>
 
       <div className="masonry-grid">
-
-
         {/* Fiche Le Bien */}
-<div className="card card-bien">
-  <div className="card-header">
-    <h2>🏡 Le Bien</h2>
-  </div>
-  <div className="card-content">
-    <div className="info-grid">
-      <div className="info-item">
-        <span className="label">Propriétaire</span>
-        <span className="value">{leBien.proprietaire || "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Adresse</span>
-        <span className="value">{leBien.adresse || "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Étage</span>
-        <span className="value">{leBien.etage ?? "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Position</span>
-        <span className="value">{leBien.position || "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Pièces</span>
-        <span className="value">{leBien.nombrePieces ?? "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Surface</span>
-        <span className="value">{leBien.nombreM2 ?? "À remplir"} m²</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Cave</span>
-        <span className="value">{leBien.cave ? "✅ Oui" : "❌ Non"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">N° Lot Cave</span>
-        <span className="value">{leBien.caveNumeroLot || "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Emplacement Cave</span>
-        <span className="value">{leBien.caveEmplacement || "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Parking</span>
-        <span className="value">{leBien.parking ? "✅ Oui" : "❌ Non"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">N° Lot Parking</span>
-        <span className="value">{leBien.parkingNumeroLot || "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Emplacement Parking</span>
-        <span className="value">{leBien.parkingEmplacement || "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Chaudière Individuelle</span>
-        <span className="value">{leBien.chaudiereIndividuelle ? "✅ Oui" : "❌ Non"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Meublé</span>
-        <span className="value">{leBien.meuble ? "✅ Oui" : "❌ Non"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Énergie</span>
-        <span className="value">{leBien.energie || "À remplir"}</span>
-      </div>
-    </div>
+        <div className="card card-bien">
+          <div className="card-header">
+            <h2>🏡 Le Bien</h2>
+          </div>
+          <div className="card-content">
+            <div className="info-grid">
+              <div className="info-item">
+                <span className="label">Propriétaire</span>
+                <span className="value">{leBien.proprietaire || "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Adresse</span>
+                <span className="value">{leBien.adresse || "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Étage</span>
+                <span className="value">{leBien.etage ?? "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Position</span>
+                <span className="value">{leBien.position || "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Pièces</span>
+                <span className="value">{leBien.nombrePieces ?? "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Surface</span>
+                <span className="value">{leBien.nombreM2 ?? "À remplir"} m²</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Cave</span>
+                <span className="value">{leBien.cave ? "✅ Oui" : "❌ Non"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">N° Lot Cave</span>
+                <span className="value">{leBien.caveNumeroLot || "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Emplacement Cave</span>
+                <span className="value">{leBien.caveEmplacement || "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Parking</span>
+                <span className="value">{leBien.parking ? "✅ Oui" : "❌ Non"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">N° Lot Parking</span>
+                <span className="value">{leBien.parkingNumeroLot || "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Emplacement Parking</span>
+                <span className="value">{leBien.parkingEmplacement || "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Chaudière Individuelle</span>
+                <span className="value">{leBien.chaudiereIndividuelle ? "✅ Oui" : "❌ Non"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Meublé</span>
+                <span className="value">{leBien.meuble ? "✅ Oui" : "❌ Non"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Énergie</span>
+                <span className="value">{leBien.energie || "À remplir"}</span>
+              </div>
+            </div>
 
-    <div className="documents-section">
-      <h4>📐 Plans</h4>
-      <div className="doc-links">
-        {leBien.plans?.data?.length > 0 ? (
-          leBien.plans.data.map((file, i) => (
-            <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-              📎 Plan {i + 1}
-            </a>
-          ))
-        ) : (
-          <span className="no-doc">Aucun plan fourni</span>
-        )}
-      </div>
-    </div>
+            <div className="documents-section">
+              <h4>📐 Plans</h4>
+              <div className="doc-links">
+                {leBien.plans?.data?.length > 0 ? (
+                  leBien.plans.data.map((file, i) => (
+                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
+                      📎 Plan {i + 1}
+                    </a>
+                  ))
+                ) : (
+                  <span className="no-doc">Aucun plan fourni</span>
+                )}
+              </div>
+            </div>
 
-    <div className="documents-section">
-      <h4>📷 Photos</h4>
-      <div className="doc-links">
-        {leBien.photos?.data?.length > 0 ? (
-          leBien.photos.data.map((file, i) => (
-            <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-              🖼️ Photo {i + 1}
-            </a>
-          ))
-        ) : (
-          <span className="no-doc">Aucune photo fournie</span>
-        )}
-      </div>
-    </div>
+            <div className="documents-section">
+              <h4>📷 Photos</h4>
+              <div className="doc-links">
+                {leBien.photos?.data?.length > 0 ? (
+                  leBien.photos.data.map((file, i) => (
+                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
+                      🖼️ Photo {i + 1}
+                    </a>
+                  ))
+                ) : (
+                  <span className="no-doc">Aucune photo fournie</span>
+                )}
+              </div>
+            </div>
 
-    <div className="info-block">
-      <h4>🪑 Liste des meubles</h4>
-      <div className="rich-text">
-        {leBien.listeMeubles?.length > 0 ? (
-          leBien.listeMeubles.map((block, i) => (
-            <div key={i}>{block.children?.[0]?.text || "Contenu"}</div>
-          ))
-        ) : (
-          <p className="empty-state">Non renseigné</p>
-        )}
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
+            <div className="info-block">
+              <h4>🪑 Liste des meubles</h4>
+              <div className="rich-text">
+                {leBien.listeMeubles?.length > 0 ? (
+                  leBien.listeMeubles.map((block, i) => (
+                    <div key={i}>{block.children?.[0]?.text || "Contenu"}</div>
+                  ))
+                ) : (
+                  <p className="empty-state">Non renseigné</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Fiche Locataire */}
-<div className="card card-locataire">
-  <div className="card-header">
-    <h2>👤 Locataire</h2>
-  </div>
-  <div className="card-content">
-    <div className="info-grid">
-      <div className="info-item">
-        <span className="label">Nom</span>
-        <span className="value">{appart?.attributes?.locataires?.nom || "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Email</span>
-        <span className="value">{appart?.attributes?.locataires?.email || "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Téléphone</span>
-        <span className="value">{appart?.attributes?.locataires?.telephone || "À remplir"}</span>
-      </div>
-      <div className="info-item">
-        <span className="label">Date d'entrée</span>
-        <span className="value">{appart?.attributes?.locataires?.dateEntree || "À remplir"}</span>
-      </div>
-    </div>
-
-    <div className="documents-section">
-      <h4>📄 Documents</h4>
-      <div className="doc-links">
-        {/* Bail */}
-        {appart?.attributes?.locataires?.bail?.data ? (
-          <a href={`http://localhost:1337${appart.attributes.locataires.bail.data.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-            📄 Bail
-          </a>
-        ) : <span className="no-doc">Bail non fourni</span>}
-
-        {/* État des lieux entrée */}
-        {appart?.attributes?.locataires?.etatDesLieuxEntree?.data?.length ? (
-          appart.attributes.locataires.etatDesLieuxEntree.data.map((file, i) => (
-            <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-              📝 État des lieux entrée {i + 1}
-            </a>
-          ))
-        ) : <span className="no-doc">État des lieux entrée non fourni</span>}
-
-        {/* État des lieux sortie */}
-        {appart?.attributes?.locataires?.etatDesLieuxSortie?.data?.length ? (
-          appart.attributes.locataires.etatDesLieuxSortie.data.map((file, i) => (
-            <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-              📝 État des lieux sortie {i + 1}
-            </a>
-          ))
-        ) : <span className="no-doc">État des lieux sortie non fourni</span>}
-
-        {/* Assurance locataire */}
-        {appart?.attributes?.locataires?.assuranceLocataire?.data?.length > 0 ? (
-          appart.attributes.locataires.assuranceLocataire.data.map((file, i) => (
-            <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-              🛡️ Assurance locataire {i + 1}
-            </a>
-          ))
-        ) : <span className="no-doc">Assurance locataire non fournie</span>}
-
-        {/* Assurance PNO */}
-        {appart?.attributes?.locataires?.assurancePno?.data?.length > 0 ? (
-          appart.attributes.locataires.assurancePno.data.map((file, i) => (
-            <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-              🧾 Assurance PNO {i + 1}
-            </a>
-          ))
-        ) : <span className="no-doc">Assurance PNO non fournie</span>}
-      </div>
-    </div>
-
-    <div className="irl-info">
-      <h4>📊 Indice IRL (contrat)</h4>
-      <p>{appart?.attributes?.locataires?.indiceIrl || "À remplir"}</p>
-    </div>
-  </div>
-</div>
-
-            
-
-
-
-
-{/* Fiche Loyer & Charges */}
-<div className="card card-loyer">
-  <div className="card-header">
-    <h2>💰 Loyer & Charges</h2>
-  </div>
-  <div className="card-content">
-    <div className="loyer-summary">
-      <div className="loyer-item main">
-        <span className="amount">{appart?.attributes?.loyer_et_charges?.loyerTtc ?? "---"} €</span>
-        <span className="label">Loyer TTC</span>
-      </div>
-      <div className="loyer-breakdown">
-        <div className="breakdown-item">
-          <span className="amount">{appart?.attributes?.loyer_et_charges?.loyerHc ?? "---"} €</span>
-          <span className="label">Hors charges</span>
-        </div>
-        <div className="breakdown-item">
-          <span className="amount">{appart?.attributes?.loyer_et_charges?.charges ?? "---"} €</span>
-          <span className="label">Charges</span>
-        </div>
-      </div>
-    </div>
-
-    {/* Indice IRL */}
-    <div className="irl-info">
-      <h4>📊 Indice IRL</h4>
-      <div className="irl-details">
-        <div className="irl-item">
-          <span className="label">Trimestre</span>
-          <span className="value">{appart?.attributes?.loyer_et_charges?.trimestreIrl || "---"}</span>
-        </div>
-        <div className="irl-item">
-          <span className="label">Année</span>
-          <span className="value">{appart?.attributes?.loyer_et_charges?.anneeIrl ?? "---"}</span>
-        </div>
-        <div className="irl-item">
-          <span className="label">Valeur</span>
-          <span className="value">{appart?.attributes?.loyer_et_charges?.indiceValeurIrl ?? "---"}</span>
-        </div>
-      </div>
-    </div>
-
-    
-    
-    {/* Taxe Ordures Ménagères */}
-    <Accordion title="🗑️ Taxe Ordures Ménagères (TOM)">
-    <div className="taxe-ordures-menageres">
-      {appart?.attributes?.loyer_et_charges?.taxeOrduresMenageres?.length > 0 ? (
-        <div className="items-list">
-          {appart.attributes.loyer_et_charges.taxeOrduresMenageres.map((tom, index) => (
-            <div key={index} className="mini-card">
-              <div className="info-grid">
-                <div className="info-item">
-                  <span className="label">Année</span>
-                  <span className="value">{tom.anneeTom ?? "À remplir"}</span>
-                </div>
-                <div className="info-item">
-                  <span className="label">Montant</span>
-                  <span className="value">{tom.montantTom ?? "À remplir"} €</span>
-                </div>
-                <div className="info-item">
-                  <span className="label">Incluse dans charges</span>
-                  <span className="value">{tom.incluseDansLesCharges ? "Oui" : "Non"}</span>
-                </div>
+        <div className="card card-locataire">
+          <div className="card-header">
+            <h2>👤 Locataire</h2>
+          </div>
+          <div className="card-content">
+            <div className="info-grid">
+              <div className="info-item">
+                <span className="label">Nom</span>
+                <span className="value">{appart?.attributes?.locataires?.nom || "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Email</span>
+                <span className="value">{appart?.attributes?.locataires?.email || "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Téléphone</span>
+                <span className="value">{appart?.attributes?.locataires?.telephone || "À remplir"}</span>
+              </div>
+              <div className="info-item">
+                <span className="label">Date d'entrée</span>
+                <span className="value">{appart?.attributes?.locataires?.dateEntree || "À remplir"}</span>
               </div>
             </div>
-          ))}
-        </div>
-      ) : (
-        <p className="empty-state">✨ Aucune taxe ordures ménagères enregistrée</p>
-      )}
-    </div>
-    </Accordion>
 
-    {/* Entretien Chaudière */}
-  <Accordion title="🔥 Entretien Chaudière">
-    <div className="entretien-chaudiere">
-      
-      {appart?.attributes?.loyer_et_charges?.entretienChaudiere?.length > 0 ? (
-        <div className="items-list">
-          {appart.attributes.loyer_et_charges.entretienChaudiere.map((entretien, index) => (
-            <div key={index} className="mini-card">
-              <div className="info-grid">
-                <div className="info-item">
-                  <span className="label">Prix entretien</span>
-                  <span className="value">{entretien.prixEntretienChaudiere ?? "À remplir"} €</span>
-                </div>
-                <div className="info-item">
-                  <span className="label">Comprise dans charges</span>
-                  <span className="value">{entretien.compriseDansLesCharges ? "Oui" : "Non"}</span>
-                </div>
-                <div className="info-item">
-                  <span className="label">Fréquence entretien</span>
-                  <span className="value">{entretien.frequenceEntretien || "À remplir"}</span>
-                </div>
-                <div className="info-item">
-                  <span className="label">Prochain entretien prévu</span>
-                  <span className="value">{entretien.prochainEntretienPrevu ?? "À remplir"}</span>
-                </div>
-                <div className="info-item entreprise-entretiens">
-                  <span className="label">Entreprise intervention</span>
-                  {entretien.intervention ? (
-                    <div>
-                      <p><strong>{entretien.intervention.nom || "Nom entreprise"}</strong></p>
-                      <p>{entretien.intervention.adresse || "Adresse"}</p>
-                      <p>{entretien.intervention.telephone || "Téléphone"}</p>
-                    </div>
-                  ) : (
-                    <span>À remplir</span>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p className="empty-state">✨ Aucun entretien chaudière enregistré</p>
-      )}
-    </div>
-    </Accordion>
+            <div className="documents-section">
+              <h4>📄 Documents</h4>
+              <div className="doc-links">
+                {appart?.attributes?.locataires?.bail?.data ? (
+                  <a href={`http://localhost:1337${appart.attributes.locataires.bail.data.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
+                    📄 Bail
+                  </a>
+                ) : <span className="no-doc">Bail non fourni</span>}
 
-    {/* Décomptes Annuels Charges */}
-    <Accordion title="📁 Décomptes Annuels Charges">
-    <div className="decomptes-annuels-charges">
-            {appart?.attributes?.loyer_et_charges?.decomptes_annuels_charges?.length > 0 ? (
-        <div className="items-list">
-          {appart.attributes.loyer_et_charges.decomptes_annuels_charges.map((decompte, index) => (
-            <div key={index} className="mini-card">
-              <div className="info-grid">
-                <div className="info-item">
-                  <span className="label">Année</span>
-                  <span className="value">{decompte.annee ?? "À remplir"}</span>
-                </div>
-                <div className="info-item">
-                  <span className="label">Montant total</span>
-                  <span className="value">{decompte.montant_total ?? "À remplir"} €</span>
-                </div>
-                <div className="info-item">
-                  <span className="label">Archive</span>
-                  <span className="value">{decompte.archive ? "Oui" : "Non"}</span>
-                </div>
-                <div className="info-item">
-                  <span className="label">Notes</span>
-                  <div className="rich-text">
-                    {decompte.notes?.length > 0 ? (
-                      decompte.notes.map((block, i) => (
-                        <div key={i}>{block.children?.[0]?.text || "Contenu"}</div>
-                      ))
-                    ) : (
-                      <span>À remplir</span>
-                    )}
-                  </div>
-                </div>
-                <div className="info-item">
-                  <span className="label">Fichier</span>
-                  {decompte.fichier_decompte?.data ? (
-                    <a href={`http://localhost:1337${decompte.fichier_decompte.data.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
-                      📎 Télécharger
+                {appart?.attributes?.locataires?.etatDesLieuxEntree?.data?.length ? (
+                  appart.attributes.locataires.etatDesLieuxEntree.data.map((file, i) => (
+                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
+                      📝 État des lieux entrée {i + 1}
                     </a>
-                  ) : (
-                    <span>Pas de fichier</span>
-                  )}
+                  ))
+                ) : <span className="no-doc">État des lieux entrée non fourni</span>}
+
+                {appart?.attributes?.locataires?.etatDesLieuxSortie?.data?.length ? (
+                  appart.attributes.locataires.etatDesLieuxSortie.data.map((file, i) => (
+                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
+                      📝 État des lieux sortie {i + 1}
+                    </a>
+                  ))
+                ) : <span className="no-doc">État des lieux sortie non fourni</span>}
+
+                {appart?.attributes?.locataires?.assuranceLocataire?.data?.length > 0 ? (
+                  appart.attributes.locataires.assuranceLocataire.data.map((file, i) => (
+                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
+                      🛡️ Assurance locataire {i + 1}
+                    </a>
+                  ))
+                ) : <span className="no-doc">Assurance locataire non fournie</span>}
+
+                {appart?.attributes?.locataires?.assurancePno?.data?.length > 0 ? (
+                  appart.attributes.locataires.assurancePno.data.map((file, i) => (
+                    <a key={i} href={`http://localhost:1337${file.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
+                      🧾 Assurance PNO {i + 1}
+                    </a>
+                  ))
+                ) : <span className="no-doc">Assurance PNO non fournie</span>}
+              </div>
+            </div>
+
+            <div className="irl-info">
+              <h4>📊 Indice IRL (contrat)</h4>
+              <p>{appart?.attributes?.locataires?.indiceIrl || "À remplir"}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Fiche Loyer & Charges */}
+        <div className="card card-loyer">
+          <div className="card-header">
+            <h2>💰 Loyer & Charges</h2>
+          </div>
+          <div className="card-content">
+            <div className="loyer-summary">
+              <div className="loyer-item main">
+                <span className="amount">{loyerEtCharges.loyerTtc ?? "---"} €</span>
+                <span className="label">Loyer TTC</span>
+              </div>
+              <div className="loyer-breakdown">
+                <div className="breakdown-item">
+                  <span className="amount">{loyerEtCharges.loyerHc ?? "---"} €</span>
+                  <span className="label">Hors charges</span>
+                </div>
+                <div className="breakdown-item">
+                  <span className="amount">{loyerEtCharges.charges ?? "---"} €</span>
+                  <span className="label">Charges</span>
                 </div>
               </div>
             </div>
-          ))}
+
+            <div className="irl-info">
+              <h4>📊 Indice IRL</h4>
+              <div className="irl-details">
+                <div className="irl-item">
+                  <span className="label">Trimestre</span>
+                  <span className="value">{loyerEtCharges.trimestreIrl || "---"}</span>
+                </div>
+                <div className="irl-item">
+                  <span className="label">Année</span>
+                  <span className="value">{loyerEtCharges.anneeIrl ?? "---"}</span>
+                </div>
+                <div className="irl-item">
+                  <span className="label">Valeur</span>
+                  <span className="value">{loyerEtCharges.indiceValeurIrl ?? "---"}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Taxe Ordures Ménagères */}
+            <Accordion title="Taxe Ordures Ménagères (TOM)" icon="🗑️">
+              <div className="taxe-ordures-menageres">
+                {loyerEtCharges.toms && loyerEtCharges.toms.length > 0 ? (
+                  <div className="items-list">
+                    {loyerEtCharges.toms.map((tom, index) => (
+                      <div key={index} className="mini-card">
+                        <div className="info-grid">
+                          <div className="info-item">
+                            <span className="label">Année</span>
+                            <span className="value">{tom.anneeTom ?? "À remplir"}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Montant</span>
+                            <span className="value">{tom.montantTom ?? "0"} €</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Incluse dans charges</span>
+                            <span className="value">{tom.incluseDansLesCharges ? "✅ Oui" : "❌ Non"}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="items-list">
+                    <div className="mini-card">
+                      <div className="info-grid">
+                        <div className="info-item">
+                          <span className="label">Année</span>
+                          <span className="value">À remplir</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Montant</span>
+                          <span className="value">0 €</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Incluse dans charges</span>
+                          <span className="value">❌ Non</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Accordion>
+
+            {/* Entretien Chaudière */}
+            <Accordion title="Entretien Chaudière" icon="🔥">
+              <div className="entretien-chaudiere">
+                {loyerEtCharges.entretien_chaudieres && loyerEtCharges.entretien_chaudieres.length > 0 ? (
+                  <div className="items-list">
+                    {loyerEtCharges.entretien_chaudieres.map((entretien, index) => (
+                      <div key={index} className="mini-card">
+                        <div className="info-grid">
+                          <div className="info-item">
+                            <span className="label">Prix entretien</span>
+                            <span className="value">{entretien.prixEntretienChaudiere ?? "0"} €</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Comprise dans charges</span>
+                            <span className="value">{entretien.compriseDansLesCharges ? "✅ Oui" : "❌ Non"}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Fréquence entretien</span>
+                            <span className="value">{entretien.frequenceEntretien || "À remplir"}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Prochain entretien prévu</span>
+                            <span className="value">{entretien.prochainEntretienPrevu ?? "À remplir"}</span>
+                          </div>
+                        </div>
+                        <Accordion title="Intervention" icon="🛠️">
+                          <div className="info-grid">
+                            <div className="info-item">
+                              <span className="label">Nom Entreprise</span>
+                              <span className="value">{entretien.intervention?.nomEntreprise || "À remplir"}</span>
+                            </div>
+                            <div className="info-item">
+                              <span className="label">Adresse</span>
+                              <span className="value">{entretien.intervention?.adresse || "À remplir"}</span>
+                            </div>
+                            <div className="info-item">
+                              <span className="label">Téléphone</span>
+                              <span className="value">{entretien.intervention?.telephone || "À remplir"}</span>
+                            </div>
+                            <div className="info-item">
+                              <span className="label">Email</span>
+                              <span className="value">{entretien.intervention?.email || "À remplir"}</span>
+                            </div>
+                            <div className="info-item">
+                              <span className="label">Numéro Siret</span>
+                              <span className="value">{entretien.intervention?.numeroSiret || "À remplir"}</span>
+                            </div>
+                            <div className="info-item">
+                              <span className="label">Technicien</span>
+                              <span className="value">{entretien.intervention?.technicien || "À remplir"}</span>
+                            </div>
+                            <div className="info-item">
+                              <span className="label">Type d'intervention</span>
+                              <span className="value">{entretien.intervention?.typeIntervention || "Non spécifié"}</span>
+                            </div>
+                            <div className="info-item">
+                              <span className="label">Date d'intervention</span>
+                              <span className="value">{entretien.intervention?.dateIntervention || "À remplir"}</span>
+                            </div>
+                          </div>
+                        </Accordion>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="items-list">
+                    <div className="mini-card">
+                      <div className="info-grid">
+                        <div className="info-item">
+                          <span className="label">Prix entretien</span>
+                          <span className="value">0 €</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Comprise dans charges</span>
+                          <span className="value">❌ Non</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Fréquence entretien</span>
+                          <span className="value">À remplir</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Prochain entretien prévu</span>
+                          <span className="value">À remplir</span>
+                        </div>
+                      </div>
+                      <Accordion title="Intervention" icon="🛠️">
+                        <div className="info-grid">
+                          <div className="info-item">
+                            <span className="label">Nom Entreprise</span>
+                            <span className="value">À remplir</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Adresse</span>
+                            <span className="value">À remplir</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Téléphone</span>
+                            <span className="value">À remplir</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Email</span>
+                            <span className="value">À remplir</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Numéro Siret</span>
+                            <span className="value">À remplir</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Technicien</span>
+                            <span className="value">À remplir</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Type d'intervention</span>
+                            <span className="value">Non spécifié</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Date d'intervention</span>
+                            <span className="value">À remplir</span>
+                          </div>
+                        </div>
+                      </Accordion>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Accordion>
+
+            {/* Décomptes Annuels Charges */}
+            <Accordion title="Décomptes Annuels Charges" icon="📁">
+              <div className="decomptes-annuels-charges">
+                {loyerEtCharges.decomptes_annuels && loyerEtCharges.decomptes_annuels.length > 0 ? (
+                  <div className="items-list">
+                    {loyerEtCharges.decomptes_annuels.map((decompte, index) => (
+                      <div key={index} className="mini-card">
+                        <div className="info-grid">
+                          <div className="info-item">
+                            <span className="label">Année</span>
+                            <span className="value">{decompte.annee ?? "À remplir"}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Montant total</span>
+                            <span className="value">{decompte.montant_total ?? "0"} €</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Archivé</span>
+                            <span className="value">{decompte.archive ? "✅ Oui" : "❌ Non"}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Notes</span>
+                            <div className="rich-text">
+                              {decompte.notes?.length > 0 ? (
+                                decompte.notes.map((block, i) => (
+                                  <div key={i}>{block.children?.[0]?.text || "À remplir"}</div>
+                                ))
+                              ) : (
+                                <span>À remplir</span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Fichier</span>
+                            {decompte.fichier_decompte?.data ? (
+                              <a href={`http://localhost:1337${decompte.fichier_decompte.data.attributes.url}`} target="_blank" rel="noreferrer" className="doc-link">
+                                📎 Télécharger
+                              </a>
+                            ) : (
+                              <span>Pas de fichier</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="items-list">
+                    <div className="mini-card">
+                      <div className="info-grid">
+                        <div className="info-item">
+                          <span className="label">Année</span>
+                          <span className="value">À remplir</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Montant total</span>
+                          <span className="value">0 €</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Archivé</span>
+                          <span className="value">❌ Non</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Notes</span>
+                          <div className="rich-text">
+                            <span>À remplir</span>
+                          </div>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Fichier</span>
+                          <span>Pas de fichier</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Accordion>
+          </div>
         </div>
-      ) : (
-        <p className="empty-state">✨ Aucun décompte annuel enregistré</p>
-      )}
-    </div>
-  </Accordion>
-  </div>
-</div>
-
-
-
-    
-           
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         {/* Fiche Syndic */}
         <div className="card card-syndic">
