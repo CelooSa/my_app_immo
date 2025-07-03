@@ -691,7 +691,7 @@ const DetailAppartement = () => {
             </Accordion>
 
             <Accordion title="Décomptes Annuels Charges" icon="📁">
-              <div className="decomptes-annuels-charges">
+              <div className="documents-section">
                 {loyerEtCharges.decomptes_annuels && loyerEtCharges.decomptes_annuels.length > 0 ? (
                   <div className="items-list">
                     {loyerEtCharges.decomptes_annuels.map((decompte, index) => (

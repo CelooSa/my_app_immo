@@ -661,17 +661,17 @@
   }
 
   &.decomptes-annuels-charges {
-  .items-list {
+  /*.items-list {
   display: grid;
   gap: 0.8rem;
   width: 100%;
   box-sizing: border-box;
 
   .mini-card {
-    background: #f0f9ff; /* Bleu très clair */
+    background: #f0f9ff; 
     border-radius: 10px;
     padding: 1rem;
-    border-left: 3px solid #7dd3fc; /* Bleu ciel */
+    border-left: 3px solid #7dd3fc; 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     box-sizing: border-box;
@@ -703,7 +703,7 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 0.75rem;
-            background: #e0f2fe; /* Bleu clair */
+            background: #e0f2fe; 
             color: #1e40af;
             text-decoration: none;
             border-radius: 6px;
@@ -717,24 +717,24 @@
           }
 
           .no-doc {
-            display: none; /* Masquer "Aucun fichier" */
+            display: none; /
           }
         }
       }
     }
-  }
+  }   
 
   input[type="file"] {
     width: 135px !important;
     height: 28px !important;
     padding: 0 !important;
     margin: 0.5rem 0 !important;
-    border: 1px solid #fce7f3 !important; /* Rose poudré clair */
+    border: 1px solid #fce7f3 !important; 
     border-radius: 6px !important;
-    background: linear-gradient(45deg, #fce7f3, #fbcfe8) !important; /* Rose poudré clair */
-    font-size: 0 !important; /* Masquer "Aucun fichier choisi" */
-    color: transparent !important; /* Masquer tout texte par défaut */
-    text-indent: -9999px !important; /* Déplacer le texte hors écran */
+    background: linear-gradient(45deg, #fce7f3, #fbcfe8) !important; 
+    font-size: 0 !important; 
+    color: transparent !important; 
+    text-indent: -9999px !important; 
     position: relative !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -795,12 +795,12 @@
     width: 80px !important;
     height: 28px !important;
     padding: 0.4rem 0.8rem !important;
-    background: linear-gradient(45deg, #f3e8ff, #e9d5ff) !important; /* Violet lavande clair */
-    color: transparent !important; /* Masquer "Ajouter" */
-    text-indent: -9999px !important; /* Déplacer "Ajouter" hors écran */
+    background: linear-gradient(45deg, #f3e8ff, #e9d5ff) !important; 
+    color: transparent !important; 
+    text-indent: -9999px !important; 
     border: none !important;
     border-radius: 6px !important;
-    font-size: 0 !important; /* Masquer tout texte par défaut */
+    font-size: 0 !important; 
     font-weight: 500 !important;
     font-family: "Poppins", sans-serif !important;
     cursor: pointer !important;
@@ -816,7 +816,7 @@
       content: "⬆" !important;
       font-size: 1rem !important;
       color: #4a044e !important;
-      text-indent: 0 !important; /* Assurer que l'icône est visible */
+      text-indent: 0 !important;
     }
 
     &:hover {
@@ -830,7 +830,7 @@
       outline-offset: 2px !important;
     }
   }
-}
+} */
     .empty-state {
       background: #f0f9ff; /* Bleu très clair */
       border: 2px dashed #bae6fd; /* Bordure pointillée subtile */
