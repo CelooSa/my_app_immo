@@ -1,10 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sour+Gummy&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sour+Gummy&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sour+Gummy&display=swap");
 
 .detail-container {
   padding: 1.5rem;
-  background: linear-gradient(135deg, #fce7f3 0%, #d8b4fe 100%); /* Rose poudré à violet lavande */
+  background: linear-gradient(
+    135deg,
+    #fce7f3 0%,
+    #d8b4fe 100%
+  ); /* Rose poudré à violet lavande */
   min-height: 100vh;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #2d3748;
   box-sizing: border-box;
 
@@ -44,7 +49,7 @@
     }
 
     .main-title {
-      font-family: 'Sour Gummy', 'Poppins', sans-serif;
+      font-family: "Sour Gummy", "Poppins", sans-serif;
       color: #4a044e;
       font-size: 2rem;
       font-weight: 600;
@@ -70,7 +75,7 @@
     animation: pulse 1.5s infinite;
 
     &::before {
-      content: '🏠';
+      content: "🏠";
       margin-right: 0.5rem;
     }
   }
@@ -109,7 +114,7 @@
     border-bottom: 1px solid #e2e8f0;
 
     h2 {
-      font-family: 'Sour Gummy', 'Poppins', sans-serif;
+      font-family: "Sour Gummy", "Poppins", sans-serif;
       font-size: 1.25rem;
       font-weight: 600;
       margin: 0;
@@ -127,16 +132,86 @@
     padding: 1.5rem;
   }
 
-  &.card-bien { .card-header { background: linear-gradient(135deg, #a7f3d0, #6ee7b7); h2 { color: #134e4a; } } } /* Vert d’eau */
-  &.card-locataire { .card-header { background: linear-gradient(135deg, #fed7e2, #f9a8d4); h2 { color: #9a3412; } } } /* Rose poudré */
-  &.card-loyer { .card-header { background: linear-gradient(135deg, #bae6fd, #7dd3fc); h2 { color: #1e40af; } } } /* Bleu ciel */
-  &.card-syndic { .card-header { background: linear-gradient(135deg, #e9d5ff, #d8b4fe); h2 { color: #6b46c1; } } } /* Violet lavande */
-  &.card-dossier { .card-header { background: linear-gradient(135deg, #fbcfe8, #f9a8d4); h2 { color: #be185d; } } } /* Rose poudré */
-  &.card-trousseau { .card-header { background: linear-gradient(135deg, #bfdbfe, #93c5fd); h2 { color: #1e40af; } } } /* Bleu clair */
-  &.card-contacts { .card-header { background: linear-gradient(135deg, #fef3c7, #fde68a); h2 { color: #78350f; } } } /* Jaune pâle */
-  &.card-interventions { .card-header { background: linear-gradient(135deg, #fecdd3, #fb7185); h2 { color: #9f1239; } } } /* Rose corail */
-  &.card-notes { .card-header { background: linear-gradient(135deg, #a7f3d0, #6ee7b7); h2 { color: #134e4a; } } } /* Vert d’eau */
-  &.card-relocation { .card-header { background: linear-gradient(135deg, #fef9c3, #fef08a); h2 { color: #713f12; } } } /* Jaune doux */
+  &.card-bien {
+    .card-header {
+      background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+      h2 {
+        color: #134e4a;
+      }
+    }
+  } /* Vert d’eau */
+  &.card-locataire {
+    .card-header {
+      background: linear-gradient(135deg, #fed7e2, #f9a8d4);
+      h2 {
+        color: #9a3412;
+      }
+    }
+  } /* Rose poudré */
+  &.card-loyer {
+    .card-header {
+      background: linear-gradient(135deg, #bae6fd, #7dd3fc);
+      h2 {
+        color: #1e40af;
+      }
+    }
+  } /* Bleu ciel */
+  &.card-syndic {
+    .card-header {
+      background: linear-gradient(135deg, #e9d5ff, #d8b4fe);
+      h2 {
+        color: #6b46c1;
+      }
+    }
+  } /* Violet lavande */
+  &.card-dossier {
+    .card-header {
+      background: linear-gradient(135deg, #fbcfe8, #f9a8d4);
+      h2 {
+        color: #be185d;
+      }
+    }
+  } /* Rose poudré */
+  &.card-trousseau {
+    .card-header {
+      background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+      h2 {
+        color: #1e40af;
+      }
+    }
+  } /* Bleu clair */
+  &.card-contacts {
+    .card-header {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      h2 {
+        color: #78350f;
+      }
+    }
+  } /* Jaune pâle */
+  &.card-interventions {
+    .card-header {
+      background: linear-gradient(135deg, #fecdd3, #fb7185);
+      h2 {
+        color: #9f1239;
+      }
+    }
+  } /* Rose corail */
+  &.card-notes {
+    .card-header {
+      background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+      h2 {
+        color: #134e4a;
+      }
+    }
+  } /* Vert d’eau */
+  &.card-relocation {
+    .card-header {
+      background: linear-gradient(135deg, #fef9c3, #fef08a);
+      h2 {
+        color: #713f12;
+      }
+    }
+  } /* Jaune doux */
 }
 
 .info-grid {
@@ -181,7 +256,11 @@
     padding: 0;
     border: 1px solid #fce7f3; /* Rose poudré clair */
     border-radius: 6px;
-    background: linear-gradient(45deg, #fce7f3, #fbcfe8); /* Rose poudré clair */
+    background: linear-gradient(
+      45deg,
+      #fce7f3,
+      #fbcfe8
+    ); /* Rose poudré clair */
     font-size: 0.85rem;
     color: #be185d;
     position: relative;
@@ -193,7 +272,7 @@
     transition: all 0.3s ease;
 
     &::before {
-      content: '📎 Choisir un fichier';
+      content: "📎 Choisir un fichier";
       font-size: 0.85rem;
       color: #be185d;
       padding: 0.5rem 0.8rem; /* Remplit tout l’espace de l’input */
@@ -206,7 +285,8 @@
       box-sizing: border-box;
     }
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       border-color: #f9a8d4;
       background: linear-gradient(45deg, #fbcfe8, #f9a8d4);
       box-shadow: 0 0 0 3px rgba(249, 168, 212, 0.2);
@@ -235,7 +315,11 @@
     width: 80px;
     height: 28px;
     padding: 0.4rem 0.8rem;
-    background: linear-gradient(45deg, #f3e8ff, #e9d5ff); /* Violet lavande clair */
+    background: linear-gradient(
+      45deg,
+      #f3e8ff,
+      #e9d5ff
+    ); /* Violet lavande clair */
     color: #4a044e;
     border: none;
     border-radius: 6px;
@@ -248,7 +332,7 @@
     transition: all 0.3s ease;
 
     &::before {
-      content: '⬆';
+      content: "⬆";
       font-size: 1rem;
     }
 
@@ -362,7 +446,7 @@
     font-weight: 600;
     color: #78350f;
     margin-bottom: 0.5rem;
-    font-family: 'Sour Gummy', 'Poppins', sans-serif;
+    font-family: "Sour Gummy", "Poppins", sans-serif;
   }
 
   .irl-details {
@@ -394,7 +478,7 @@
     font-weight: 600;
     color: #4a044e;
     margin-bottom: 0.5rem;
-    font-family: 'Sour Gummy', 'Poppins', sans-serif;
+    font-family: "Sour Gummy", "Poppins", sans-serif;
   }
 
   .rich-text {
@@ -424,21 +508,30 @@
     align-items: center;
     margin-bottom: 0.5rem;
 
-    .status, .budget, .date {
+    .status,
+    .budget,
+    .date {
       font-size: 0.8rem;
       padding: 0.25rem 0.5rem;
       border-radius: 6px;
       color: white;
     }
 
-    .status { background: #7dd3fc; } /* Bleu ciel */
-    .budget { background: #6ee7b7; } /* Vert d’eau */
-    .date { background: #6b7280; }
+    .status {
+      background: #7dd3fc;
+    } /* Bleu ciel */
+    .budget {
+      background: #6ee7b7;
+    } /* Vert d’eau */
+    .date {
+      background: #6b7280;
+    }
   }
 }
 
 .trousseau-info {
-  .trousseau-id, .trousseau-holder {
+  .trousseau-id,
+  .trousseau-holder {
     display: flex;
     justify-content: space-between;
     padding: 0.75rem;
@@ -446,8 +539,14 @@
     border-radius: 8px;
     margin-bottom: 0.75rem;
 
-    .label { font-weight: 500; color: #6b46c1; }
-    .value { font-weight: 600; color: #4a044e; }
+    .label {
+      font-weight: 500;
+      color: #6b46c1;
+    }
+    .value {
+      font-weight: 600;
+      color: #4a044e;
+    }
   }
 }
 
@@ -478,8 +577,14 @@
     .contact-info {
       flex-grow: 1;
 
-      .contact-name { font-weight: 600; color: #2d3748; }
-      .contact-details { font-size: 0.85rem; color: #6b7280; }
+      .contact-name {
+        font-weight: 600;
+        color: #2d3748;
+      }
+      .contact-details {
+        font-size: 0.85rem;
+        color: #6b7280;
+      }
     }
   }
 }
@@ -500,7 +605,7 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    font-family: 'Sour Gummy', 'Poppins', sans-serif;
+    font-family: "Sour Gummy", "Poppins", sans-serif;
     font-size: 1rem;
     font-weight: 500;
     color: #4a044e;
@@ -520,16 +625,24 @@
       align-items: center;
       gap: 0.5rem;
 
-      .accordion-icon { font-size: 1.2rem; color: #4a044e; }
+      .accordion-icon {
+        font-size: 1.2rem;
+        color: #4a044e;
+      }
     }
 
     .accordion-arrow {
       color: #4b5563;
       transition: transform 0.3s ease;
 
-      &.open { transform: rotate(180deg); }
+      &.open {
+        transform: rotate(180deg);
+      }
 
-      svg { width: 18px; height: 18px; }
+      svg {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
 
@@ -538,150 +651,186 @@
     overflow: hidden;
     transition: max-height 0.4s ease-out;
 
-    &.open { max-height: 1200px; }
+    &.open {
+      max-height: 1200px;
+    }
 
-    .accordion-inner { padding: 1.5rem; }
+    .accordion-inner {
+      padding: 1.5rem;
+    }
   }
 
   &.decomptes-annuels-charges {
-    .items-list {
-      display: grid;
-      gap: 0.8rem;
-      width: 100%;
-      box-sizing: border-box;
+  .items-list {
+  display: grid;
+  gap: 0.8rem;
+  width: 100%;
+  box-sizing: border-box;
 
-      .mini-card {
-        background: #f0f9ff; /* Bleu très clair */
-        border-radius: 10px;
-        padding: 1rem;
-        border-left: 3px solid #7dd3fc; /* Bleu ciel */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
-        box-sizing: border-box;
+  .mini-card {
+    background: #f0f9ff; /* Bleu très clair */
+    border-radius: 10px;
+    padding: 1rem;
+    border-left: 3px solid #7dd3fc; /* Bleu ciel */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-grid {
+      gap: 0.5rem;
+
+      .info-item {
+        background: transparent;
+        border-left: none;
+        padding: 0.5rem 0;
+
+        .label {
+          font-size: 0.85rem;
+          color: #6b7280;
         }
 
-        .info-grid {
-          gap: 0.5rem;
+        .value {
+          font-size: 0.9rem;
+          color: #2d3748;
 
-          .info-item {
-            background: transparent;
-            border-left: none;
-            padding: 0.5rem 0;
+          .doc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: #e0f2fe; /* Bleu clair */
+            color: #1e40af;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
 
-            .label {
-              font-size: 0.85rem;
-              color: #6b7280;
+            &:hover {
+              background: #bfdbfe;
+              transform: translateX(3px);
             }
+          }
 
-            .value {
-              font-size: 0.9rem;
-              color: #2d3748;
-            }
+          .no-doc {
+            display: none; /* Masquer "Aucun fichier" */
           }
         }
       }
-
-      input[type="file"] {
-  width: 135px;
-  height: 28px;
-  padding: 0;
-  border: 1px solid #fce7f3; /* Rose poudré clair */
-  border-radius: 6px;
-  background: linear-gradient(45deg, #fce7f3, #fbcfe8) !important; /* Rose poudré clair */
-  font-size: 0.85rem;
-  color: #be185d !important;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-
-  &::before {
-    content: '📎 Choisir un fichier';
-    font-size: 0.85rem;
-    color: #be185d;
-    padding: 0.5rem 0.8rem;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
+    }
   }
 
-  &:hover, &:focus {
-    border-color: #f9a8d4;
-    background: linear-gradient(45deg, #fbcfe8, #f9a8d4) !important;
-    box-shadow: 0 0 0 3px rgba(249, 168, 212, 0.2);
-    outline: none;
-  }
+  input[type="file"] {
+    width: 135px !important;
+    height: 28px !important;
+    padding: 0 !important;
+    margin: 0.5rem 0 !important;
+    border: 1px solid #fce7f3 !important; /* Rose poudré clair */
+    border-radius: 6px !important;
+    background: linear-gradient(45deg, #fce7f3, #fbcfe8) !important; /* Rose poudré clair */
+    font-size: 0 !important; /* Masquer "Aucun fichier choisi" */
+    color: transparent !important; /* Masquer tout texte par défaut */
+    text-indent: -9999px !important; /* Déplacer le texte hors écran */
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    line-height: normal !important;
 
-  &::-webkit-file-upload-button {
-    visibility: hidden;
-    width: 0;
-    height: 0;
-    margin: 0;
-    padding: 0;
-  }
-
-  &::-moz-file-upload-button {
-    visibility: hidden;
-    width: 0;
-    height: 0;
-    margin: 0;
-    padding: 0;
-  }
-}
-
-button {
-  margin-top: 0.5rem;
-  width: 80px;
-  height: 28px;
-  padding: 0.4rem 0.8rem;
-  background: linear-gradient(45deg, #f3e8ff, #e9d5ff) !important; /* Violet lavande clair */
-  color: #4a044e !important;
-  border: none !important;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  font-family: 'Poppins', sans-serif;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-
-  &::before {
-    content: '⬆';
-    font-size: 1rem;
-  }
-
-  &:hover {
-    background: linear-gradient(45deg, #e9d5ff, #d8b4fe) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3);
-  }
-
-  &:focus {
-    outline: 2px solid #6b46c1 !important;
-    outline-offset: 2px;
-  }
-}
+    &::before {
+      content: "📎 Choisir un fichier" !important;
+      font-size: 0.85rem !important;
+      color: #be185d !important;
+      padding: 0.5rem 0.8rem !important;
+      border-radius: 6px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      height: 100% !important;
+      box-sizing: border-box !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      background: transparent !important;
     }
 
+    &:hover,
+    &:focus {
+      border-color: #f9a8d4 !important;
+      background: linear-gradient(45deg, #fbcfe8, #f9a8d4) !important;
+      box-shadow: 0 0 0 3px rgba(249, 168, 212, 0.2) !important;
+      outline: none !important;
+    }
+
+    &::-webkit-file-upload-button {
+      visibility: hidden !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    &::-moz-file-upload-button {
+      visibility: hidden !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  }
+
+  button.upload-btn {
+    margin-top: 0.5rem !important;
+    width: 80px !important;
+    height: 28px !important;
+    padding: 0.4rem 0.8rem !important;
+    background: linear-gradient(45deg, #f3e8ff, #e9d5ff) !important; /* Violet lavande clair */
+    color: transparent !important; /* Masquer "Ajouter" */
+    text-indent: -9999px !important; /* Déplacer "Ajouter" hors écran */
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 0 !important; /* Masquer tout texte par défaut */
+    font-weight: 500 !important;
+    font-family: "Poppins", sans-serif !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+
+    &::before {
+      content: "⬆" !important;
+      font-size: 1rem !important;
+      color: #4a044e !important;
+      text-indent: 0 !important; /* Assurer que l'icône est visible */
+    }
+
+    &:hover {
+      background: linear-gradient(45deg, #e9d5ff, #d8b4fe) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3) !important;
+    }
+
+    &:focus {
+      outline: 2px solid #6b46c1 !important;
+      outline-offset: 2px !important;
+    }
+  }
+}
     .empty-state {
       background: #f0f9ff; /* Bleu très clair */
       border: 2px dashed #bae6fd; /* Bordure pointillée subtile */
@@ -698,7 +847,7 @@ button {
       box-sizing: border-box;
 
       &::before {
-        content: '📂';
+        content: "📂";
         font-size: 1rem;
         color: #6b7280;
       }
@@ -707,16 +856,29 @@ button {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.card, .mini-card, .contact-item {
+.card,
+.mini-card,
+.contact-item {
   animation: fadeIn 0.4s ease-out;
 }
 
@@ -729,15 +891,25 @@ button {
       align-items: flex-start;
       padding: 0.75rem;
 
-      .btn-retour { padding: 8px 16px; font-size: 0.85rem; }
+      .btn-retour {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+      }
     }
   }
 
-  .masonry-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .masonry-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 
-  .info-grid { grid-template-columns: 1fr; }
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
 
-  .loyer-breakdown { grid-template-columns: 1fr; }
+  .loyer-breakdown {
+    grid-template-columns: 1fr;
+  }
 
   .documents-section {
     input[type="file"] {
@@ -761,11 +933,31 @@ button {
     }
   }
 
-  
-
   .accordion-modern.decomptes-annuels-charges .empty-state {
     min-height: 32px;
     padding: 0.8rem;
     font-size: 0.75rem;
+  }
+
+  .accordion-modern.decomptes-annuels-charges .items-list {
+    input[type="file"] {
+      width: 100px !important;
+      height: 24px !important;
+      margin: 0.4rem 0 !important;
+
+      &::before {
+        padding: 0.3rem 0.6rem !important;
+        font-size: 0.8rem !important;
+      }
+    }
+
+    button.upload-btn {
+      width: 70px !important;
+      min-width: 70px !important;
+      height: 24px !important;
+      min-height: 24px !important;
+      padding: 0.3rem 0.6rem !important;
+      font-size: 0.8rem !important;
+    }
   }
 }

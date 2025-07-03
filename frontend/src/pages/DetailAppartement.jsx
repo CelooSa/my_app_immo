@@ -741,7 +741,7 @@ const DetailAppartement = () => {
                                 accept="image/*,application/pdf,video/*,audio/*"
                                 onChange={(e) => handleFileUpload(e, "loyer_et_charges", "fichier_decompte", false)}
                               />
-                              <button onClick={() => uploadFiles("loyer_et_charges", "fichier_decompte")}>Ajouter</button>
+                              <button className="upload-btn" onClick={() => uploadFiles("loyer_et_charges", "fichier_decompte")}>Ajouter</button>
                             </span>
                           </div>
                         </div>
