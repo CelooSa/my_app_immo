@@ -112,7 +112,21 @@ const DetailAppartement = () => {
         : [uploadRes.data.id];
 
       const updatedData = { ...appart.attributes };
-      if (section === "loyer_et_charges" && field === "fichier_decompte") {
+
+      if (section.startsWith("dossier_en_cours.litiges")) {
+        const index = parseInt(field.split("_")[1], 10);
+        updatedData.dossier_en_cours = updatedData.dossier_en_cours || {};
+        updatedData.dossier_en_cours.litiges = updatedData.dossier_en_cours.litiges || [];
+        updatedData.dossier_en_cours.litiges[index] = updatedData.dossier_en_cours.litiges[index] || {};
+        updatedData.dossier_en_cours.litiges[index].documentsLitige = fileIds;
+      } else if (section.startsWith("dossier_en_cours.travaux")) {
+        const index = parseInt(field.split("_")[1], 10);
+        updatedData.dossier_en_cours = updatedData.dossier_en_cours || {};
+        updatedData.dossier_en_cours.travaux = updatedData.dossier_en_cours.travaux || [];
+        updatedData.dossier_en_cours.travaux[index] = updatedData.dossier_en_cours.travaux[index] || {};
+        updatedData.dossier_en_cours.travaux[index].documentsTravaux = fileIds;
+      } else if (section === "loyer_et_charges" && field === "fichier_decompte") {
+        updatedData[section] = updatedData[section] || {};
         updatedData[section].decomptes_annuels = updatedData[section].decomptes_annuels || [];
         if (updatedData[section].decomptes_annuels.length === 0) {
           updatedData[section].decomptes_annuels.push({});
@@ -133,7 +147,7 @@ const DetailAppartement = () => {
         }
       );
 
-      const res = await axios.get(`${API_URL}/${id}?populate=*`, {
+      const res = await axios.get(`http://localhost:1337/api/appartements/${id}?populate=*`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -793,107 +807,389 @@ const DetailAppartement = () => {
 
         {/* Fiche Syndic */}
         <div className="card card-syndic">
-          <div className="card-header">
-            <h2>🏢 Syndic</h2>
-          </div>
-          <div className="card-content">
-            <div className="syndic-info">
-              <div className="info-block">
-                <h4>📞 Coordonnées</h4>
-                <div className="rich-text">
-                  {appart?.attributes?.syndic?.coordonnees_syndic?.length > 0
-                    ? appart.attributes.syndic.coordonnees_syndic.map(
-                        (block, i) => (
-                          <div key={i}>
-                            {block.children?.[0]?.text || "Contenu"}
-                          </div>
-                        )
-                      )
-                    : "À remplir"}
+  <div className="card-header">
+    <h2>🏢 Syndic</h2>
+  </div>
+  <div className="card-content">
+    <Accordion title="Syndic" icon="👤">
+      <div className="documents-section">
+        {appart?.attributes?.syndic?.length > 0 ? (
+          <div className="items-list">
+            {appart.attributes.syndic.map((syndic, index) => (
+              <div key={index} className="mini-card">
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="label">Date AG</span>
+                    <span className="value">{syndic.date_ag || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Coordonnées Syndic</span>
+                    <div className="rich-text">
+                      {syndic.coordonnees_syndic?.length > 0 ? (
+                        syndic.coordonnees_syndic.map((block, i) => (
+                          <div key={i}>{block.children?.[0]?.text || "À remplir"}</div>
+                        ))
+                      ) : (
+                        <span className="empty-state">À remplir</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Contacts Syndic</span>
+                    <div className="rich-text">
+                      {syndic.contacts_syndic?.length > 0 ? (
+                        syndic.contacts_syndic.map((block, i) => (
+                          <div key={i}>{block.children?.[0]?.text || "À remplir"}</div>
+                        ))
+                      ) : (
+                        <span className="empty-state">À remplir</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">URL Intranet Syndic</span>
+                    <div className="rich-text">
+                      {syndic.url_intranet_syndic?.length > 0 ? (
+                        syndic.url_intranet_syndic.map((block, i) => (
+                          <div key={i}>{block.children?.[0]?.text || "À remplir"}</div>
+                        ))
+                      ) : (
+                        <span className="empty-state">À remplir</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Représentants Syndicaux</span>
+                    <div className="rich-text">
+                      {syndic.representants_syndicaux?.length > 0 ? (
+                        syndic.representants_syndicaux.map((block, i) => (
+                          <div key={i}>{block.children?.[0]?.text || "À remplir"}</div>
+                        ))
+                      ) : (
+                        <span className="empty-state">À remplir</span>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              <div className="info-block">
-                <h4>📅 Date AG</h4>
-                <p>{appart?.attributes?.syndic?.date_ag || "À remplir"}</p>
-              </div>
-
-              <div className="info-block">
-                <h4>👥 Représentants</h4>
-                <div className="rich-text">
-                  {appart?.attributes?.syndic?.representants_syndicaux?.length >
-                  0
-                    ? appart.attributes.syndic.representants_syndicaux.map(
-                        (block, i) => (
-                          <div key={i}>
-                            {block.children?.[0]?.text || "Contenu"}
-                          </div>
-                        )
-                      )
-                    : "À remplir"}
+            ))}
+          </div>
+        ) : (
+          <div className="items-list">
+            <div className="mini-card">
+              <div className="info-grid">
+                <div className="info-item">
+                  <span className="label">Date AG</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Coordonnées Syndic</span>
+                  <div className="rich-text">
+                    <span className="empty-state">À remplir</span>
+                  </div>
+                </div>
+                <div className="info-item">
+                  <span className="label">Contacts Syndic</span>
+                  <div className="rich-text">
+                    <span className="empty-state">À remplir</span>
+                  </div>
+                </div>
+                <div className="info-item">
+                  <span className="label">URL Intranet Syndic</span>
+                  <div className="rich-text">
+                    <span className="empty-state">À remplir</span>
+                  </div>
+                </div>
+                <div className="info-item">
+                  <span className="label">Représentants Syndicaux</span>
+                  <div className="rich-text">
+                    <span className="empty-state">À remplir</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+      </div>
+    </Accordion>
+  </div>
+</div>
 
-        {/* Fiche Travaux/Litiges */}
-        <div className="card card-dossier">
-          <div className="card-header">
-            <h2>🗂️ Dossier en cours</h2>
-          </div>
-          <div className="card-content">
-            <div className="dossier-section">
-              <h4>⚖️ Litiges</h4>
-              {appart?.attributes?.dossier_en_cours?.litiges?.length > 0 ? (
-                <div className="items-list">
-                  {appart.attributes.dossier_en_cours.litiges.map(
-                    (litige, index) => (
-                      <div key={index} className="mini-card">
-                        <div className="mini-card-header">
-                          <span className="status">{litige.statut}</span>
-                          <span className="date">{litige.dateIncident}</span>
-                        </div>
-                        <p>
-                          <strong>{litige.type}</strong>
-                        </p>
-                        <p>{litige.description}</p>
-                      </div>
-                    )
-                  )}
+        {/* Fiche DOSSIER EN COURS qui inclue litiges et travaux*/}
+<div className="card card-dossier">
+  <div className="card-header">
+    <h2>🗂️ Dossier en cours</h2>
+  </div>
+  <div className="card-content">
+    <Accordion title="Litiges" icon="⚖️">
+      <div className="documents-section">
+        {appart?.attributes?.dossier_en_cours?.litiges?.length > 0 ? (
+          <div className="items-list">
+            {appart.attributes.dossier_en_cours.litiges.map((litige, index) => (
+              <div key={index} className="mini-card">
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="label">Type</span>
+                    <span className="value">{litige.type || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Description</span>
+                    <span className="value">{litige.description || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Date de l'incident</span>
+                    <span className="value">{litige.dateIncident || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Statut</span>
+                    <span className="value">{litige.statut || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Notes</span>
+                    <div className="rich-text">
+                      {litige.notes ? (
+                        <p>{litige.notes}</p>
+                      ) : (
+                        <span className="empty-state">À remplir</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Documents</span>
+                    <span className="value">
+                      {litige.documentsLitige?.data?.length > 0 ? (
+                        litige.documentsLitige.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            📎 Document {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "dossier_en_cours.litiges", `documentsLitige_${index}`, true)}
+                      />
+                      <button onClick={() => uploadFiles("dossier_en_cours.litiges", `documentsLitige_${index}`)}>
+                       Ajouter
+                      </button>
+                    </span>
+                  </div>
                 </div>
-              ) : (
-                <p className="empty-state">✨ Aucun litige</p>
-              )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="items-list">
+            <div className="mini-card">
+              <div className="info-grid">
+                <div className="info-item">
+                  <span className="label">Type</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Description</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Date de l'incident</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Statut</span>
+                  <span className="value">en-cours</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Notes</span>
+                  <div className="rich-text">
+                    <span className="empty-state">À remplir</span>
+                  </div>
+                </div>
+                <div className="info-item">
+                  <span className="label">Documents</span>
+                  <span className="value">
+                    <span className="no-doc">Aucun fichier</span>
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf"
+                      multiple
+                      onChange={(e) => handleFileUpload(e, "dossier_en_cours.litiges", `documentsLitige_0`, true)}
+                    />
+                    <button onClick={() => uploadFiles("dossier_en_cours.litiges", `documentsLitige_0`)}>
+                     Ajouter
+                    </button>
+                  </span>
+                </div>
+              </div>
             </div>
+          </div>
+        )}
+      </div>
+    </Accordion>
 
-            <div className="dossier-section">
-              <h4>🛠️ Travaux</h4>
-              {appart?.attributes?.dossier_en_cours?.travaux?.length > 0 ? (
-                <div className="items-list">
-                  {appart.attributes.dossier_en_cours.travaux.map(
-                    (travaux, index) => (
-                      <div key={index} className="mini-card">
-                        <div className="mini-card-header">
-                          <span className="status">{travaux.statut}</span>
-                          <span className="budget">
-                            {travaux.budget ?? "---"} €
-                          </span>
-                        </div>
-                        <p>
-                          <strong>{travaux.titre}</strong>
-                        </p>
-                        <p>{travaux.description}</p>
-                      </div>
-                    )
-                  )}
+    <Accordion title="Travaux" icon="🛠️">
+      <div className="documents-section">
+        {appart?.attributes?.dossier_en_cours?.travaux?.length > 0 ? (
+          <div className="items-list">
+            {appart.attributes.dossier_en_cours.travaux.map((travaux, index) => (
+              <div key={index} className="mini-card">
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="label">Titre</span>
+                    <span className="value">{travaux.titre || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Type</span>
+                    <span className="value">{travaux.typesTravaux || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Description</span>
+                    <span className="value">{travaux.description || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Date de début</span>
+                    <span className="value">{travaux.dateDebut || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Date de fin</span>
+                    <span className="value">{travaux.dateFin || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Entreprise</span>
+                    <span className="value">{travaux.entreprise || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Statut</span>
+                    <span className="value">{travaux.statut || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Budget</span>
+                    <span className="value">{travaux.budget ? `${travaux.budget} €` : "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Archivé</span>
+                    <span className="value">{travaux.archive ? "✅ Oui" : "❌ Non"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Notes</span>
+                    <div className="rich-text">
+                      {travaux.notes ? (
+                        <p>{travaux.notes}</p>
+                      ) : (
+                        <span className="empty-state">À remplir</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Documents</span>
+                    <span className="value">
+                      {travaux.documentsTravaux?.data?.length > 0 ? (
+                        travaux.documentsTravaux.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            📎 Document {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "dossier_en_cours.travaux", `documentsTravaux_${index}`, true)}
+                      />
+                      <button onClick={() => uploadFiles("dossier_en_cours.travaux", `documentsTravaux_${index}`)}>
+                      Ajouter
+                      </button>
+                    </span>
+                  </div>
                 </div>
-              ) : (
-                <p className="empty-state">✨ Aucun travaux</p>
-              )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="items-list">
+            <div className="mini-card">
+              <div className="info-grid">
+                <div className="info-item">
+                  <span className="label">Titre</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Type</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Description</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Date de début</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Date de fin</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Entreprise</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Statut</span>
+                  <span className="value">planifie</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Budget</span>
+                  <span className="value">0 €</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Archivé</span>
+                  <span className="value">❌ Non</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Notes</span>
+                  <div className="rich-text">
+                    <span className="empty-state">À remplir</span>
+                  </div>
+                </div>
+                <div className="info-item">
+                  <span className="label">Documents</span>
+                  <span className="value">
+                    <span className="no-doc">Aucun fichier</span>
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf"
+                      multiple
+                      onChange={(e) => handleFileUpload(e, "dossier_en_cours.travaux", `documentsTravaux_0`, true)}
+                    />
+                    <button onClick={() => uploadFiles("dossier_en_cours.travaux", `documentsTravaux_0`)}>
+                    Ajouter
+                    </button>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+      </div>
+    </Accordion>
+  </div>
+</div>
 
         {/* Fiche Trousseau */}
         <div className="card card-trousseau">
@@ -997,78 +1293,246 @@ const DetailAppartement = () => {
         </div>
 
         {/* Fiche Contacts */}
-        <div className="card card-contacts">
-          <div className="card-header">
-            <h2>📇 Contacts</h2>
-          </div>
-          <div className="card-content">
-            {appart?.attributes?.autres_contacts?.length > 0 ? (
-              <div className="contacts-list">
-                {appart.attributes.autres_contacts.map((contact, i) => (
-                  <div className="contact-item" key={i}>
-                    <div className="contact-header">
-                      <h4>{contact.nom || "Nom inconnu"}</h4>
-                      <span className="contact-type">
-                        {contact.type_contact || "Non spécifié"}
-                      </span>
-                    </div>
-                    <div className="contact-details">
-                      {contact.coordonnees?.length > 0 &&
-                        contact.coordonnees.map((block, j) => (
-                          <div key={j} className="contact-info">
-                            {block.children?.[0]?.text || "Contenu"}
-                          </div>
-                        ))}
-                    </div>
+<div className="card card-contacts">
+  <div className="card-header">
+    <h2>📞 Autres Contacts</h2>
+  </div>
+  <div className="card-content">
+    <Accordion title="Divers" icon="📱">
+      <div className="documents-section">
+        {appart?.attributes?.autres_contacts?.length > 0 ? (
+          <div className="items-list">
+            {appart.attributes.autres_contacts.map((contact, index) => (
+              <div key={index} className="mini-card">
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="label">Nom</span>
+                    <span className="value">{contact.nom || "À remplir"}</span>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className="empty-state">📞 Aucun contact ajouté</p>
-            )}
-          </div>
-        </div>
-
-        {/* Fiche Interventions */}
-        <div className="card card-interventions">
-          <div className="card-header">
-            <h2>🔧 Interventions</h2>
-          </div>
-          <div className="card-content">
-            {appart?.attributes?.historique_interventions?.length > 0 ? (
-              <div className="interventions-list">
-                {appart.attributes.historique_interventions.map(
-                  (intervention, index) => (
-                    <div key={index} className="intervention-item">
-                      <div className="intervention-header">
-                        <span className="date">
-                          {intervention.date_intervention || "---"}
-                        </span>
-                        <span className="cost">
-                          {intervention.cout ? `${intervention.cout} €` : "---"}
-                        </span>
-                      </div>
-                      <h4>
-                        {intervention.type_intervention || "Intervention"}
-                      </h4>
-                      <p>{intervention.description || "Pas de description"}</p>
-                      {intervention.satisfaction && (
-                        <div className="satisfaction">
-                          Satisfaction:{" "}
-                          <span className="rating">
-                            {intervention.satisfaction}
-                          </span>
-                        </div>
+                  <div className="info-item">
+                    <span className="label">Type de contact</span>
+                    <span className="value">{contact.type_contact || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Coordonnées</span>
+                    <div className="rich-text">
+                      {contact.coordonnees?.length > 0 ? (
+                        contact.coordonnees.map((block, i) => (
+                          <div key={i}>{block.children?.[0]?.text || "À remplir"}</div>
+                        ))
+                      ) : (
+                        <span className="empty-state">À remplir</span>
                       )}
                     </div>
-                  )
-                )}
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Notes</span>
+                    <div className="rich-text">
+                      {contact.notes?.length > 0 ? (
+                        contact.notes.map((block, i) => (
+                          <div key={i}>{block.children?.[0]?.text || "À remplir"}</div>
+                        ))
+                      ) : (
+                        <span className="empty-state">À remplir</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
-            ) : (
-              <p className="empty-state">🔧 Aucune intervention</p>
-            )}
+            ))}
           </div>
-        </div>
+        ) : (
+          <div className="items-list">
+            <div className="mini-card">
+              <div className="info-grid">
+                <div className="info-item">
+                  <span className="label">Nom</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Type de contact</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Coordonnées</span>
+                  <div className="rich-text">
+                    <span className="empty-state">À remplir</span>
+                  </div>
+                </div>
+                <div className="info-item">
+                  <span className="label">Notes</span>
+                  <div className="rich-text">
+                    <span className="empty-state">À remplir</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </Accordion>
+  </div>
+</div>
+
+        {/* Fiche Interventions */}
+<div className="card card-interventions">
+  <div className="card-header">
+    <h2>🔧 Interventions</h2>
+  </div>
+  <div className="card-content">
+    <Accordion title="Historique Interventions" icon="🛠️">
+      <div className="documents-section">
+        {appart?.attributes?.historique_interventions?.length > 0 ? (
+          <div className="items-list">
+            {appart.attributes.historique_interventions.map((intervention, index) => (
+              <div key={index} className="mini-card">
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="label">Type d'intervention</span>
+                    <span className="value">{intervention.type_intervention || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Nom de l'entreprise</span>
+                    <span className="value">{intervention.nom_entreprise || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Nom de l'intervenant</span>
+                    <span className="value">{intervention.nom_intervenant || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Date d'intervention</span>
+                    <span className="value">{intervention.date_intervention || "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Description</span>
+                    <div className="rich-text">
+                      {intervention.description ? (
+                        <p>{intervention.description}</p>
+                      ) : (
+                        <span className="empty-state">À remplir</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Coût</span>
+                    <span className="value">{intervention.cout ? `${intervention.cout} €` : "À remplir"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Satisfaction</span>
+                    <span className="value">{intervention.satisfaction ? `${intervention.satisfaction}/5` : "Non évalué"}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Notes</span>
+                    <div className="rich-text">
+                      {intervention.notes ? (
+                        <p>{intervention.notes}</p>
+                      ) : (
+                        <span className="empty-state">À remplir</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Documents</span>
+                    <span className="value">
+                      {intervention.documents_intervention?.data?.length > 0 ? (
+                        intervention.documents_intervention.data.map((file, i) => (
+                          <a
+                            key={i}
+                            href={`http://localhost:1337${file.attributes.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="doc-link"
+                          >
+                            📎 Document {i + 1}
+                          </a>
+                        ))
+                      ) : (
+                        <span className="no-doc">Aucun fichier</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf"
+                        multiple
+                        onChange={(e) => handleFileUpload(e, "historique_interventions", `documents_intervention_${index}`, true)}
+                      />
+                      <button
+                        className="upload-btn"
+                        onClick={() => uploadFiles("historique_interventions", `documents_intervention_${index}`)}
+                      >
+                        Ajouter
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="items-list">
+            <div className="mini-card">
+              <div className="info-grid">
+                <div className="info-item">
+                  <span className="label">Type d'intervention</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Nom de l'entreprise</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Nom de l'intervenant</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Date d'intervention</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Description</span>
+                  <div className="rich-text">
+                    <span className="empty-state">À remplir</span>
+                  </div>
+                </div>
+                <div className="info-item">
+                  <span className="label">Coût</span>
+                  <span className="value">À remplir</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Satisfaction</span>
+                  <span className="value">Non évalué</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">Notes</span>
+                  <div className="rich-text">
+                    <span className="empty-state">À remplir</span>
+                  </div>
+                </div>
+                <div className="info-item">
+                  <span className="label">Documents</span>
+                  <span className="value">
+                    <span className="no-doc">Aucun fichier</span>
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf"
+                      multiple
+                      onChange={(e) => handleFileUpload(e, "historique_interventions", `documents_intervention_0`, true)}
+                    />
+                    <button
+                      className="upload-btn"
+                      onClick={() => uploadFiles("historique_interventions", `documents_intervention_0`)}
+                    >
+                      Ajouter
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </Accordion>
+  </div>
+</div>
 
         {/* Fiche Notes */}
         <div className="card card-notes">

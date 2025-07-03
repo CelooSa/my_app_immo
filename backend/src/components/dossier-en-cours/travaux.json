@@ -1,7 +1,9 @@
 {
   "collectionName": "components_dossier_en_cours_travaux",
   "info": {
-    "displayName": "travaux"
+    "displayName": "travaux",
+    "icon": "hammer",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -50,7 +52,7 @@
     "entreprise": {
       "type": "string"
     },
-    "documentsTravauxAmericainents": {
+    "documentsTravaux": {
       "type": "media",
       "multiple": true,
       "allowedTypes": [

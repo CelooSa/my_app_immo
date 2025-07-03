@@ -1,7 +1,9 @@
 {
   "collectionName": "components_dossier_en_cours_litiges",
   "info": {
-    "displayName": "litiges"
+    "displayName": "litiges",
+    "icon": "balance-scale",
+    "description": ""
   },
   "options": {},
   "attributes": {

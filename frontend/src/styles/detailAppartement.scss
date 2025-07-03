@@ -246,7 +246,7 @@
 .documents-section {
   margin-top: 1rem;
   padding: 1rem;
-  background: #f0f9ff; /* Bleu très clair */
+  background: #f0f9ff; 
   border-radius: 8px;
   box-sizing: border-box;
 
@@ -254,13 +254,9 @@
     width: 135px;
     height: 28px;
     padding: 0;
-    border: 1px solid #fce7f3; /* Rose poudré clair */
+    border: 1px solid #fce7f3; 
     border-radius: 6px;
-    background: linear-gradient(
-      45deg,
-      #fce7f3,
-      #fbcfe8
-    ); /* Rose poudré clair */
+    background: linear-gradient(45deg, #fce7f3, #fbcfe8);
     font-size: 0.85rem;
     color: #be185d;
     position: relative;
@@ -315,11 +311,7 @@
     width: 80px;
     height: 28px;
     padding: 0.4rem 0.8rem;
-    background: linear-gradient(
-      45deg,
-      #f3e8ff,
-      #e9d5ff
-    ); /* Violet lavande clair */
+    background: linear-gradient(45deg,#f3e8ff,#e9d5ff); 
     color: #4a044e;
     border: none;
     border-radius: 6px;
@@ -833,7 +825,7 @@
 } */
     .empty-state {
       background: #f0f9ff; /* Bleu très clair */
-      border: 2px dashed #bae6fd; /* Bordure pointillée subtile */
+      border: 2px dashed #bae6fd; 
       border-radius: 10px;
       padding: 1rem;
       text-align: center;

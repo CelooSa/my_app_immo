@@ -269,7 +269,9 @@ export interface AppartementsTrousseaux extends Struct.ComponentSchema {
 export interface DossierEnCoursLitiges extends Struct.ComponentSchema {
   collectionName: 'components_dossier_en_cours_litiges';
   info: {
+    description: '';
     displayName: 'litiges';
+    icon: 'balance-scale';
   };
   attributes: {
     dateIncident: Schema.Attribute.Date & Schema.Attribute.Required;
@@ -297,7 +299,9 @@ export interface DossierEnCoursLitiges extends Struct.ComponentSchema {
 export interface DossierEnCoursTravaux extends Struct.ComponentSchema {
   collectionName: 'components_dossier_en_cours_travaux';
   info: {
+    description: '';
     displayName: 'travaux';
+    icon: 'hammer';
   };
   attributes: {
     archive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -305,10 +309,7 @@ export interface DossierEnCoursTravaux extends Struct.ComponentSchema {
     dateDebut: Schema.Attribute.Date;
     dateFin: Schema.Attribute.Date;
     description: Schema.Attribute.Text & Schema.Attribute.Required;
-    documentsTravauxAmericainents: Schema.Attribute.Media<
-      'images' | 'files',
-      true
-    >;
+    documentsTravaux: Schema.Attribute.Media<'images' | 'files', true>;
     entreprise: Schema.Attribute.String;
     notes: Schema.Attribute.Text;
     statut: Schema.Attribute.Enumeration<
