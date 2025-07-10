@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 $page-bg: #fefbf5;
 $paper-yellow: #fff7d1;
 $spiral-gray: #a09f9b;
@@ -8,11 +12,11 @@ $accent-color: #6a4c93;
   min-height: 100vh;
   padding: 2rem;
   background: $page-bg;
-  font-family: 'Comic Neue', cursive;
+  font-family: "Comic Neue", cursive;
 }
 
 h1 {
-  font-family: 'Sour Gummy', cursive;
+  font-family: "Sour Gummy", cursive;
   text-align: center;
   color: $accent-color;
   margin-bottom: 2rem;
@@ -28,7 +32,7 @@ h1 {
   border: none;
   border-radius: 30px;
   padding: 0.8rem 2.5rem;
-  font-family: 'Sour Gummy', sans-serif;
+  font-family: "Sour Gummy", sans-serif;
   font-size: 1.4rem;
   cursor: pointer;
   box-shadow: 0 4px 14px rgba($accent-color, 0.7);
@@ -44,68 +48,77 @@ h1 {
 .contacts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
-  justify-items: center;
-  align-items: start; // Important pour éviter le glissement
+  gap: 2rem 2.5rem; /* Augmente l'espacement horizontal pour plus de clarté */
+  justify-items: start; /* Aligne les fiches à gauche */
+  align-items: start;
+  width: 100%; /* Occupe toute la largeur */
+  padding: 0 1rem 0 1.5rem; /* Décalage à gauche et léger padding à droite */
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; /* Une seule colonne */
+    gap: 1.5rem; /* Espacement réduit sur petits écrans */
+    padding: 0 0.5rem; /* Padding réduit */
+  }
+
+  @media (max-width: 320px) {
+    grid-template-columns: 1fr;
+    gap: 1rem; /* Espacement encore réduit pour très petits écrans */
+    padding: 0 0.3rem;
+  }
 }
 
 /* Carte contact */
 .contact-card {
   background: $paper-yellow;
   border-radius: 12px 12px 18px 18px;
-  box-shadow:
-    inset 5px 0 0 0 $spiral-gray,
-    3px 5px 8px rgba(0, 0, 0, 0.12);
+  box-shadow: inset 5px 0 0 0 $spiral-gray, 3px 5px 8px rgba(0, 0, 0, 0.12);
   width: 100%;
-  max-width: 320px;
+  max-width: 100%;
   padding: 1.3rem 1.6rem 2rem;
   position: relative;
-  font-family: 'Comic Neue', cursive;
+  font-family: "Comic Neue", cursive;
   font-size: 1.15rem;
   color: $text-color;
   user-select: none;
-  // Transition plus douce et pas sur la transform qui cause le glissement
   transition: box-shadow 0.3s ease, border 0.3s ease;
-  
-  // Fond quadrillé léger
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-  linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
 
-  // Hover plus subtil pour éviter le glissement
   &:hover:not(.expanded) {
-    box-shadow:
-      inset 5px 0 0 0 $accent-color,
-      6px 8px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  // Style pour la carte étendue
-  &.expanded {
-    box-shadow:
-      inset 5px 0 0 0 $accent-color,
-      6px 8px 25px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 5px 0 0 0 $accent-color, 6px 8px 20px rgba(0, 0, 0, 0.2);
   }
 
-  // Style pour le placeholder
+  &.expanded {
+    box-shadow: inset 5px 0 0 0 $accent-color, 6px 8px 25px rgba(0, 0, 0, 0.25);
+  }
+
   &.placeholder {
     opacity: 0.6;
     pointer-events: none;
-    
+
     .contact-header {
       cursor: default;
     }
   }
 
-  // Bande spirale (verticale)
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 12px;
     left: 10px;
     bottom: 12px;
     width: 14px;
-    background:
-      radial-gradient(circle at 7px 10px, $spiral-gray 3px, transparent 4px),
+    background: radial-gradient(
+        circle at 7px 10px,
+        $spiral-gray 3px,
+        transparent 4px
+      ),
       radial-gradient(circle at 7px 25px, $spiral-gray 3px, transparent 4px),
       radial-gradient(circle at 7px 40px, $spiral-gray 3px, transparent 4px),
       radial-gradient(circle at 7px 55px, $spiral-gray 3px, transparent 4px),
@@ -128,7 +141,7 @@ h1 {
 
   h2 {
     margin: 0;
-    font-family: 'Sour Gummy', sans-serif;
+    font-family: "Sour Gummy", sans-serif;
     color: $accent-color;
     font-weight: 700;
     font-size: 1.6rem;
@@ -181,36 +194,42 @@ h1 {
 
   .form-row {
     display: flex;
-    gap: 1rem;
-    
+    flex-wrap: wrap;
+    gap: 1.2rem 2rem;
+
     label {
-      flex: 1;
+      flex: 1 1 45%;
+      margin-bottom: 0.5rem;
+      min-width: 0; /* Empêche les débordements dans flex */
+    }
+
+    @media (max-width: 768px) {
+      label {
+        flex: 1 1 100%;
+      }
     }
   }
 
   label {
-    display: flex;
+    display: facex;
     flex-direction: column;
     font-weight: 600;
     color: $text-color;
     font-size: 0.95rem;
   }
 
-  input, textarea {
+  input,
+  textarea {
     margin-top: 0.3rem;
     padding: 0.5rem 0.8rem;
     border: 2px solid lighten($spiral-gray, 20%);
     border-radius: 6px;
-    font-family: 'Comic Neue', cursive;
+    font-family: "Comic Neue", cursive;
     font-size: 1rem;
     background: lighten($paper-yellow, 3%);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-    &:focus {
-      outline: none;
-      border-color: $accent-color;
-      box-shadow: 0 0 5px rgba($accent-color, 0.3);
-    }
+    width: 100%;
+    box-sizing: border-box; /* Assure que le padding est inclus */
   }
 
   textarea {
@@ -230,7 +249,7 @@ h1 {
   button {
     border: none;
     border-radius: 8px;
-    font-family: 'Sour Gummy', cursive;
+    font-family: "Sour Gummy", cursive;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -274,11 +293,11 @@ h1 {
 /* Message vide */
 .empty-message {
   grid-column: 1/-1;
-  justify-self:  center;
+  justify-self: center;
   text-align: center;
   font-size: 1.2rem;
   color: $accent-color;
-  font-family: 'Sour Gummy', sans-serif;
+  font-family: "Sour Gummy", sans-serif;
   padding: 1rem 0;
   max-width: 600px;
 }
@@ -289,13 +308,29 @@ h1 {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .contact-card {
     max-width: 100%;
   }
-  
+
   .contact-info .form-row {
     flex-direction: column;
     gap: 0.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .contact-card {
+    font-size: 1rem;
+    padding: 1rem 1.2rem;
+  }
+  .contact-info {
+    input,
+    textarea {
+      font-size: 0.9rem;
+    }
+  }
+  .contact-header h2 {
+    font-size: 1.4rem;
   }
 }

@@ -33,13 +33,18 @@
       "component": "appartements.trousseaux",
       "repeatable": true
     },
-    "notes": {
-      "type": "blocks"
+    "contacts_divers": {
+      "type": "component",
+      "component": "appartements.contacts-divers",
+      "repeatable": true
     },
     "Interventions": {
       "type": "component",
       "component": "appartements.historique_interventions",
       "repeatable": true
+    },
+    "notes": {
+      "type": "blocks"
     },
     "Relocation": {
       "type": "component",

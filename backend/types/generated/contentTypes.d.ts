@@ -384,6 +384,10 @@ export interface ApiAppartementAppartement extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    contacts_divers: Schema.Attribute.Component<
+      'appartements.contacts-divers',
+      true
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/contacts.scss';
 
+
+const extractTextFromBlocks = (blocks) => {
+  if (!Array.isArray(blocks)) return '';
+  return blocks
+    .map(block =>
+      block.children?.map(child => child.text).join('') ?? ''
+    )
+    .join('\n');
+};
+
+
 const randomPastelColor = () => {
   const r = Math.floor((Math.random() * 127) + 127);
   const g = Math.floor((Math.random() * 127) + 127);
@@ -62,30 +73,34 @@ const Contacts = () => {
 
   // Schéma vide (formulaire vide) pour nouvelle fiche
   const defaultFields = {
-    nom: '',
-    prenom: '',
-    entreprise: '',
-    telephone_fixe: '',
-    telephone_mobile: '',
-    email: '',
-    adresse: '',
-    ville: '',
-    code_postal: '',
-    categorie_principale: '',
-    sous_categorie: '',
-    specialites: '',
-    zone_intervention: '',
-    notes: '',
-    recommande_par: '',
-    date_ajout: '',
-    derniere_utilisation: '',
-    evaluation: '',
-    actif: false,
-    site_web: '',
-    siret: '',
-    horaires: '',
-    tarifs_indicatifs: '',
-  };
+  nom: '',
+  prenom: '',
+  entreprise: '',
+  telephone_fixe: '',
+  telephone_mobile: '',
+  email: '',
+  adresse: '',
+  ville: '',
+  code_postal: '',
+  categorie_principale: '',
+  sous_categorie: '',
+  specialites: [],
+  zone_intervention: '',
+  tags: [], // à gérer plus tard
+  notes: '',
+  recommande_par: '',
+  date_ajout: new Date().toISOString(),
+  criteres_recherche: null, // composant, à gérer plus tard
+  derniere_utilisation: '',
+  evaluation: '',
+  actif: true,
+  site_web: '',
+  siret: '',
+  horaires: '',
+  tarifs_indicatifs: '',
+  documents: [] // à gérer plus tard
+};
+
 
   // Ajout d'une nouvelle fiche vide
   const handleAddNew = () => {

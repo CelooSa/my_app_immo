@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sour+Gummy&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sour+Gummy&display=swap");
 
 .detail-container {
   padding: 1.5rem;
@@ -139,7 +138,203 @@
         color: #134e4a;
       }
     }
-  } /* Vert d’eau */
+  } /* test ici avec les nouveaux btons*/
+
+  // Ici mes Boutons d'action regroupés:
+  // pr locataire
+.locataire-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  .btn-locataire-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 4px 12px;
+    border: none;
+    border-radius: 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    span {
+      font-size: 0.85rem;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:focus {
+      outline: 2px solid #6b46c1;
+      outline-offset: 2px;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    // Bouton Ajouter - Vert d'eau (comme card-bien)
+    &.btn-add {
+      background: linear-gradient(45deg, #a7f3d0, #6ee7b7);
+      color: #134e4a;
+
+      &:hover {
+        background: linear-gradient(45deg, #6ee7b7, #34d399);
+        box-shadow: 0 4px 12px rgba(110, 231, 183, 0.3);
+      }
+    }
+
+    // Bouton Archiver - Violet lavande (comme card-syndic)
+    &.btn-archive {
+      background: linear-gradient(45deg, #e9d5ff, #d8b4fe);
+      color: #6b46c1;
+
+      &:hover {
+        background: linear-gradient(45deg, #d8b4fe, #c4b5fd);
+        box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+      }
+    } 
+
+    // Bouton Supprimer - Rose corail (comme card-interventions)
+    &.btn-delete {
+      background: linear-gradient(45deg, #fecdd3, #fb7185);
+      color: #9f1239;
+
+      &:hover {
+        background: linear-gradient(45deg, #fb7185, #f43f5e);
+        box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);
+      }
+    }
+  }
+  
+  // Responsive
+  @media (max-width: 768px) {
+    gap: 0.3rem;
+
+    .btn-locataire-action {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+
+      span {
+        display: none; // Masquer le texte sur mobile, garder seulement les icônes
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+}
+
+// et ici pr autres contacts
+
+// Boutons de la fiche contacts
+.contacts-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  .btn-contacts-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 4px 12px;
+    border: none;
+    border-radius: 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    span {
+      font-size: 0.85rem;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:focus {
+      outline: 2px solid #78350f; // Couleur jaune foncé pour le focus
+      outline-offset: 2px;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    // Bouton Ajouter - Jaune pâle (comme card-contacts)
+    &.btn-add {
+      background: linear-gradient(45deg, #fef3c7, #6ee7b7);
+      color: #78350f;
+
+      &:hover {
+        background: linear-gradient(45deg, #fde68a, #fef08a);
+        box-shadow: 0 4px 12px rgba(253, 230, 138, 0.3);
+      }
+    }
+
+    // Bouton Archiver - Jaune légèrement plus foncé
+    &.btn-archive {
+      background: linear-gradient(45deg, #fef9c3, #fef08a);
+      color: #78350f;
+
+      &:hover {
+        background: linear-gradient(45deg, #fef08a, #facc15);
+        box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+      }
+    }
+
+    // Bouton Supprimer - Rouge corail (comme card-interventions)
+    &.btn-delete {
+      background: linear-gradient(45deg, #fecdd3, #fb7185);
+      color: #9f1239;
+
+      &:hover {
+        background: linear-gradient(45deg, #fb7185, #f43f5e);
+        box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    gap: 0.3rem;
+
+    .btn-contacts-action {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+
+      span {
+        display: none; // Masquer le texte sur mobile, garder seulement les icônes
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+}
+
+/// => A voir si j'en rajoute sur d'autres sections = pr tous les regrouper ici
+
+
+
+
+
+
+
   &.card-locataire {
     .card-header {
       background: linear-gradient(135deg, #fed7e2, #f9a8d4);

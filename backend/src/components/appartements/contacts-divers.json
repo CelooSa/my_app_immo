@@ -1,8 +1,8 @@
 {
-  "collectionName": "components_appartements_autres_contacts",
+  "collectionName": "components_appartements_contacts_divers",
   "info": {
-    "displayName": "autres_contacts",
-    "icon": "phone"
+    "displayName": "contacts_divers",
+    "icon": "discuss"
   },
   "options": {},
   "attributes": {
@@ -12,10 +12,9 @@
     "type_contact": {
       "type": "enumeration",
       "enum": [
-        "Agence immo",
-        "Plombier",
-        "Gestionnaire",
-        "Gardien",
+        "Fournisseur",
+        "Maintenance",
+        "Voisin",
         "Autre"
       ]
     },

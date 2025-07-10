@@ -16,6 +16,22 @@ export interface AppartementsAutresContacts extends Struct.ComponentSchema {
   };
 }
 
+export interface AppartementsContactsDivers extends Struct.ComponentSchema {
+  collectionName: 'components_appartements_contacts_divers';
+  info: {
+    displayName: 'contacts_divers';
+    icon: 'discuss';
+  };
+  attributes: {
+    coordonnees: Schema.Attribute.Blocks;
+    nom: Schema.Attribute.String;
+    notes: Schema.Attribute.Blocks;
+    type_contact: Schema.Attribute.Enumeration<
+      ['Fournisseur', 'Maintenance', 'Voisin', 'Autre']
+    >;
+  };
+}
+
 export interface AppartementsDecomptesAnnuels extends Struct.ComponentSchema {
   collectionName: 'components_appartements_decomptes_annuels';
   info: {
@@ -132,6 +148,7 @@ export interface AppartementsLocataires extends Struct.ComponentSchema {
     icon: 'user';
   };
   attributes: {
+    archive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     assuranceLocataire: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
@@ -389,6 +406,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'appartements.autres-contacts': AppartementsAutresContacts;
+      'appartements.contacts-divers': AppartementsContactsDivers;
       'appartements.decomptes-annuels': AppartementsDecomptesAnnuels;
       'appartements.entretien-chaudiere': AppartementsEntretienChaudiere;
       'appartements.historique_interventions': AppartementsHistoriqueInterventions;

@@ -76,6 +76,10 @@
         "T3",
         "T4"
       ]
+    },
+    "archive": {
+      "type": "boolean",
+      "default": false
     }
   },
   "config": {}
