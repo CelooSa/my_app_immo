@@ -3,13 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/detailAppartement.scss";
 import BlocNotesContent from "./BlocNotesCompact";
-import {
-  FaPlus,
-  FaTrash,
-  FaArchive,
-  FaArrowLeft,
-  FaArrowRight,
-} from "react-icons/fa"; // Added import for icons
+import { FaPlus, FaTrash, FaArchive, FaSave } from "react-icons/fa"; // Added import for icons
 
 const API_URL = "http://localhost:1337/api/appartements";
 
@@ -64,49 +58,127 @@ const DetailAppartement = () => {
   const [loading, setLoading] = useState(true);
   const [filesToUpload, setFilesToUpload] = useState({});
 
-  // pour mes boutons d'action => de la partie locataire
-  const handleAddTenant = () => {
-    const handleAddContact = async () => {
-  try {
-    const token = localStorage.getItem("token"); // Récupère le token d'authentification
-    const newContact = {
-      data: {
-        nom: "Nouveau Contact", // Valeur par défaut, à personnaliser
-        type_contact: "Non spécifié",
-        coordonnees: [{ children: [{ text: "À remplir" }] }],
-        notes: [{ children: [{ text: "À remplir" }] }],
-        appartement: id, // Lie le contact à l'appartement actuel
-      },
+  // Gestionnaire pour les champs simples et booléens
+  const handleChange = (
+    section,
+    field,
+    value,
+    isArray = false,
+    index = null
+  ) => {
+    setAppart((prev) => {
+      const updatedData = { ...prev };
+      if (isArray && index !== null) {
+        updatedData.attributes[section][field] = [
+          ...(updatedData.attributes[section][field] || []),
+        ];
+        updatedData.attributes[section][field][index] = value;
+      } else {
+        updatedData.attributes[section] = {
+          ...(updatedData.attributes[section] || {}),
+          [field]: value,
+        };
+      }
+      return updatedData;
+    });
+  };
+
+  // Gestionnaire pour les champs texte riche (comme listeMeubles)
+  const handleRichTextChange = (section, field, value) => {
+    setAppart((prev) => {
+      const updatedData = { ...prev };
+      updatedData.attributes[section] = {
+        ...(updatedData.attributes[section] || {}),
+        [field]: [{ children: [{ text: value }] }],
+      };
+      return updatedData;
+    });
+  };
+
+  // Sauvegarde via API Strapi et Détection des modif non sauve au cas où
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (
+        JSON.stringify(appart) !==
+        JSON.stringify(localStorage.getItem(`appartement_${id}`))
+      ) {
+        e.preventDefault();
+        e.returnValue =
+          "Vous avez des modifications non sauvegardées. Voulez-vous quitter ?";
+      }
     };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [appart, id]);
+  const handleSave = async () => {
+    if (!appart) return;
 
-    // Envoie la requête POST pour créer un nouveau contact
-    await axios.post(
-      `http://localhost:1337/api/autres_contacts`,
-      newContact,
-      {
+    try {
+      const token = localStorage.getItem("token");
+      const updatedData = { ...appart.attributes };
+
+      await axios.put(
+        `http://localhost:1337/api/appartements/${id}`,
+        { data: updatedData },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Rafraîchir les données après sauvegarde
+      const res = await axios.get(
+        `http://localhost:1337/api/appartements/${id}?populate=*`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setAppart(res.data.data);
+      alert("Modifications sauvegardées avec succès !");
+    } catch (err) {
+      console.error("Erreur lors de la sauvegarde :", err);
+      alert("Erreur lors de la sauvegarde.");
+    }
+  };
+  // pour mes boutons d'action => de la partie locataire
+  // Ajouter un locataire via API Strapi
+  const handleAddTenant = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const newTenant = {
+        data: {
+          nom: "Nouveau Locataire",
+          email: "",
+          telephone: "",
+          dateEntree: "",
+          appartement: id, // Lie le locataire à l'appartement actuel
+        },
+      };
+
+      await axios.post(`http://localhost:1337/api/locataires`, newTenant, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      });
 
-    // Rafraîchit les données de l'appartement pour inclure le nouveau contact
-    const res = await axios.get(
-      `http://localhost:1337/api/appartements/${id}?populate=*`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    setAppart(res.data.data);
-
-    alert("Contact ajouté avec succès !"); // Feedback utilisateur
-  } catch (err) {
-    console.error("Erreur lors de l'ajout du contact :", err);
-    alert("Erreur lors de l'ajout du contact.");
-  }
-};
+      // Rafraîchir les données de l'appartement
+      const res = await axios.get(
+        `http://localhost:1337/api/appartements/${id}?populate=*`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setAppart(res.data.data);
+      alert("Locataire ajouté avec succès !");
+    } catch (err) {
+      console.error("Erreur lors de l'ajout du locataire :", err);
+      alert("Erreur lors de l'ajout du locataire.");
+    }
   };
 
   const handleDeleteTenant = () => {
@@ -277,6 +349,9 @@ const DetailAppartement = () => {
           ← Retour
         </button>
         <h1 className="main-title">🏠 Appartement #{id}</h1>
+        <button className="save-btn" onClick={handleSave}>
+          <FaSave className="icon" /> Sauvegarder
+        </button>
       </div>
 
       <div className="masonry-grid">
@@ -288,89 +363,239 @@ const DetailAppartement = () => {
           <div className="card-content">
             <div className="info-grid">
               <div className="info-item">
-                <span className="label">Propriétaire</span>
-                <span className="value">
-                  {leBien.proprietaire || "À remplir"}
-                </span>
+                <label className="label" htmlFor="proprietaire">
+                  Propriétaire
+                </label>
+                <input
+                  type="text"
+                  id="proprietaire"
+                  className="input-field"
+                  value={leBien.proprietaire || ""}
+                  onChange={(e) =>
+                    handleChange("le_bien", "proprietaire", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
-                <span className="label">Adresse</span>
-                <span className="value">{leBien.adresse || "À remplir"}</span>
+                <label className="label" htmlFor="adresse">
+                  Adresse
+                </label>
+                <input
+                  type="text"
+                  id="adresse"
+                  className="input-field"
+                  value={leBien.adresse || ""}
+                  onChange={(e) =>
+                    handleChange("le_bien", "adresse", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
-                <span className="label">Étage</span>
-                <span className="value">{leBien.etage ?? "À remplir"}</span>
+                <label className="label" htmlFor="etage">
+                  Étage
+                </label>
+                <input
+                  type="number"
+                  id="etage"
+                  className="input-field"
+                  value={leBien.etage ?? ""}
+                  onChange={(e) =>
+                    handleChange("le_bien", "etage", Number(e.target.value))
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
-                <span className="label">Position</span>
-                <span className="value">{leBien.position || "À remplir"}</span>
+                <label className="label" htmlFor="position">
+                  Position
+                </label>
+                <input
+                  type="text"
+                  id="position"
+                  className="input-field"
+                  value={leBien.position || ""}
+                  onChange={(e) =>
+                    handleChange("le_bien", "position", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
-                <span className="label">Pièces</span>
-                <span className="value">
-                  {leBien.nombrePieces ?? "À remplir"}
-                </span>
+                <label className="label" htmlFor="nombrePieces">
+                  Pièces
+                </label>
+                <input
+                  type="number"
+                  id="nombrePieces"
+                  className="input-field"
+                  value={leBien.nombrePieces ?? ""}
+                  onChange={(e) =>
+                    handleChange(
+                      "le_bien",
+                      "nombrePieces",
+                      Number(e.target.value)
+                    )
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
-                <span className="label">Surface</span>
-                <span className="value">
-                  {leBien.nombreM2 ?? "À remplir"} m²
-                </span>
+                <label className="label" htmlFor="nombreM2">
+                  Surface
+                </label>
+                <input
+                  type="number"
+                  id="nombreM2"
+                  className="input-field"
+                  value={leBien.nombreM2 ?? ""}
+                  onChange={(e) =>
+                    handleChange("le_bien", "nombreM2", Number(e.target.value))
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
-                <span className="label">Cave</span>
-                <span className="value">
-                  {leBien.cave ? "✅ Oui" : "❌ Non"}
-                </span>
+                <label className="label" htmlFor="cave">
+                  Cave
+                </label>
+                <input
+                  type="checkbox"
+                  id="cave"
+                  className="checkbox-field"
+                  checked={leBien.cave || false}
+                  onChange={(e) =>
+                    handleChange("le_bien", "cave", e.target.checked)
+                  }
+                />
               </div>
               <div className="info-item">
-                <span className="label">N° Lot Cave</span>
-                <span className="value">
-                  {leBien.caveNumeroLot || "À remplir"}
-                </span>
+                <label className="label" htmlFor="caveNumeroLot">
+                  N° Lot Cave
+                </label>
+                <input
+                  type="text"
+                  id="caveNumeroLot"
+                  className="input-field"
+                  value={leBien.caveNumeroLot || ""}
+                  onChange={(e) =>
+                    handleChange("le_bien", "caveNumeroLot", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
-                <span className="label">Emplacement Cave</span>
-                <span className="value">
-                  {leBien.caveEmplacement || "À remplir"}
-                </span>
+                <label className="label" htmlFor="caveEmplacement">
+                  Emplacement Cave
+                </label>
+                <input
+                  type="text"
+                  id="caveEmplacement"
+                  className="input-field"
+                  value={leBien.caveEmplacement || ""}
+                  onChange={(e) =>
+                    handleChange("le_bien", "caveEmplacement", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
-                <span className="label">Parking</span>
-                <span className="value">
-                  {leBien.parking ? "✅ Oui" : "❌ Non"}
-                </span>
+                <label className="label" htmlFor="parking">
+                  Parking
+                </label>
+                <input
+                  type="checkbox"
+                  id="parking"
+                  className="checkbox-field"
+                  checked={leBien.parking || false}
+                  onChange={(e) =>
+                    handleChange("le_bien", "parking", e.target.checked)
+                  }
+                />
               </div>
               <div className="info-item">
-                <span className="label">N° Lot Parking</span>
-                <span className="value">
-                  {leBien.parkingNumeroLot || "À remplir"}
-                </span>
+                <label className="label" htmlFor="parkingNumeroLot">
+                  N° Lot Parking
+                </label>
+                <input
+                  type="text"
+                  id="parkingNumeroLot"
+                  className="input-field"
+                  value={leBien.parkingNumeroLot || ""}
+                  onChange={(e) =>
+                    handleChange("le_bien", "parkingNumeroLot", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
-                <span className="label">Emplacement Parking</span>
-                <span className="value">
-                  {leBien.parkingEmplacement || "À remplir"}
-                </span>
+                <label className="label" htmlFor="parkingEmplacement">
+                  Emplacement Parking
+                </label>
+                <input
+                  type="text"
+                  id="parkingEmplacement"
+                  className="input-field"
+                  value={leBien.parkingEmplacement || ""}
+                  onChange={(e) =>
+                    handleChange(
+                      "le_bien",
+                      "parkingEmplacement",
+                      e.target.value
+                    )
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
-                <span className="label">Chaudière Individuelle</span>
-                <span className="value">
-                  {leBien.chaudiereIndividuelle ? "✅ Oui" : "❌ Non"}
-                </span>
+                <label className="label" htmlFor="chaudiereIndividuelle">
+                  Chaudière Individuelle
+                </label>
+                <input
+                  type="checkbox"
+                  id="chaudiereIndividuelle"
+                  className="checkbox-field"
+                  checked={leBien.chaudiereIndividuelle || false}
+                  onChange={(e) =>
+                    handleChange(
+                      "le_bien",
+                      "chaudiereIndividuelle",
+                      e.target.checked
+                    )
+                  }
+                />
               </div>
               <div className="info-item">
-                <span className="label">Meublé</span>
-                <span className="value">
-                  {leBien.meuble ? "✅ Oui" : "❌ Non"}
-                </span>
+                <label className="label" htmlFor="meuble">
+                  Meublé
+                </label>
+                <input
+                  type="checkbox"
+                  id="meuble"
+                  className="checkbox-field"
+                  checked={leBien.meuble || false}
+                  onChange={(e) =>
+                    handleChange("le_bien", "meuble", e.target.checked)
+                  }
+                />
               </div>
               <div className="info-item">
-                <span className="label">Énergie</span>
-                <span className="value">{leBien.energie || "À remplir"}</span>
+                <label className="label" htmlFor="energie">
+                  Énergie
+                </label>
+                <input
+                  type="text"
+                  id="energie"
+                  className="input-field"
+                  value={leBien.energie || ""}
+                  onChange={(e) =>
+                    handleChange("le_bien", "energie", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
             </div>
-
             <Accordion title="Documents" icon="📄">
               <div className="documents-section">
                 <div className="info-grid">
@@ -443,13 +668,23 @@ const DetailAppartement = () => {
             <div className="info-block">
               <h4>🪑 Liste des meubles</h4>
               <div className="rich-text">
-                {leBien.listeMeubles?.length > 0 ? (
-                  leBien.listeMeubles.map((block, i) => (
-                    <div key={i}>{block.children?.[0]?.text || "Contenu"}</div>
-                  ))
-                ) : (
-                  <p className="empty-state">Non renseigné</p>
-                )}
+                <textarea
+                  className="textarea-field"
+                  value={
+                    leBien.listeMeubles?.length > 0
+                      ? leBien.listeMeubles[0]?.children?.[0]?.text || ""
+                      : ""
+                  }
+                  onChange={(e) =>
+                    handleRichTextChange(
+                      "le_bien",
+                      "listeMeubles",
+                      e.target.value
+                    )
+                  }
+                  placeholder="Non renseigné"
+                  rows="4"
+                />
               </div>
             </div>
           </div>

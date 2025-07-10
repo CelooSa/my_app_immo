@@ -74,9 +74,7 @@
     "zone_intervention": {
       "type": "string"
     },
-
-
-
+    
 
     "tags": {
       "type": "relation",

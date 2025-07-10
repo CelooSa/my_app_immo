@@ -13,71 +13,124 @@
   box-sizing: border-box;
 
   .header-section {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 
-    .btn-retour {
-      background: linear-gradient(45deg, #d8b4fe, #c4b5fd); /* Violet lavande */
-      border: none;
-      padding: 10px 18px;
-      border-radius: 8px;
-      color: #4a044e;
-      font-weight: 500;
-      font-size: 0.9rem;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(168, 85, 247, 0.2);
-      transition: all 0.3s ease;
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
-        background: linear-gradient(45deg, #a78bfa, #d8b4fe);
-      }
-
-      &:focus {
-        outline: 2px solid #6b46c1;
-        outline-offset: 2px;
-      }
-    }
-
-    .main-title {
-      font-family: "Sour Gummy", "Poppins", sans-serif;
-      color: #4a044e;
-      font-size: 2rem;
-      font-weight: 600;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-
-      @media (max-width: 768px) {
-        font-size: 1.75rem;
-      }
-    }
-  }
-
-  .loading-spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50vh;
-    font-size: 1.2rem;
+  .btn-retour {
+    background: linear-gradient(45deg, #d8b4fe, #c4b5fd); /* Violet lavande */
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
     color: #4a044e;
     font-weight: 500;
-    animation: pulse 1.5s infinite;
+    font-size: 0.9rem;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(168, 85, 247, 0.2);
+    transition: all 0.3s ease;
+    min-width: 150.97px; /* Même largeur que Sauvegarder */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /* Centre le texte/flèche */
 
-    &::before {
-      content: "🏠";
-      margin-right: 0.5rem;
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+      background: linear-gradient(45deg, #a78bfa, #d8b4fe);
+    }
+
+    &:focus {
+      outline: 2px solid #6b46c1;
+      outline-offset: 2px;
     }
   }
+
+  .main-title {
+    font-family: "Sour Gummy", "Poppins", sans-serif;
+    color: #4a044e;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.75rem;
+    }
+  }
+
+    .save-btn {
+    background: linear-gradient(45deg, #a7f3d0, #6ee7b7); /* Vert d’eau */
+    border: none;
+    padding: 10px 18px; /* Même padding que .btn-retour */
+    border-radius: 8px;
+    color: #134e4a;
+    font-weight: 500;
+    font-size: 0.9rem;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(110, 231, 183, 0.2);
+    transition: all 0.3s ease;
+    min-width: 150.97px; /* Même largeur que Sauvegarder */
+    height: 41px; /* Force la hauteur à 41px */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /* Centre l’icône et le texte */
+    gap: 0.3rem;
+    line-height: 1;
+    box-sizing: border-box; /* Assure un calcul cohérent */
+
+    &:hover {
+      background: linear-gradient(45deg, #6ee7b7, #34d399);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(110, 231, 183, 0.3);
+    }
+
+    &:focus {
+      outline: 2px solid #134e4a;
+      outline-offset: 2px;
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 768px) {
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      min-width: 130px;
+      height: 36px; /* Réduit proportionnellement sur mobile */
+
+      .icon {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 1.2rem;
+  color: #4a044e;
+  font-weight: 500;
+  animation: pulse 1.5s infinite;
+
+  &::before {
+    content: "🏠";
+    margin-right: 0.5rem;
+  }
+}
 }
 
 .masonry-grid {
@@ -113,7 +166,7 @@
     border-bottom: 1px solid #e2e8f0;
 
     h2 {
-      font-family: "Sour Gummy", "Poppins", sans-serif;
+      font-family: "Sour Gummy", sans-serif;
       font-size: 1.25rem;
       font-weight: 600;
       margin: 0;
@@ -142,198 +195,192 @@
 
   // Ici mes Boutons d'action regroupés:
   // pr locataire
-.locataire-actions {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-
-  .btn-locataire-action {
-    display: inline-flex;
+  .locataire-actions {
+    display: flex;
+    gap: 0.5rem;
     align-items: center;
-    gap: 0.3rem;
-    padding: 4px 12px;
-    border: none;
-    border-radius: 8px;
-    font-family: "Poppins", sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-    span {
-      font-size: 0.85rem;
-    }
-
-    svg {
-      width: 14px;
-      height: 14px;
-    }
-
-    &:focus {
-      outline: 2px solid #6b46c1;
-      outline-offset: 2px;
-    }
-
-    &:hover {
-      transform: translateY(-2px);
-    }
-
-    // Bouton Ajouter - Vert d'eau (comme card-bien)
-    &.btn-add {
-      background: linear-gradient(45deg, #a7f3d0, #6ee7b7);
-      color: #134e4a;
-
-      &:hover {
-        background: linear-gradient(45deg, #6ee7b7, #34d399);
-        box-shadow: 0 4px 12px rgba(110, 231, 183, 0.3);
-      }
-    }
-
-    // Bouton Archiver - Violet lavande (comme card-syndic)
-    &.btn-archive {
-      background: linear-gradient(45deg, #e9d5ff, #d8b4fe);
-      color: #6b46c1;
-
-      &:hover {
-        background: linear-gradient(45deg, #d8b4fe, #c4b5fd);
-        box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
-      }
-    } 
-
-    // Bouton Supprimer - Rose corail (comme card-interventions)
-    &.btn-delete {
-      background: linear-gradient(45deg, #fecdd3, #fb7185);
-      color: #9f1239;
-
-      &:hover {
-        background: linear-gradient(45deg, #fb7185, #f43f5e);
-        box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);
-      }
-    }
-  }
-  
-  // Responsive
-  @media (max-width: 768px) {
-    gap: 0.3rem;
 
     .btn-locataire-action {
-      padding: 6px 10px;
-      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 4px 12px;
+      border: none;
+      border-radius: 8px;
+      font-family: "Poppins", sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
       span {
-        display: none; // Masquer le texte sur mobile, garder seulement les icônes
+        font-size: 0.85rem;
       }
 
       svg {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
+      }
+
+      &:focus {
+        outline: 2px solid #6b46c1;
+        outline-offset: 2px;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+
+      // Bouton Ajouter - Vert d'eau (comme card-bien)
+      &.btn-add {
+        background: linear-gradient(45deg, #a7f3d0, #6ee7b7);
+        color: #134e4a;
+
+        &:hover {
+          background: linear-gradient(45deg, #6ee7b7, #34d399);
+          box-shadow: 0 4px 12px rgba(110, 231, 183, 0.3);
+        }
+      }
+
+      // Bouton Archiver - Violet lavande (comme card-syndic)
+      &.btn-archive {
+        background: linear-gradient(45deg, #e9d5ff, #d8b4fe);
+        color: #6b46c1;
+
+        &:hover {
+          background: linear-gradient(45deg, #d8b4fe, #c4b5fd);
+          box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+      }
+
+      // Bouton Supprimer - Rose corail (comme card-interventions)
+      &.btn-delete {
+        background: linear-gradient(45deg, #fecdd3, #fb7185);
+        color: #9f1239;
+
+        &:hover {
+          background: linear-gradient(45deg, #fb7185, #f43f5e);
+          box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);
+        }
+      }
+    }
+
+    // Responsive
+    @media (max-width: 768px) {
+      gap: 0.3rem;
+
+      .btn-locataire-action {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+
+        span {
+          display: none; // Masquer le texte sur mobile, garder seulement les icônes
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
       }
     }
   }
-}
 
-// et ici pr autres contacts
+  // et ici pr autres contacts
 
-// Boutons de la fiche contacts
-.contacts-actions {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-
-  .btn-contacts-action {
-    display: inline-flex;
+  // Boutons de la fiche contacts
+  .contacts-actions {
+    display: flex;
+    gap: 0.5rem;
     align-items: center;
-    gap: 0.3rem;
-    padding: 4px 12px;
-    border: none;
-    border-radius: 8px;
-    font-family: "Poppins", sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-    span {
-      font-size: 0.85rem;
-    }
-
-    svg {
-      width: 14px;
-      height: 14px;
-    }
-
-    &:focus {
-      outline: 2px solid #78350f; // Couleur jaune foncé pour le focus
-      outline-offset: 2px;
-    }
-
-    &:hover {
-      transform: translateY(-2px);
-    }
-
-    // Bouton Ajouter - Jaune pâle (comme card-contacts)
-    &.btn-add {
-      background: linear-gradient(45deg, #fef3c7, #6ee7b7);
-      color: #78350f;
-
-      &:hover {
-        background: linear-gradient(45deg, #fde68a, #fef08a);
-        box-shadow: 0 4px 12px rgba(253, 230, 138, 0.3);
-      }
-    }
-
-    // Bouton Archiver - Jaune légèrement plus foncé
-    &.btn-archive {
-      background: linear-gradient(45deg, #fef9c3, #fef08a);
-      color: #78350f;
-
-      &:hover {
-        background: linear-gradient(45deg, #fef08a, #facc15);
-        box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
-      }
-    }
-
-    // Bouton Supprimer - Rouge corail (comme card-interventions)
-    &.btn-delete {
-      background: linear-gradient(45deg, #fecdd3, #fb7185);
-      color: #9f1239;
-
-      &:hover {
-        background: linear-gradient(45deg, #fb7185, #f43f5e);
-        box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);
-      }
-    }
-  }
-
-  // Responsive
-  @media (max-width: 768px) {
-    gap: 0.3rem;
 
     .btn-contacts-action {
-      padding: 6px 10px;
-      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 4px 12px;
+      border: none;
+      border-radius: 8px;
+      font-family: "Poppins", sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
       span {
-        display: none; // Masquer le texte sur mobile, garder seulement les icônes
+        font-size: 0.85rem;
       }
 
       svg {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
+      }
+
+      &:focus {
+        outline: 2px solid #78350f; // Couleur jaune foncé pour le focus
+        outline-offset: 2px;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+
+      // Bouton Ajouter - Jaune pâle (comme card-contacts)
+      &.btn-add {
+        background: linear-gradient(45deg, #fef3c7, #6ee7b7);
+        color: #78350f;
+
+        &:hover {
+          background: linear-gradient(45deg, #fde68a, #fef08a);
+          box-shadow: 0 4px 12px rgba(253, 230, 138, 0.3);
+        }
+      }
+
+      // Bouton Archiver - Jaune légèrement plus foncé
+      &.btn-archive {
+        background: linear-gradient(45deg, #fef9c3, #fef08a);
+        color: #78350f;
+
+        &:hover {
+          background: linear-gradient(45deg, #fef08a, #facc15);
+          box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+        }
+      }
+
+      // Bouton Supprimer - Rouge corail (comme card-interventions)
+      &.btn-delete {
+        background: linear-gradient(45deg, #fecdd3, #fb7185);
+        color: #9f1239;
+
+        &:hover {
+          background: linear-gradient(45deg, #fb7185, #f43f5e);
+          box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);
+        }
+      }
+    }
+
+    // Responsive
+    @media (max-width: 768px) {
+      gap: 0.3rem;
+
+      .btn-contacts-action {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+
+        span {
+          display: none; // Masquer le texte sur mobile, garder seulement les icônes
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
       }
     }
   }
-}
 
-/// => A voir si j'en rajoute sur d'autres sections = pr tous les regrouper ici
-
-
-
-
-
-
+  /// => A voir si j'en rajoute sur d'autres sections = pr tous les regrouper ici
 
   &.card-locataire {
     .card-header {
@@ -435,13 +482,58 @@
       font-weight: 400;
       color: #2d3748;
     }
+
+    .input-field,
+    .textarea-field {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #bae6fd; /* Bleu ciel */
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-family: "Poppins", sans-serif;
+      color: #2d3748;
+      background: #f0f9ff; /* Bleu très clair */
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+
+      &:hover,
+      &:focus {
+        border-color: #6ee7b7; /* Vert d’eau */
+        box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.2);
+        outline: none;
+      }
+
+      &::placeholder {
+        color: #6b7280;
+        font-style: italic;
+      }
+    }
+
+    .textarea-field {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .checkbox-field {
+      width: 20px;
+      height: 20px;
+      accent-color: #6ee7b7; /* Vert d’eau */
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        outline: 2px solid #6ee7b7;
+        outline-offset: 2px;
+      }
+    }
   }
 }
+
 
 .documents-section {
   margin-top: 1rem;
   padding: 1rem;
-  background: #f0f9ff; 
+  background: #f0f9ff;
   border-radius: 8px;
   box-sizing: border-box;
 
@@ -449,7 +541,7 @@
     width: 135px;
     height: 28px;
     padding: 0;
-    border: 1px solid #fce7f3; 
+    border: 1px solid #fce7f3;
     border-radius: 6px;
     background: linear-gradient(45deg, #fce7f3, #fbcfe8);
     font-size: 0.85rem;
@@ -506,7 +598,7 @@
     width: 80px;
     height: 28px;
     padding: 0.4rem 0.8rem;
-    background: linear-gradient(45deg,#f3e8ff,#e9d5ff); 
+    background: linear-gradient(45deg, #f3e8ff, #e9d5ff);
     color: #4a044e;
     border: none;
     border-radius: 6px;
@@ -848,179 +940,9 @@
   }
 
   &.decomptes-annuels-charges {
-  /*.items-list {
-  display: grid;
-  gap: 0.8rem;
-  width: 100%;
-  box-sizing: border-box;
-
-  .mini-card {
-    background: #f0f9ff; 
-    border-radius: 10px;
-    padding: 1rem;
-    border-left: 3px solid #7dd3fc; 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .info-grid {
-      gap: 0.5rem;
-
-      .info-item {
-        background: transparent;
-        border-left: none;
-        padding: 0.5rem 0;
-
-        .label {
-          font-size: 0.85rem;
-          color: #6b7280;
-        }
-
-        .value {
-          font-size: 0.9rem;
-          color: #2d3748;
-
-          .doc-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 0.75rem;
-            background: #e0f2fe; 
-            color: #1e40af;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-
-            &:hover {
-              background: #bfdbfe;
-              transform: translateX(3px);
-            }
-          }
-
-          .no-doc {
-            display: none; /
-          }
-        }
-      }
-    }
-  }   
-
-  input[type="file"] {
-    width: 135px !important;
-    height: 28px !important;
-    padding: 0 !important;
-    margin: 0.5rem 0 !important;
-    border: 1px solid #fce7f3 !important; 
-    border-radius: 6px !important;
-    background: linear-gradient(45deg, #fce7f3, #fbcfe8) !important; 
-    font-size: 0 !important; 
-    color: transparent !important; 
-    text-indent: -9999px !important; 
-    position: relative !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer !important;
-    overflow: hidden !important;
-    transition: all 0.3s ease !important;
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    line-height: normal !important;
-
-    &::before {
-      content: "📎 Choisir un fichier" !important;
-      font-size: 0.85rem !important;
-      color: #be185d !important;
-      padding: 0.5rem 0.8rem !important;
-      border-radius: 6px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      width: 100% !important;
-      height: 100% !important;
-      box-sizing: border-box !important;
-      position: absolute !important;
-      top: 0 !important;
-      left: 0 !important;
-      background: transparent !important;
-    }
-
-    &:hover,
-    &:focus {
-      border-color: #f9a8d4 !important;
-      background: linear-gradient(45deg, #fbcfe8, #f9a8d4) !important;
-      box-shadow: 0 0 0 3px rgba(249, 168, 212, 0.2) !important;
-      outline: none !important;
-    }
-
-    &::-webkit-file-upload-button {
-      visibility: hidden !important;
-      width: 0 !important;
-      height: 0 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-
-    &::-moz-file-upload-button {
-      visibility: hidden !important;
-      width: 0 !important;
-      height: 0 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-  }
-
-  button.upload-btn {
-    margin-top: 0.5rem !important;
-    width: 80px !important;
-    height: 28px !important;
-    padding: 0.4rem 0.8rem !important;
-    background: linear-gradient(45deg, #f3e8ff, #e9d5ff) !important; 
-    color: transparent !important; 
-    text-indent: -9999px !important; 
-    border: none !important;
-    border-radius: 6px !important;
-    font-size: 0 !important; 
-    font-weight: 500 !important;
-    font-family: "Poppins", sans-serif !important;
-    cursor: pointer !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    transition: all 0.3s ease !important;
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-
-    &::before {
-      content: "⬆" !important;
-      font-size: 1rem !important;
-      color: #4a044e !important;
-      text-indent: 0 !important;
-    }
-
-    &:hover {
-      background: linear-gradient(45deg, #e9d5ff, #d8b4fe) !important;
-      transform: translateY(-2px) !important;
-      box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3) !important;
-    }
-
-    &:focus {
-      outline: 2px solid #6b46c1 !important;
-      outline-offset: 2px !important;
-    }
-  }
-} */
     .empty-state {
       background: #f0f9ff; /* Bleu très clair */
-      border: 2px dashed #bae6fd; 
+      border: 2px dashed #bae6fd;
       border-radius: 10px;
       padding: 1rem;
       text-align: center;
