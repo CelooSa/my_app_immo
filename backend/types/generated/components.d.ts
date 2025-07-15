@@ -1,21 +1,5 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
-export interface AppartementsAutresContacts extends Struct.ComponentSchema {
-  collectionName: 'components_appartements_autres_contacts';
-  info: {
-    displayName: 'autres_contacts';
-    icon: 'phone';
-  };
-  attributes: {
-    coordonnees: Schema.Attribute.Blocks;
-    nom: Schema.Attribute.String;
-    notes: Schema.Attribute.Blocks;
-    type_contact: Schema.Attribute.Enumeration<
-      ['Agence immo', 'Plombier', 'Gestionnaire', 'Gardien', 'Autre']
-    >;
-  };
-}
-
 export interface AppartementsContactsDivers extends Struct.ComponentSchema {
   collectionName: 'components_appartements_contacts_divers';
   info: {
@@ -405,7 +389,6 @@ export interface SharedCriteresRecherche extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
-      'appartements.autres-contacts': AppartementsAutresContacts;
       'appartements.contacts-divers': AppartementsContactsDivers;
       'appartements.decomptes-annuels': AppartementsDecomptesAnnuels;
       'appartements.entretien-chaudiere': AppartementsEntretienChaudiere;

@@ -57,6 +57,83 @@ const DetailAppartement = () => {
   const [appart, setAppart] = useState(null);
   const [loading, setLoading] = useState(true);
   const [filesToUpload, setFilesToUpload] = useState({});
+  const [locataires, setLocataires] = useState([]);
+  const [errors, setErrors] = useState({});
+
+  // Charger les locataires au montage
+  useEffect(() => {
+    if (appart?.attributes?.locataires?.data) {
+      setLocataires(
+        appart.attributes.locataires.data.map((loc) => ({
+          id: loc.id,
+          nom: loc.attributes.nom || "",
+          email: loc.attributes.email || "",
+          telephone: loc.attributes.telephone || "",
+          dateEntree: loc.attributes.dateEntree || "",
+          bail: loc.attributes.bail || null,
+          etatDesLieuxEntree: loc.attributes.etatDesLieuxEntree || [],
+          etatDesLieuxSortie: loc.attributes.etatDesLieuxSortie || [],
+          assuranceLocataire: loc.attributes.assuranceLocataire || [],
+          assurancePno: loc.attributes.assurancePno || [],
+          indiceIrl: loc.attributes.indiceIrl || "",
+          archive: loc.attributes.archive || false,
+        }))
+      );
+    } else {
+      setLocataires([]);
+    }
+  }, [appart]);
+
+  // Valider un locataire
+  const validateLocataire = (locataire) => {
+    const newErrors = {};
+    if (!locataire.nom) newErrors.nom = "Le nom est requis";
+    if (!locataire.email) {
+      newErrors.email = "L'email est requis";
+    } else if (!/\S+@\S+\.\S+/.test(locataire.email)) {
+      newErrors.email = "L'email n'est pas valide";
+    }
+    return newErrors;
+  };
+
+  // Gérer les changements dans les champs des locataires
+  const handleLocataireChange = (index, field, value) => {
+    const newLocataires = [...locataires];
+    newLocataires[index][field] = value;
+    setLocataires(newLocataires);
+
+    // Valider en temps réel
+    const fieldErrors = validateLocataire(newLocataires[index]);
+    setErrors((prev) => ({ ...prev, [index]: fieldErrors }));
+
+    // Mettre à jour le state appart pour synchronisation avec handleSave
+    setAppart((prev) => ({
+      ...prev,
+      attributes: {
+        ...prev.attributes,
+        locataires: {
+          data: newLocataires.map((loc) => ({
+            id: loc.id,
+            attributes: {
+              nom: loc.nom,
+              email: loc.email,
+              telephone: loc.telephone,
+              dateEntree: loc.dateEntree,
+              bail: loc.bail,
+              etatDesLieuxEntree: loc.etatDesLieuxEntree,
+              etatDesLieuxSortie: loc.etatDesLieuxSortie,
+              assuranceLocataire: loc.assuranceLocataire,
+              assurancePno: loc.assurancePno,
+              indiceIrl: loc.indiceIrl,
+              archive: loc.archive,
+            },
+          })),
+        },
+      },
+    }));
+  };
+
+  ///// là où j'ai fait des modis juste au dessus.
 
   // Gestionnaire pour les champs simples et booléens
   const handleChange = (
@@ -66,9 +143,26 @@ const DetailAppartement = () => {
     isArray = false,
     index = null
   ) => {
+    if (!appart) {
+      console.warn(
+        "handleChange: appart is null, initializing default structure"
+      );
+      setAppart({
+        attributes: {
+          [section]: {
+            [field]: isArray ? [value] : value,
+          },
+        },
+      });
+      return;
+    }
     setAppart((prev) => {
       const updatedData = { ...prev };
+      if (!updatedData.attributes) {
+        updatedData.attributes = {};
+      }
       if (isArray && index !== null) {
+        updatedData.attributes[section] = updatedData.attributes[section] || {};
         updatedData.attributes[section][field] = [
           ...(updatedData.attributes[section][field] || []),
         ];
@@ -85,8 +179,24 @@ const DetailAppartement = () => {
 
   // Gestionnaire pour les champs texte riche (comme listeMeubles)
   const handleRichTextChange = (section, field, value) => {
+    if (!appart) {
+      console.warn(
+        "handleRichTextChange: appart is null, initializing default structure"
+      );
+      setAppart({
+        attributes: {
+          [section]: {
+            [field]: [{ children: [{ text: value }] }],
+          },
+        },
+      });
+      return;
+    }
     setAppart((prev) => {
       const updatedData = { ...prev };
+      if (!updatedData.attributes) {
+        updatedData.attributes = {};
+      }
       updatedData.attributes[section] = {
         ...(updatedData.attributes[section] || {}),
         [field]: [{ children: [{ text: value }] }],
@@ -110,13 +220,16 @@ const DetailAppartement = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [appart, id]);
+
   const handleSave = async () => {
-    if (!appart) return;
+    if (!appart || !appart.attributes) {
+      console.warn("handleSave: appart ou appart.attributes est null");
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token");
       const updatedData = { ...appart.attributes };
-
       await axios.put(
         `http://localhost:1337/api/appartements/${id}`,
         { data: updatedData },
@@ -140,10 +253,13 @@ const DetailAppartement = () => {
       alert("Modifications sauvegardées avec succès !");
     } catch (err) {
       console.error("Erreur lors de la sauvegarde :", err);
-      alert("Erreur lors de la sauvegarde.");
+      const errorMessage =
+        err.response?.data?.error?.message || "Erreur lors de la sauvegarde.";
+      alert(errorMessage);
     }
   };
   // pour mes boutons d'action => de la partie locataire
+  // Ajouter un locataire via API Strapi
   // Ajouter un locataire via API Strapi
   const handleAddTenant = async () => {
     try {
@@ -154,15 +270,20 @@ const DetailAppartement = () => {
           email: "",
           telephone: "",
           dateEntree: "",
+          indiceIrl: "",
           appartement: id, // Lie le locataire à l'appartement actuel
         },
       };
 
-      await axios.post(`http://localhost:1337/api/locataires`, newTenant, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `http://localhost:1337/api/locataires`,
+        newTenant,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       // Rafraîchir les données de l'appartement
       const res = await axios.get(
@@ -181,12 +302,70 @@ const DetailAppartement = () => {
     }
   };
 
-  const handleDeleteTenant = () => {
-    console.log("Supprimer la fiche locataire");
+  // Supprimer un locataire via API Strapi
+  const handleDeleteTenant = async (tenantId, index) => {
+    if (!window.confirm("Voulez-vous vraiment supprimer ce locataire ?"))
+      return;
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:1337/api/locataires/${tenantId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Rafraîchir les données de l'appartement
+      const res = await axios.get(
+        `http://localhost:1337/api/appartements/${id}?populate=*`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setAppart(res.data.data);
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[index];
+        return newErrors;
+      });
+      alert("Locataire supprimé avec succès !");
+    } catch (err) {
+      console.error("Erreur lors de la suppression du locataire :", err);
+      alert("Erreur lors de la suppression du locataire.");
+    }
   };
 
-  const handleArchiveTenant = () => {
-    console.log("Archiver la fiche locataire");
+  // Archiver un locataire via API Strapi
+  const handleArchiveTenant = async (tenantId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:1337/api/locataires/${tenantId}`,
+        { data: { archive: true } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Rafraîchir les données de l'appartement
+      const res = await axios.get(
+        `http://localhost:1337/api/appartements/${id}?populate=*`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setAppart(res.data.data);
+      alert("Locataire archivé avec succès !");
+    } catch (err) {
+      console.error("Erreur lors de l'archivage du locataire :", err);
+      alert("Erreur lors de l'archivage du locataire.");
+    }
   };
 
   // et ici pour la partie de mes contacts
@@ -216,13 +395,18 @@ const DetailAppartement = () => {
           "Réponse API loyer_et_charges:",
           res.data.data.attributes.loyer_et_charges
         );
-        setAppart(res.data.data);
+        // S'assurer que le_bien est initialisé si absent
+        const data = res.data.data;
+        if (!data.attributes.le_bien) {
+          data.attributes.le_bien = {};
+        }
+        setAppart(data);
       } catch (err) {
         console.warn(
           "Aucune donnée trouvée, affichage en mode vide:",
           err.message
         );
-        setAppart(null);
+        setAppart({ attributes: { le_bien: {} } }); // Structure par défaut
       } finally {
         setLoading(false);
       }
@@ -231,14 +415,44 @@ const DetailAppartement = () => {
     fetchAppartement();
   }, [id]);
 
-  const handleFileUpload = (e, section, field, isMultiple) => {
+  const handleFileUpload = (e, section, field, isMultiple, index = null) => {
     const files = isMultiple ? Array.from(e.target.files) : e.target.files[0];
+    const maxSize = 10 * 1024 * 1024; // 10 MB
+    const validTypes = [
+      "image/jpeg",
+      "image/png",
+      "application/pdf",
+      "video/mp4",
+      "audio/mpeg",
+    ];
+    if (isMultiple) {
+      for (const file of files) {
+        if (file.size > maxSize) {
+          alert("Fichier trop volumineux (max 10 MB).");
+          return;
+        }
+        if (!validTypes.includes(file.type)) {
+          alert("Type de fichier non supporté.");
+          return;
+        }
+      }
+    } else {
+      if (files.size > maxSize) {
+        alert("Fichier trop volumineux (max 10 MB).");
+        return;
+      }
+      if (!validTypes.includes(files.type)) {
+        alert("Type de fichier non supporté.");
+        return;
+      }
+    }
+    const key =
+      index !== null ? `${section}.${field}_${index}` : `${section}.${field}`;
     setFilesToUpload((prev) => ({
       ...prev,
-      [`${section}.${field}`]: files,
+      [key]: files,
     }));
   };
-
   const uploadFiles = async (section, field) => {
     const key = `${section}.${field}`;
     if (!filesToUpload[key]) return;
@@ -342,6 +556,10 @@ const DetailAppartement = () => {
   const leBien = appart?.attributes?.le_bien || {};
   const loyerEtCharges = appart?.attributes?.loyer_et_charges || {};
 
+  if (!appart) {
+    return <div className="loading-spinner">🏠 Chargement...</div>;
+  }
+
   return (
     <div className="detail-container">
       <div className="header-section">
@@ -400,7 +618,7 @@ const DetailAppartement = () => {
                   type="number"
                   id="etage"
                   className="input-field"
-                  value={leBien.etage ?? ""}
+                  value={leBien.etage != null ? leBien.etage : ""}
                   onChange={(e) =>
                     handleChange("le_bien", "etage", Number(e.target.value))
                   }
@@ -430,7 +648,7 @@ const DetailAppartement = () => {
                   type="number"
                   id="nombrePieces"
                   className="input-field"
-                  value={leBien.nombrePieces ?? ""}
+                  value={leBien.nombrePieces != null ? leBien.nombrePieces : ""}
                   onChange={(e) =>
                     handleChange(
                       "le_bien",
@@ -449,7 +667,7 @@ const DetailAppartement = () => {
                   type="number"
                   id="nombreM2"
                   className="input-field"
-                  value={leBien.nombreM2 ?? ""}
+                  value={leBien.nombreM2 != null ? leBien.nombreM2 : ""}
                   onChange={(e) =>
                     handleChange("le_bien", "nombreM2", Number(e.target.value))
                   }
@@ -684,6 +902,7 @@ const DetailAppartement = () => {
                   }
                   placeholder="Non renseigné"
                   rows="4"
+                  aria-label="Liste des meubles de l'appartement"
                 />
               </div>
             </div>
@@ -706,7 +925,8 @@ const DetailAppartement = () => {
               </button>
               <button
                 className="btn-locataire-action btn-archive"
-                onClick={handleArchiveTenant}
+                onClick={() => 
+                  handleArchiveTenant(appart?.attributes?.locataires?.id)}
                 title="Archiver la fiche locataire"
                 aria-label="Archiver la fiche locataire"
               >
@@ -715,7 +935,8 @@ const DetailAppartement = () => {
               </button>
               <button
                 className="btn-locataire-action btn-delete"
-                onClick={handleDeleteTenant}
+                onClick={() =>
+                  handleDeleteTenant(appart?.attributes?.locataires?.id)}
                 title="Supprimer la fiche locataire"
                 aria-label="Supprimer la fiche locataire"
               >
@@ -728,27 +949,47 @@ const DetailAppartement = () => {
             <div className="info-grid">
               <div className="info-item">
                 <span className="label">Nom</span>
-                <span className="value">
-                  {appart?.attributes?.locataires?.nom || "À remplir"}
-                </span>
+                <input
+                  type="text"
+                  value={appart?.attributes?.locataires?.nom || ""}
+                  onChange={(e) =>
+                    handleChange("locataires", "nom", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
                 <span className="label">Email</span>
-                <span className="value">
-                  {appart?.attributes?.locataires?.email || "À remplir"}
-                </span>
+                <input
+                  type="text"
+                  value={appart?.attributes?.locataires?.email || ""}
+                  onChange={(e) =>
+                    handleChange("locataires", "email", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
                 <span className="label">Téléphone</span>
-                <span className="value">
-                  {appart?.attributes?.locataires?.telephone || "À remplir"}
-                </span>
+                <input
+                  type="text"
+                  value={appart?.attributes?.locataires?.telephone || ""}
+                  onChange={(e) =>
+                    handleChange("locataires", "telephone", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
               <div className="info-item">
                 <span className="label">Date d'entrée</span>
-                <span className="value">
-                  {appart?.attributes?.locataires?.dateEntree || "À remplir"}
-                </span>
+                <input
+                  type="text"
+                  value={appart?.attributes?.locataires?.dateEntree || ""}
+                  onChange={(e) =>
+                    handleChange("locataires", "dateEntree", e.target.value)
+                  }
+                  placeholder="À remplir"
+                />
               </div>
             </div>
 
@@ -2463,7 +2704,7 @@ const DetailAppartement = () => {
                     <span className="value">
                       {appart?.attributes?.relocation?.bail_fiinal?.data ? (
                         <a
-                          href={`http://localhost:1337${appart.attributes.relocation.bail_fiinal.data.attributes.url}`}
+                          href={`http://localhost:1337${appart.attributes.relocation.bail_final.data.attributes.url}`}
                           target="_blank"
                           rel="noreferrer"
                           className="doc-link"

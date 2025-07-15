@@ -1,51 +1,106 @@
 // Variables
-$primary-blue: #00A2FF;
-$primary-pink: #FF9EC7;
-$primary-green: #B8E6B8;
-$secondary-green: #98D8C8;
+$primary-blue: #00a2ff;
+$primary-pink: #ff9ec7;
+$primary-green: #b8e6b8;
+$secondary-green: #98d8c8;
 $text-gray: #666;
-$text-dark-green: #2D5A2D;
-$profile-pink: #D63384;
+$text-dark-green: #2d5a2d;
+$profile-pink: #d63384;
 
 // Animations
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-8px); }
-  60% { transform: translateY(-4px); }
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes searchGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba($primary-blue, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba($primary-blue, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba($primary-blue, 0.4);
+  }
 }
 
 .navbar {
-  background: linear-gradient(135deg, #E8F4FD 0%, #F0F8FF 100%);
+  background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%);
   border-bottom: 2px solid $primary-green;
   padding: 0;
   box-shadow: 0 4px 20px rgba($primary-blue, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
+  font-family: "Sour Gummy", sans-serif;
 
   &-container {
+    display: flex;
+    align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 12px 24px;
+    justify-content: space-between;
   }
 
-  // Logo avec style gaming
-  &-brand {
+  &-left {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
-    gap: 8px;
+  }
+
+  &-center {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-right {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+  }
+
+  &-brand {
+    position: absolute !important;
+    left: 24px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
     font-weight: 700;
     font-size: 24px;
     color: $primary-blue;
+    text-decoration: none;
+    z-index: 10;
 
     .logo-icon {
       font-size: 32px;
@@ -58,24 +113,22 @@ $profile-pink: #D63384;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      font-family: 'Sour Gummy', sans-serif;;
+      font-family: "Sour Gummy", sans-serif;
     }
 
     .brand-emoji {
-      &:hover{
+      &:hover {
         animation: bounce 0.8s;
       }
-     
     }
   }
 
-  // Navigation centrale
   &-menu {
     display: flex;
-    gap: 8px;
-    
+    gap: 58px;
 
-    .nav-button {
+    .nav-link {
+      /* Changé de .nav-button à .nav-link pour correspondre à Navbar.jsx */
       display: flex;
       align-items: center;
       gap: 8px;
@@ -89,7 +142,8 @@ $profile-pink: #D63384;
       transition: all 0.3s ease;
       backdrop-filter: blur(10px);
       font-size: 14px;
-      font-family: 'Sour Gummy';
+      font-family: "Sour Gummy", sans-serif;
+      text-decoration: none;
 
       &:hover {
         background: rgba($primary-green, 0.3);
@@ -110,24 +164,112 @@ $profile-pink: #D63384;
     }
   }
 
-  // Profil utilisateur
-  &-profile {
-    position: relative;
+  &-search {
+    max-width: 250px;
+    margin: 0;
+    position: absolute !important;
+    right: 200px !important; // Laisser place au bouton admin
+    top: 50% !important;
+    transform: translateY(-50%) !important;
 
-    .profile-button {
+    .search-form {
+      width: 100%;
+    }
+
+    .search-input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 25px;
+      padding: 0 20px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba($primary-blue, 0.2);
+
+      &:focus-within {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: $primary-blue;
+        animation: searchGlow 2s infinite;
+        transform: translateY(-1px);
+      }
+
+      .search-icon {
+        color: $primary-blue;
+        margin-right: 12px;
+        font-size: 20px;
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+      }
+
+      .search-input {
+        flex: 1;
+        background: none;
+        border: none;
+        color: $text-dark-green;
+        font-size: 14px;
+        padding: 14px 0;
+        outline: none;
+        font-family: "Sour Gummy", sans-serif;
+        font-weight: 500;
+
+        &::placeholder {
+          color: rgba($text-gray, 0.8);
+          font-style: italic;
+        }
+
+        &:focus {
+          color: $text-dark-green;
+        }
+      }
+
+      .clear-search {
+        background: none;
+        border: none;
+        color: $text-gray;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+        margin-left: 8px;
+
+        &:hover {
+          background: rgba($primary-pink, 0.1);
+          color: $primary-pink;
+          transform: scale(1.1);
+        }
+
+        svg {
+          font-size: 16px;
+        }
+      }
+
+      &:hover {
+        .search-icon {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &-profile {
+    position:absolute !important;
+    right: 24px !important;
+    
+    .admin-button {
       display: flex;
       align-items: center;
       gap: 8px;
       padding: 8px 16px;
       border: none;
       border-radius: 25px;
-      background: linear-gradient(135deg, #FFE4E6, #FFF0F5);
+      background: linear-gradient(135deg, #ffe4e6, #fff0f5);
       color: $profile-pink;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
       border: 2px solid rgba($primary-pink, 0.3);
-      font-family: 'Sour Gummy';
+      font-family: "Sour Gummy", sans-serif;
 
       &:hover {
         transform: translateY(-2px);
@@ -135,17 +277,16 @@ $profile-pink: #D63384;
         border-color: $primary-pink;
       }
 
-      .heart-icon {
+      .logout-icon {
         font-size: 16px;
         color: $primary-pink;
-        animation: pulse 2s infinite;
       }
 
       .avatar {
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: linear-gradient(135deg, $primary-pink, #FFB3D1);
+        background: linear-gradient(135deg, $primary-pink, #ffb3d1);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -153,37 +294,56 @@ $profile-pink: #D63384;
         box-shadow: 0 2px 8px rgba($primary-pink, 0.3);
       }
     }
-  }
-}
 
-// Responsive
-@media (max-width: 768px) {
-  .navbar {
-    &-container {
-      padding: 12px 16px;
-    }
-    
-    &-menu {
-      gap: 4px;
-      
-      .nav-button {
-        padding: 10px 12px;
-        font-size: 13px;
-        
-        span {
-          display: none;
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: none;
+      flex-direction: column;
+      min-width: 120px;
+      z-index: 200;
+
+      &.open {
+        display: flex;
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+        border: none;
+        background: none;
+        text-align: left;
+        color: $text-dark-green;
+        font-size: 14px;
+        font-family: "Sour Gummy", sans-serif;
+        cursor: pointer;
+
+        &:hover {
+          background: rgba($primary-green, 0.2);
         }
       }
     }
-    
-    &-brand {
-      .brand-text {
-        display: none;
-      }
+  }
+
+  @media (max-width: 480px) {
+    &-container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &-left,
+    &-center,
+    &-right {
+      width: 100%;
+      justify-content: center;
+      margin: 5px 0;
+    }
+
+    &-search {
+      max-width: 100%;
     }
   }
-}
-
-.navbar-brand  {
-  text-decoration: none;
 }

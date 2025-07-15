@@ -48,21 +48,21 @@ h1 {
 .contacts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem 2.5rem; /* Augmente l'espacement horizontal pour plus de clarté */
-  justify-items: start; /* Aligne les fiches à gauche */
+  gap: 2rem 2.5rem;
+  justify-items: start;
   align-items: start;
-  width: 100%; /* Occupe toute la largeur */
-  padding: 0 1rem 0 1.5rem; /* Décalage à gauche et léger padding à droite */
+  width: 100%;
+  padding: 0 1rem 0 1.5rem;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr; /* Une seule colonne */
-    gap: 1.5rem; /* Espacement réduit sur petits écrans */
-    padding: 0 0.5rem; /* Padding réduit */
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 0.5rem;
   }
 
   @media (max-width: 320px) {
     grid-template-columns: 1fr;
-    gap: 1rem; /* Espacement encore réduit pour très petits écrans */
+    gap: 1rem;
     padding: 0 0.3rem;
   }
 }
@@ -193,29 +193,22 @@ h1 {
   gap: 1rem;
 
   .form-row {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid; /* Changé en grille pour un contrôle précis */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Deux colonnes ou plus */
     gap: 1.2rem 2rem;
+    width: 100%; /* Assure que la grille utilise toute la largeur */
 
     label {
-      flex: 1 1 45%;
-      margin-bottom: 0.5rem;
-      min-width: 0; /* Empêche les débordements dans flex */
+      display: flex;
+      flex-direction: column;
+      font-weight: 600;
+      color: $text-color;
+      font-size: 0.95rem;
     }
 
     @media (max-width: 768px) {
-      label {
-        flex: 1 1 100%;
-      }
+      grid-template-columns: 1fr; /* Une colonne sur petits écrans */
     }
-  }
-
-  label {
-    display: facex;
-    flex-direction: column;
-    font-weight: 600;
-    color: $text-color;
-    font-size: 0.95rem;
   }
 
   input,
@@ -229,7 +222,7 @@ h1 {
     background: lighten($paper-yellow, 3%);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
-    box-sizing: border-box; /* Assure que le padding est inclus */
+    box-sizing: border-box;
   }
 
   textarea {
