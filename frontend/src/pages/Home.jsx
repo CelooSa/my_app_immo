@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Icon } from '@iconify/react';
+
 import '../styles/home.scss';
 import MinimalNavbar from '../components/MinimalNavbar';
+import Navbar from '../components/Navbar';
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
-  //const navigate = useNavigate();
+  const [isConnected, setIsConnected] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsConnected(!!token)
     setIsVisible(true);
-  }, []);
+  }, [location]);
 
   const features = [
     {
@@ -31,7 +36,8 @@ const Home = () => {
 
   return (
     <>
-      <MinimalNavbar />
+      {isConnected ? <Navbar /> : <MinimalNavbar />}
+{/* Navbar qui doit venir en fonction de si je suis log ou pas */ }
       <div className="home-container">
         <div className="home-background"></div>
 
@@ -55,7 +61,7 @@ const Home = () => {
               <div
                 key={i}
                 className="feature-card"
-                // onClick supprimé pour ne plus naviguer vers preview ou blocnotes
+                // onClick supprimé ici pour ne plus naviguer vers preview ou blocnotes que j'ai enlevé pr l'instant
                 style={{
                   transitionDelay: `${i * 100}ms`,
                   boxShadow: `0 6px 20px ${f.color}44`,

@@ -10,7 +10,7 @@ const MinimalNavbar = () => {
   const handleHomeClick = () => {
     const token = localStorage.getItem('token');
     if(token) {
-      navigate('/appartement');
+      navigate('/appartements');
     }else {
       navigate('/');
     }

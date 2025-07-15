@@ -9,43 +9,15 @@ $profile-pink: #d63384;
 
 // Animations
 @keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-8px);
-  }
-  60% {
-    transform: translateY(-4px);
-  }
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% {transform: translateY(-8px); }
+  60% {transform: translateY(-4px); }
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes searchGlow {
-  0% {
-    box-shadow: 0 0 0 0 rgba($primary-blue, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 20px 5px rgba($primary-blue, 0.2);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba($primary-blue, 0.4);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 .navbar {
@@ -253,9 +225,9 @@ $profile-pink: #d63384;
   }
 
   &-profile {
-    position:absolute !important;
+    position: absolute !important;
     right: 24px !important;
-    
+
     .admin-button {
       display: flex;
       align-items: center;
