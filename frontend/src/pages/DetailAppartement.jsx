@@ -230,15 +230,21 @@ const DetailAppartement = () => {
     try {
       const token = localStorage.getItem("token");
       const updatedData = { ...appart.attributes };
-      await axios.put(
+
+      console.log("Données envoyées à l'API pour sauvegarde :", updatedData);
+
+      const response = await axios.put(
         `http://localhost:1337/api/appartements/${id}`,
-        { data: updatedData },
+        updatedData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
+
+      console.log("Réponse de l'API après sauvegarde :", response.data);
 
       // Rafraîchir les données après sauvegarde
       const res = await axios.get(
@@ -252,15 +258,20 @@ const DetailAppartement = () => {
       setAppart(res.data.data);
       alert("Modifications sauvegardées avec succès !");
     } catch (err) {
-      console.error("Erreur lors de la sauvegarde :", err);
-      const errorMessage =
-        err.response?.data?.error?.message || "Erreur lors de la sauvegarde.";
-      alert(errorMessage);
+      console.error(
+        "Erreur détaillée lors de la sauvegarde :",
+        err.response ? err.response.data : err.message
+      );
+      alert(
+        "Erreur lors de la sauvegarde : " +
+          (err.response ? err.response.data.error.message : err.message)
+      );
     }
   };
   // pour mes boutons d'action => de la partie locataire
   // Ajouter un locataire via API Strapi
   // Ajouter un locataire via API Strapi
+
   const handleAddTenant = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -275,15 +286,23 @@ const DetailAppartement = () => {
         },
       };
 
+      console.log(
+        "Données envoyées à l'API pour ajout du locataire :",
+        newTenant
+      );
+
       const response = await axios.post(
         `http://localhost:1337/api/locataires`,
         newTenant,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
+
+      console.log("Réponse de l'API après ajout du locataire :", response.data);
 
       // Rafraîchir les données de l'appartement
       const res = await axios.get(
@@ -294,11 +313,16 @@ const DetailAppartement = () => {
           },
         }
       );
+
       setAppart(res.data.data);
       alert("Locataire ajouté avec succès !");
     } catch (err) {
-      console.error("Erreur lors de l'ajout du locataire :", err);
-      alert("Erreur lors de l'ajout du locataire.");
+      console.error("Erreur détaillée lors de l'ajout du locataire :", err);
+      const errorMessage =
+        err.response?.data?.error?.message ||
+        err.message ||
+        "Une erreur inconnue est survenue";
+      alert("Erreur lors de l'ajout du locataire : " + errorMessage);
     }
   };
 
@@ -309,11 +333,22 @@ const DetailAppartement = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:1337/api/locataires/${tenantId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+
+      console.log("Suppression du locataire avec l'ID :", tenantId);
+
+      const response = await axios.delete(
+        `http://localhost:1337/api/locataires/${tenantId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(
+        "Réponse de l'API après suppression du locataire :",
+        response.data
+      );
 
       // Rafraîchir les données de l'appartement
       const res = await axios.get(
@@ -324,16 +359,18 @@ const DetailAppartement = () => {
           },
         }
       );
+
       setAppart(res.data.data);
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[index];
-        return newErrors;
-      });
       alert("Locataire supprimé avec succès !");
     } catch (err) {
-      console.error("Erreur lors de la suppression du locataire :", err);
-      alert("Erreur lors de la suppression du locataire.");
+      console.error(
+        "Erreur détaillée lors de la suppression du locataire :",
+        err.response ? err.response.data : err.message
+      );
+      alert(
+        "Erreur lors de la suppression du locataire : " +
+          (err.response ? err.response.data.error.message : err.message)
+      );
     }
   };
 
@@ -341,14 +378,23 @@ const DetailAppartement = () => {
   const handleArchiveTenant = async (tenantId) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
+
+      console.log("Archivage du locataire avec l'ID :", tenantId);
+
+      const response = await axios.put(
         `http://localhost:1337/api/locataires/${tenantId}`,
         { data: { archive: true } },
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
+      );
+
+      console.log(
+        "Réponse de l'API après archivage du locataire :",
+        response.data
       );
 
       // Rafraîchir les données de l'appartement
@@ -360,11 +406,18 @@ const DetailAppartement = () => {
           },
         }
       );
+
       setAppart(res.data.data);
       alert("Locataire archivé avec succès !");
     } catch (err) {
-      console.error("Erreur lors de l'archivage du locataire :", err);
-      alert("Erreur lors de l'archivage du locataire.");
+      console.error(
+        "Erreur détaillée lors de l'archivage du locataire :",
+        err.response ? err.response.data : err.message
+      );
+      alert(
+        "Erreur lors de l'archivage du locataire : " +
+          (err.response ? err.response.data.error.message : err.message)
+      );
     }
   };
 
@@ -923,10 +976,10 @@ const DetailAppartement = () => {
                 <FaPlus />
                 <span>Ajouter</span>
               </button>
-              <button
-                className="btn-locataire-action btn-archive"
-                onClick={() => 
-                  handleArchiveTenant(appart?.attributes?.locataires?.id)}
+              <button className="btn-locataire-action btn-archive"
+                onClick={() =>
+                  handleArchiveTenant(appart?.attributes?.locataires?.id)
+                }
                 title="Archiver la fiche locataire"
                 aria-label="Archiver la fiche locataire"
               >
@@ -936,7 +989,8 @@ const DetailAppartement = () => {
               <button
                 className="btn-locataire-action btn-delete"
                 onClick={() =>
-                  handleDeleteTenant(appart?.attributes?.locataires?.id)}
+                  handleDeleteTenant(appart?.attributes?.locataires?.id)
+                }
                 title="Supprimer la fiche locataire"
                 aria-label="Supprimer la fiche locataire"
               >
@@ -992,7 +1046,6 @@ const DetailAppartement = () => {
                 />
               </div>
             </div>
-
             <Accordion title="Documents" icon="📄">
               <div className="documents-section">
                 <div className="info-grid">
@@ -1001,7 +1054,7 @@ const DetailAppartement = () => {
                     <span className="value">
                       {appart?.attributes?.locataires?.bail?.data ? (
                         <a
-                          href={`http://localhost:1337${appart.attributes.locataires.bail.data.attributes.url}`}
+                          href={`${process.env.REACT_APP_API_URL}${appart.attributes.locataires.bail.data.attributes.url}`}
                           target="_blank"
                           rel="noreferrer"
                           className="doc-link"
@@ -1032,7 +1085,7 @@ const DetailAppartement = () => {
                           (file, i) => (
                             <a
                               key={i}
-                              href={`http://localhost:1337${file.attributes.url}`}
+                              href={`${process.env.REACT_APP_API_URL}${file.attributes.url}`}
                               target="_blank"
                               rel="noreferrer"
                               className="doc-link"
@@ -1075,7 +1128,7 @@ const DetailAppartement = () => {
                           (file, i) => (
                             <a
                               key={i}
-                              href={`http://localhost:1337${file.attributes.url}`}
+                              href={`${process.env.REACT_APP_API_URL}${file.attributes.url}`}
                               target="_blank"
                               rel="noreferrer"
                               className="doc-link"
@@ -1118,7 +1171,7 @@ const DetailAppartement = () => {
                           (file, i) => (
                             <a
                               key={i}
-                              href={`http://localhost:1337${file.attributes.url}`}
+                              href={`${process.env.REACT_APP_API_URL}${file.attributes.url}`}
                               target="_blank"
                               rel="noreferrer"
                               className="doc-link"
@@ -1161,7 +1214,7 @@ const DetailAppartement = () => {
                           (file, i) => (
                             <a
                               key={i}
-                              href={`http://localhost:1337${file.attributes.url}`}
+                              href={`${process.env.REACT_APP_API_URL}${file.attributes.url}`}
                               target="_blank"
                               rel="noreferrer"
                               className="doc-link"
@@ -1198,13 +1251,13 @@ const DetailAppartement = () => {
                 </div>
               </div>
             </Accordion>
-
             <div className="irl-info">
               <h4>📊 Indice IRL (contrat)</h4>
               <p>{appart?.attributes?.locataires?.indiceIrl || "À remplir"}</p>
             </div>
           </div>
         </div>
+
         {/* Fiche Loyer & Charges */}
         <div className="card card-loyer">
           <div className="card-header">
